@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "272c66d0_708e734b",
+        "filename": "Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-09-16T10:57:56Z",
+      "side": 1,
+      "message": "File mode in repo is 755. Do you require this line?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 27
+      },
+      "revId": "26caa74dd7e78ebe250cbea8da984a723df74089",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a2f4d1e5_2995c640",
+        "filename": "build-containers.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-09-16T10:57:56Z",
+      "side": 1,
+      "message": "You have to build the container\u0027s name used CONTRAIL_CONTAINER_TAG and repo name. To get an example see to build.sh script at tf-dev-env repo",
+      "range": {
+        "startLine": 3,
+        "startChar": 21,
+        "endLine": 3,
+        "endChar": 39
+      },
+      "revId": "26caa74dd7e78ebe250cbea8da984a723df74089",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
