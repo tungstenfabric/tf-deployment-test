@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21377986_5403a060",
+        "filename": "Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-09-17T13:37:09Z",
+      "side": 1,
+      "message": "let\u0027s copy only required files like entrypoint.sh or *.sh",
+      "revId": "f17389dc617e4d74da1c47106bebf98d3da32eee",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a65282c8_ef72080b",
+        "filename": "build-containers.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-09-17T13:37:09Z",
+      "side": 1,
+      "message": "please use unique name for image name (tf-deployment-test) and same tag as in test-containers - $CONTRAIL_CONTAINER_TAG",
+      "range": {
+        "startLine": 6,
+        "startChar": 48,
+        "endLine": 6,
+        "endChar": 60
+      },
+      "revId": "f17389dc617e4d74da1c47106bebf98d3da32eee",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
