@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de7c3ae7_a51d1032",
+        "filename": "build-containers.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-09-18T11:56:17Z",
+      "side": 1,
+      "message": "--tag ${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}\n\notherwise it will name it as CONTRAIL_CONTAINER_TAG with tag \u0027latest\u0027\n\nand please do export for these variables in calling script https://review.opencontrail.org/c/tungstenfabric/tf-dev-env/+/61377/5/scripts/package/build-test-containers.sh\nthey can be local in that file and here you\u0027ll have empty strings\n\nalso it would be a good option to have own defaults like in calling script",
+      "revId": "7c4ad39df9b6cf1e0f562fc4be086511fa692d28",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
