@@ -1,8 +1,17 @@
-#!/bin/bash
+#!/bin/bash -e
 
+TF_CONFIG_DIR=${TF_CONFIG_DIR:-"${HOME}/.tf"}
 CONTAINER_REGISTRY=${CONTAINER_REGISTRY:-"localhost:5000"}
 CONTRAIL_CONTAINER_TAG=${CONTRAIL_CONTAINER_TAG:-"dev"}
 
-sudo docker run ${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}
+TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
 
-echo tf-deployment-test/testrunner.sh finished
+sudo docker run -v ${TF_CONFIG_DIR}/stack.env:/root/stack.env $TF_DEPLOYMENT_TEST_IMAGE || res=1
+
+# TODO: collect logs
+
+if [[ "$res" == 1 ]]; then
+  echo "ERROR: Tests failed"
+else
+  echo "INFO: tests succeeded"
+fi
