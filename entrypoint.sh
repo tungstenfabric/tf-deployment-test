@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-source /root/stack.env
+source /root/.tf/stack.env
 
 # TODO: run tests
 
