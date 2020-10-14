@@ -1,0 +1,14 @@
+parameter_defaults:
+  RhsmVars:
+    rhsm_repos:
+     - rhel-8-for-x86_64-baseos-rpms
+     - rhel-8-for-x86_64-appstream-rpms
+     - rhel-8-for-x86_64-highavailability-rpms
+     - fast-datapath-for-rhel-8-x86_64-rpms
+     - ansible-2-for-rhel-8-x86_64-rpms
+     - openstack-16.1-for-rhel-8-x86_64-rpms
+     - satellite-tools-6.5-for-rhel-8-x86_64-rpms
+    rhsm_username: "${RHEL_USER}"
+    rhsm_password: "${RHEL_PASSWORD}"
+    rhsm_org_id: "6963238"
+    rhsm_pool_ids: "${RHEL_POOL_ID}"

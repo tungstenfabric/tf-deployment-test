@@ -1,0 +1,10 @@
+---
+- name: Configure SSH PermitRootLogin parameter
+  hosts: all
+  become: yes
+  tasks:
+    - name: Set the PermitRootLogin parameter to no
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: "PermitRootLogin no"

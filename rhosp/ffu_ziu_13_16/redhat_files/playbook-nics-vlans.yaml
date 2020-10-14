@@ -1,0 +1,29 @@
+---
+- name: Patch vlan devices if have eth references
+  hosts: all
+  become: yes
+  vars:
+    prefix: "em"
+  tasks:
+    - name: Patch vlan devices
+      block:
+        - name: Check that vlan files exists
+          stat:
+            path: /etc/sysconfig/network-scripts/ifcfg-{{ item }}
+          register: nic_result
+          when: item.startswith("vlan")
+          with_items: "{{ ansible_interfaces }}"
+        - name: Backup old vlan network-script files
+          copy:
+            remote_src: True
+            src: "{{ item.stat.path }}"
+            dest: "{{ item.stat.path }}.bak"
+          when: item.item.startswith("vlan") and item.stat.exists
+          with_items: "{{ nic_result.results }}"
+        - name: Edit PHYSDEV in new network-script files
+          replace:
+            path: "{{ item.stat.path }}"
+            regexp: "^PHYSDEV=eth"
+            replace: "PHYSDEV={{ prefix }}"
+          when: item.item.startswith("vlan") and item.stat.exists
+          with_items: "{{ nic_result.results }}"

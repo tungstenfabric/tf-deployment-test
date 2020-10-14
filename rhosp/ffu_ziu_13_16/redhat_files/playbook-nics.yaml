@@ -1,0 +1,91 @@
+---
+- name: Rename eth devices
+  hosts: all
+  become: yes
+  vars:
+    prefix: "em"
+  tasks:
+    - name: Update udev rules
+      lineinfile:
+        line: "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{address}==\"{{ ansible_facts[item]['perm_macaddress'] | default(ansible_facts[item]['macaddress']) }}\", NAME=\"{{ item|replace('eth',prefix) }}\""
+        path: /etc/udev/rules.d/70-rhosp-persistent-net.rules
+        create: True
+      with_items: "{{ ansible_interfaces }}"
+      when: item.startswith("eth")
+    - name: Rename eth files
+      block:
+        - name: Check that eth files exists
+          stat:
+            path: /etc/sysconfig/network-scripts/ifcfg-{{ item }}
+          register: nic_result
+          with_items: "{{ ansible_interfaces }}"
+          when: item.startswith("eth")
+        - name: Copy nic files using the new prefix
+          copy:
+            remote_src: True
+            src: "{{ item.stat.path }}"
+            dest: "{{ item.stat.path|replace('eth',prefix) }}"
+          with_items: "{{ nic_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Edit NAME in new network-script files
+          lineinfile:
+            regexp: "^NAME=.*"
+            line: "NAME={{ item.item|replace('eth',prefix) }}"
+            path: "{{ item.stat.path|replace('eth',prefix) }}"
+          with_items: "{{ nic_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Edit DEVICE in new network-script files
+          lineinfile:
+            regexp: "^DEVICE=.*"
+            line: "DEVICE={{ item.item|replace('eth',prefix) }}"
+            path: "{{ item.stat.path|replace('eth',prefix) }}"
+          with_items: "{{ nic_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Backup old eth network-script files
+          copy:
+            remote_src: True
+            src: "{{ item.stat.path }}"
+            dest: "{{ item.stat.path }}.bak"
+          with_items: "{{ nic_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Remove old eth network-script files
+          file:
+            path: "{{ item.stat.path }}"
+            state: absent
+          with_items: "{{ nic_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+    - name: Rename route files
+      block:
+        - name: Check that route files exists
+          stat:
+            path: /etc/sysconfig/network-scripts/route-{{ item }}
+          register: route_result
+          with_items: "{{ ansible_interfaces }}"
+          when: item.startswith("eth")
+        - name: Copy route files using the new prefix
+          copy:
+            remote_src: True
+            src: "{{ item.stat.path }}"
+            dest: "{{ item.stat.path|replace('eth',prefix) }}"
+          with_items: "{{ route_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Update prefix in route files that use IP command arguments format
+          replace:
+            regexp: "eth"
+            replace: "{{ prefix }}"
+            path: "{{ item.stat.path|replace('eth',prefix) }}"
+          with_items: "{{ route_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Backup old route files
+          copy:
+            remote_src: True
+            src: "{{ item.stat.path }}"
+            dest: "{{ item.stat.path }}.bak"
+          with_items: "{{ route_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists
+        - name: Remove old route files
+          file:
+            path: "{{ item.stat.path }}"
+            state: absent
+          with_items: "{{ route_result.results }}"
+          when: item.item.startswith("eth") and item.stat.exists

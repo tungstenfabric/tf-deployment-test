@@ -1,0 +1,17 @@
+---
+- name: Copy Leapp data files to overcloud
+  hosts: overcloud
+  become: yes
+  tasks:
+    - name: Create the Leapp files directory
+      file:
+        path: /etc/leapp/files
+        state: directory
+    - name: Copy pes-events.json
+      copy:
+        src: /etc/leapp/files/pes-events.json
+        dest: /etc/leapp/files/pes-events.json
+    - name: Copy
+      copy:
+        src: /etc/leapp/files/repomap.csv
+        dest: /etc/leapp/files/repomap.csv

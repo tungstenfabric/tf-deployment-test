@@ -1,0 +1,47 @@
+---
+- name: Patch vhost0 devices if have eth references
+  hosts: all
+  become: yes
+  vars:
+    prefix: "em"
+  tasks:
+    - name: Patch vhost0 device
+      block:
+        - name: Check that vhost0 files exists
+          stat:
+            path: /etc/sysconfig/network-scripts/ifcfg-vhost0
+          register: nic_result
+        - name: Backup old vhost0 network-script files
+          copy:
+            remote_src: True
+            src: "{{ nic_result.stat.path }}"
+            dest: "{{ nic_result.stat.path }}.bak"
+          when: nic_result.stat.exists
+        - name: Edit BIND_INT in new network-script files
+          replace:
+            path: "{{ nic_result.stat.path }}"
+            regexp: "^BIND_INT=eth"
+            replace: "BIND_INT={{ prefix }}"
+          when: nic_result.stat.exists
+        - name: remove ifcfg-ethX if any
+          file: 
+            path: /etc/sysconfig/network-scripts/ifcfg-eth*
+            state: absent
+        - name: remove ifcfg-pktX if any
+          file: 
+            path: /etc/sysconfig/network-scripts/ifcfg-pkt*
+            state: absent
+    - name: run vrouter-init if exists
+      shell: |
+        set -x
+        if docker inspect contrail-vrouter-kernel-init >/dev/null 2>&1; then
+          docker start -i contrail-vrouter-kernel-init
+        fi
+    - name: remove old eth udev rules if any after update
+      shell: |
+        set -x
+        rule_file=/etc/udev/rules.d/70-persistent-net.rules
+        if [[ -f $rule_file ]] && grep -q eth $rule_file ; then
+          rm -f $rule_file 
+        fi
+
