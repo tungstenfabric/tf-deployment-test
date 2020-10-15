@@ -6,7 +6,7 @@ CONTRAIL_CONTAINER_TAG=${CONTRAIL_CONTAINER_TAG:-"dev"}
 
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
 
-sudo docker run -v -i ${TF_CONFIG_DIR}:/root/.tf $TF_DEPLOYMENT_TEST_IMAGE || res=1
+sudo docker run -i -v ${TF_CONFIG_DIR}:/root/.tf $TF_DEPLOYMENT_TEST_IMAGE || res=1
 
 # TODO: collect logs
 
