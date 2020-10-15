@@ -9,3 +9,6 @@ build_opts="--build-arg LC_ALL=en_US.UTF-8 --build-arg LANG=en_US.UTF-8 --build-
 build_opts+=" --network host --no-cache --tag ${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG} $scriptdir"
 
 sudo docker build $build_opts
+if [[ -n "$CONTAINER_REGISTRY" ]]; then
+  sudo docker push ${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}
+fi
