@@ -15,6 +15,8 @@ role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
 
 sed -i '/ceph3_.*\|.*_stein/d' containers-prepare-parameter.yaml
 
+#17.5. Synchronizing the overcloud stack
+
 openstack overcloud upgrade converge \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \

@@ -30,9 +30,16 @@ for node in overcloud-controller-0 overcloud-contrailcontroller-0 overcloud-nova
 done    
 
 cd ~
-ansible-playbook -c local -i localhost, $my_dir/redhat_files/playbook-ssh.yaml
-ansible-playbook -c local -i localhost, $my_dir/redhat_files/playbook-nics.yaml
-ansible-playbook -c local -i localhost, $my_dir/redhat_files/playbook-nics-vlans.yaml
+
+#4.2. USING PREDICTABLE NIC NAMES FOR THE UNDERCLOUD NODE
+ansible-playbook -c local -i localhost, $my_dir/../redhat_files/playbook-nics.yaml
+
+#There is no playbook for vlans in Red Hat manual yet.
+ansible-playbook -c local -i localhost, $my_dir/../tf_specific/playbook-nics-vlans.yaml
+
+#4.3. SETTING THE SSH ROOT PERMISSION PARAMETER ON THE UNDERCLOUD
+ansible-playbook -c local -i localhost, $my_dir/../redhat_files/playbook-ssh.yaml
+
 
 #Fix for 7.8. It must to be upgraded to 7.9 for leapp upgrade
 sudo yum update -y

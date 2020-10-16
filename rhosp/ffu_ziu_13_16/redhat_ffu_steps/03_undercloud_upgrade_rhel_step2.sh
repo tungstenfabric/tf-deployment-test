@@ -9,6 +9,7 @@ source rhosp-environment.sh
 
 sudo dnf -y remove python2*
 
+#6.1. LOCKING THE ENVIRONMENT TO A RED HAT ENTERPRISE LINUX RELEASE
 sudo subscription-manager release --set=8.2
 sudo subscription-manager repos --disable=*
 sudo subscription-manager repos \

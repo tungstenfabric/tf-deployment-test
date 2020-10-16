@@ -10,6 +10,7 @@ cd ~
 source stackrc
 source rhosp-environment.sh
 
+#17.2. Upgrading Controller nodes
 ctrl_ip=$(openstack server list --name overcloud-controller-0 -c Networks -f value | cut -d '=' -f2)
 [[ -n "$ctrl_ip" ]]
 

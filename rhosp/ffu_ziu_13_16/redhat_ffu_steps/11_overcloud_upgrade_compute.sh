@@ -11,11 +11,9 @@ cd ~
 source stackrc
 source rhosp-environment.sh
 
+#17.4. Upgrading Compute nodes
 for node in $(openstack server list --name overcloud-novacompute -c Name -f value) ; do
-  # use separate steps for system_upgrade_prepare + system_upgrade_run
-  # instead of united system_upgrade to allow some hack for vhost0
-  openstack overcloud upgrade run --stack overcloud --tags system_upgrade_prepare --limit $node
-  openstack overcloud upgrade run --stack overcloud --tags system_upgrade_run --limit $node
+  source $my_dir/tf_specific/11_overcloud_upgrade_compute.sh
   openstack overcloud upgrade run --stack overcloud --limit $node
 done
 

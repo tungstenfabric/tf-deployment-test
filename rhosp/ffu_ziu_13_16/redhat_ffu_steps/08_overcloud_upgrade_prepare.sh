@@ -20,6 +20,7 @@ role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
   -r $role_file \
   -p tripleo-heat-templates/
 
+#17.1. Running the overcloud upgrade preparation
 openstack overcloud upgrade prepare \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
