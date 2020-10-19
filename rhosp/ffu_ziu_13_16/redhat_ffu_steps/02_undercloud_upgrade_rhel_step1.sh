@@ -12,6 +12,7 @@ source rhosp-environment.sh
 
 /sbin/ip addr list
 
+#5.1. REMOVING RED HAT OPENSTACK PLATFORM DIRECTOR PACKAGES
 sudo systemctl stop openstack-* httpd haproxy mariadb rabbitmq* docker xinetd || true
 
 sudo yum -y remove *el7ost* galera* haproxy* \
@@ -29,9 +30,10 @@ sudo yum -y remove *el7ost* galera* haproxy* \
 
 sudo rm -rf /etc/httpd /var/lib/docker
 
+#5.2. PERFORMING A LEAPP UPGRADE ON THE UNDERCLOUD
 sudo yum install -y leapp
 
-sudo tar -xzf $my_dir/redhat_files/leapp-data8.tar.gz -C /etc/leapp/files
+sudo tar -xzf $my_dir/../redhat_files/leapp-data8.tar.gz -C /etc/leapp/files
 
 sudo subscription-manager refresh
 

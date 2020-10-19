@@ -14,7 +14,7 @@ source stackrc
 # TODO: ita fails - no python3 on overcloud at this moment
 # openstack tripleo validator run --group pre-upgrade
 
-# Disable PCS fencing
+#7.4. Disabling fencing in the overcloud
 ctrl_ip=$(openstack server list --name overcloud-controller-0 -c Networks -f value | cut -d '=' -f2)
 [[ -n "$ctrl_ip" ]]
 node_admin_username=${NODE_ADMIN_USERNAME:-'heat-admin'}
@@ -22,6 +22,7 @@ pcs_bootstrap_node_name=$(ssh $node_admin_username@$ctrl_ip "sudo hiera -c /etc/
 pcs_bootstrap_node_ip=$(openstack server list --name $pcs_bootstrap_node_name -c Networks -f value | cut -d '=' -f2)
 ssh $node_admin_username@$pcs_bootstrap_node_ip "sudo pcs property set stonith-enabled=false"
 
+#7.5. Creating an overcloud inventory file
 #For nightly lab
 #tripleo-ansible-inventory --ansible_ssh_user stack -static-yaml-inventory inventory.yaml
 tripleo-ansible-inventory --static-yaml-inventory inventory.yaml
@@ -29,11 +30,16 @@ tripleo-ansible-inventory --static-yaml-inventory inventory.yaml
 ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
 ansible overcloud -i inventory.yaml -b -m shell -a 'yum update -y'
 
-ansible-playbook -i inventory.yaml $my_dir/redhat_files/playbook-leapp-data.yaml
-ansible-playbook -i inventory.yaml $my_dir/redhat_files/playbook-nics.yaml
-ansible-playbook -i inventory.yaml $my_dir/redhat_files/playbook-nics-vlans.yaml
-ansible-playbook -i inventory.yaml -l overcloud_Compute $my_dir/playbook-nics-vhost0.yaml
-ansible-playbook -i inventory.yaml $my_dir/redhat_files/playbook-ssh.yaml
+ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-leapp-data.yaml
+
+#8.4. USING PREDICTABLE NIC NAMES FOR OVERCLOUD NODES
+ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-nics.yaml
+
+#TF Specific part
+source tf-specific/06_overcloud_prepare.sh
+
+#8.5. SETTING THE SSH ROOT PERMISSION PARAMETER ON THE OVERCLOUD
+ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-ssh.yaml
 
 ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop"
 
