@@ -1,0 +1,11 @@
+.testrepository
+*.pyc
+.*sw*
+contrail.repo
+Dockerfile.nofromargs
+*.tar
+*.tgz
+*.gz
+*.zip
+pk.key
+report.xml
