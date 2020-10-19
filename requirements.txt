@@ -1,0 +1,6 @@
+testrepository
+testtools
+paramiko
+python-subunit
+junitxml
+fixtures
