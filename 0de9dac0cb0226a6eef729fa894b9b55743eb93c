@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "094992c6_88b83d44",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "-ex",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a514cad9_af7e4d93",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "the very first deploy is done out of this test.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 36
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "affe2e05_5cb530f7",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "common infra in this project will load provide env from devstack. own code is not needed.",
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e95e523_556b937e",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "move installation of libs into Dockerfile",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 43
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "205bbd72_e54ce242",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "why not to hide it inside get_ and set_ tools.. \nit looks there is no value from getting it here.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 78
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d07ce5d7_a5b58cb8",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "lets use first node from CONTROLLER_NODES list.",
+      "range": {
+        "startLine": 18,
+        "startChar": 51,
+        "endLine": 18,
+        "endChar": 59
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4497651e_3f838552",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "lets have it like : \u0027MPLSoUDP,MPLSoGRE,VXLAN\u0027\nand let get_.. tool to join array to list and return string.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 74
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11806ae2_5461dc5b",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "same, lets have \"a,b,c\"\nand let python to prepare correct array parameter if it needs it.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 54
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "644250df_f0e5914d",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "exit",
+      "range": {
+        "startLine": 33,
+        "startChar": 2,
+        "endLine": 33,
+        "endChar": 8
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33ceb0c3_fa9c02af",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "assume restart is needed for contrail containers only.",
+      "range": {
+        "startLine": 38,
+        "startChar": 29,
+        "endLine": 38,
+        "endChar": 69
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f04e2ff_e816f1e1",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "yes, it is needed to wait a bit till contrail be up again.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 16
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93439611_c40e193d",
+        "filename": "apply_defaults_tests/test_apply_defaults_false.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-21T16:04:51Z",
+      "side": 1,
+      "message": "exit",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 45,
+        "endChar": 8
+      },
+      "revId": "0de9dac0cb0226a6eef729fa894b9b55743eb93c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
