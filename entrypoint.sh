@@ -1,8 +1,10 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 source /root/.tf/stack.env
 
 # TODO: run tests
+test_file="/apply_defaults_tests/test_get_current_encap_value.sh"
+sudo bash $test_file
 
 # TODO: save logs
 
