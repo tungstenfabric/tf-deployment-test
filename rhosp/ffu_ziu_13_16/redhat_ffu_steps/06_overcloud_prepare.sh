@@ -3,6 +3,7 @@
 my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
+source ~/rhosp-environment.sh
 source $my_dir/functions.sh
 
 exec 3>&1 1> >(tee ${0}.log) 2>&1
@@ -27,8 +28,16 @@ ssh $node_admin_username@$pcs_bootstrap_node_ip "sudo pcs property set stonith-e
 #tripleo-ansible-inventory --ansible_ssh_user stack -static-yaml-inventory inventory.yaml
 tripleo-ansible-inventory --static-yaml-inventory inventory.yaml
 
-ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
-ansible overcloud -i inventory.yaml -b -m shell -a 'yum update -y'
+#Red Hat Registration Case
+#ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
+#ansible overcloud -i inventory.yaml -b -m shell -a 'yum update -y'
+
+#Local mirrors case (CICD)
+for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
+    scp $my_dir/../redhat_files/rhel8.repo ${SSH_USER}@${ip}:
+    ssh ${SSH_USER}@${ip} "sudo rm -f /etc/yum.repos.d/*"
+    ssh ${SSH_USER}@${ip} "sudo cp rhel8.repo /etc/yum.repos.d/"
+done
 
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-leapp-data.yaml
 
