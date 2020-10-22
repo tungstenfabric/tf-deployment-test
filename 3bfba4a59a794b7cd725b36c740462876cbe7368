@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84b59353_a310e8aa",
+        "filename": "Dockerfile",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T13:47:06Z",
+      "side": 1,
+      "message": "better to copy just whole project inside, to not to modify this file if more tests added",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "3bfba4a59a794b7cd725b36c740462876cbe7368",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e67b9cba_2246e00b",
+        "filename": "Dockerfile",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T13:47:06Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "3bfba4a59a794b7cd725b36c740462876cbe7368",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdcfbea8_975b1870",
+        "filename": "Dockerfile",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T13:47:06Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 40
+      },
+      "revId": "3bfba4a59a794b7cd725b36c740462876cbe7368",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5b2d62d_1a96d386",
+        "filename": "apply_defaults_tests/test_get_current_encap_value.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T13:47:06Z",
+      "side": 1,
+      "message": "no needs to iterate - to get just first it is enough to do node\u003d$(echo $CONTROLLER_NODES | tr \u0027,\u0027 \u0027 \u0027 | cut -d \u0027 \u0027 -f 1) that takes both space and comma separation lists..",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 4
+      },
+      "revId": "3bfba4a59a794b7cd725b36c740462876cbe7368",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "112532b7_9b50ba8b",
+        "filename": "requirements.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T13:47:06Z",
+      "side": 1,
+      "message": "just put it directly to pip install command.\nand remove this file at all",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "3bfba4a59a794b7cd725b36c740462876cbe7368",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecbb61fe_e466a72c",
+        "filename": "testrunner.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T13:47:06Z",
+      "side": 1,
+      "message": "remove.\nor use approach like\n\n[[ \"$DEBUG\" \u003d\u003d true ]] \u0026\u0026 set -x\nthis allows you to to run like:  DEBGU\u003dtrue ./testrunner.sh to see more outputs if needed",
+      "revId": "3bfba4a59a794b7cd725b36c740462876cbe7368",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
