@@ -1,4 +1,5 @@
 #!/bin/bash -e
+set -x
 
 TF_CONFIG_DIR=${TF_CONFIG_DIR:-"${HOME}/.tf"}
 CONTAINER_REGISTRY=${CONTAINER_REGISTRY:-"localhost:5000"}
