@@ -1,0 +1,3 @@
+#Local mirrors case (CICD)
+parameter_defaults:
+  SkipRhelEnforcement: true
