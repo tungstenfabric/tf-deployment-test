@@ -35,20 +35,36 @@ sudo yum install -y leapp
 
 sudo tar -xzf $my_dir/../redhat_files/leapp-data8.tar.gz -C /etc/leapp/files
 
-sudo subscription-manager refresh
+#Local mirrors case (CICD)
+sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
+
 
 echo 'openvswitch2.11' | sudo tee -a /etc/leapp/transaction/to_remove
 echo 'openvswitch2.13' | sudo tee -a /etc/leapp/transaction/to_install
 echo 'ceph-ansible' | sudo tee -a /etc/leapp/transaction/to_keep
 
-sudo leapp upgrade --debug \
+#Red Hat Registration case
+#sudo subscription-manager refresh
+#sudo leapp upgrade --debug \
+#  --enablerepo rhel-8-for-x86_64-baseos-rpms \
+#  --enablerepo rhel-8-for-x86_64-appstream-rpms \
+#  --enablerepo rhel-8-for-x86_64-highavailability-rpms \
+#  --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
+#  --enablerepo ansible-2-for-rhel-8-x86_64-rpms \
+#  --enablerepo openstack-16.1-for-rhel-8-x86_64-rpms \
+#  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms
+
+#Local mirrors case (CICD)
+sudo leapp upgrade --no-rhsm --debug \
   --enablerepo rhel-8-for-x86_64-baseos-rpms \
   --enablerepo rhel-8-for-x86_64-appstream-rpms \
   --enablerepo rhel-8-for-x86_64-highavailability-rpms \
   --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
-  --enablerepo ansible-2-for-rhel-8-x86_64-rpms \
+  --enablerepo ansible-2.9-for-rhel-8-x86_64-rpms \
   --enablerepo openstack-16.1-for-rhel-8-x86_64-rpms \
-  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms
+  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
+  --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
+
 
 sudo touch /.autorelabel
 
