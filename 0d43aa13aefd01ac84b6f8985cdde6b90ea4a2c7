@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "372ea1b1_d9d0c722",
+        "filename": "Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-22T16:07:10Z",
+      "side": 1,
+      "message": "1. please follow multiline syntax - see tf-container-builder\n2. use yum clean all \u0026\u0026 rm -rf /var/cache/yum or alike - see in container builder\n3. use --no-compile for pip",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 162
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
