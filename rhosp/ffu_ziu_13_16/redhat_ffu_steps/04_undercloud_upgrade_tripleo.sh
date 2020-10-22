@@ -15,18 +15,30 @@ sudo dnf install -y python3-tripleoclient
 
 
 echo Generating yaml files
-[[ -n "$RHEL_POOL_ID" && -n "$RHEL_USER" && -n "$RHEL_PASSWORD" ]]
 
-#10.1. Red Hat Subscription Manager (RHSM) composable service
-cat $my_dir/../redhat_files/rhsm.yaml.template | envsubst > rhsm.yaml
+#Red Hat Registration case
+#[[ -n "$RHEL_POOL_ID" && -n "$RHEL_USER" && -n "$RHEL_PASSWORD" ]]
+#  export rhsm_image_registry_credentials="
+#  ContainerImageRegistryCredentials:
+#    ${OPENSTACK_CONTAINER_REGISTRY}:
+#      ${RHEL_USER}: '${RHEL_PASSWORD}'"
+#
+#
+##10.1. Red Hat Subscription Manager (RHSM) composable service
+#cat $my_dir/../redhat_files/rhsm.yaml.template | envsubst > rhsm.yaml
 
 #6.5. CONTAINER IMAGE PREPARATION PARAMETERS
-cat $my_dir/..//redhat_files/containers-prepare-parameter.yaml.template | envsubst > containers-prepare-parameter.yaml
+cat $my_dir/../redhat_files/containers-prepare-parameter.yaml.template | envsubst > containers-prepare-parameter.yaml
 
 #6.8. UPDATING THE UNDERCLOUD.CONF FILE
-sed -i '/undercloud_public_host\|undercloud_admin_host\|container_images_file/d' undercloud.conf
+sed -i '/undercloud_public_host\|undercloud_admin_host\|container_images_file\|custom_env_files/d' undercloud.conf
 sed -i "/\[DEFAULT\]/ a undercloud_public_host = ${undercloud_public_host}" undercloud.conf
 sed -i "/\[DEFAULT\]/ a undercloud_admin_host = ${undercloud_admin_host}" undercloud.conf
+
+#Local mirrors case (CICD)
+sed -i "/\[DEFAULT\]/ a custom_env_files = custom-undercloud-params.yaml" undercloud.conf
+cp $my_dir/../redhat_files/custom-undercloud-params.yaml .
+
 sed -i "/\[DEFAULT\]/ a container_images_file = containers-prepare-parameter.yaml" undercloud.conf
 sed -i "s/eth/em/" undercloud.conf
 cat undercloud.conf
