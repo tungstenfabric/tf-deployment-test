@@ -8,13 +8,13 @@ source nightly-env.sh
 source $my_dir/functions.sh
 
 checkForVariable SSH_USER
-checkForVariable RHEL_USER
-checkForVariable RHEL_PASSWORD
-checkForVariable RHEL_POOL_ID
 checkForVariable mgmt_ip
 checkForVariable ssh_private_key
 checkForVariable undercloud_public_host
 checkForVariable undercloud_admin_host
+checkForVariable CONTAINER_REGISTRY_FFU
+checkForVariable CONTRAIL_CONTAINER_TAG_FFU
+
 
 cd
 

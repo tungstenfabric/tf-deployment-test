@@ -1,4 +1,7 @@
 parameter_defaults:
+  #Local mirrors case (CICD)
+  SkipRhelEnforcement: true
+
   UpgradeLeappDebug: true
   UpgradeInitCommand: |
     sudo dnf module disable -y container-tools:rhel8
