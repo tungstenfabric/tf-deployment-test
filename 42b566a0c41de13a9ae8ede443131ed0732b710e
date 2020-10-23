@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62ffa16f_840150c2",
+        "filename": "Dockerfile",
+        "patchSetId": 18
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "whyt not to copy whole own dir with one COPY?\nwe should avoid editing this file in case of adding tests",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 40
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bda85bd_0f268f3d",
+        "filename": "Dockerfile",
+        "patchSetId": 18
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "please , use one RUN\nlast cmd must be cleanup and rm.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 4
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4320523_e947c3fb",
+        "filename": "deployment_test.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "is that really an arg?  maybe it is worth to have logger setup once and kept as obj member?",
+      "range": {
+        "startLine": 11,
+        "startChar": 35,
+        "endLine": 11,
+        "endChar": 41
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdb9e860_bcf7b37e",
+        "filename": "deployment_test.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "imho:\n - no needs in such prefix for multiline bash output..\n - if we do log of output - then it is usefull to log the run command as well..",
+      "range": {
+        "startLine": 14,
+        "startChar": 25,
+        "endLine": 14,
+        "endChar": 38
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ebffe9c_247a320a",
+        "filename": "deployment_test.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "afaik, we agreed that stderr cannot be sign of error?",
+      "range": {
+        "startLine": 16,
+        "startChar": 12,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "667e14bd_45b0729c",
+        "filename": "deployment_test.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "- bad style\n- is it realy needed to be parameter?\n- workspace already member.. just reuse.\n\nps: imho: bash_local_test_dir\u003dNone\nand in body \nif not bash_local_test_dir:\n  bash_local_test_dir \u003d blabla",
+      "range": {
+        "startLine": 22,
+        "startChar": 32,
+        "endLine": 24,
+        "endChar": 61
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "217d5feb_70a43fee",
+        "filename": "deployment_test.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "why not to recall check_cmd_on_host ?",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 35
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7859d68_97ea337c",
+        "filename": "deployment_test.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "imho - just remote_path (as the file has a shebang)",
+      "range": {
+        "startLine": 31,
+        "startChar": 31,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9688d4f9_441a5d82",
+        "filename": "entrypoint.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "set -exo pipefail\n\n(to let cmd like \"cmd1 | cmd2\" fail in case if cmd1 fails)",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 6
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f0bf477_1c0ee982",
+        "filename": "entrypoint.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "just imho - i would use ${DEPLOYER}-${ORCHESTRATOR}\nit be like rhosp13-queens , ansible-os etc.. that looks like in tf ci jobs.. ?",
+      "range": {
+        "startLine": 17,
+        "startChar": 11,
+        "endLine": 17,
+        "endChar": 42
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4435978a_7e6664e3",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-23T17:45:49Z",
+      "side": 1,
+      "message": "imho: just SSH_KEY \nhostkey - has another meaning, it is not a ssh key to connect, it is a remote host key that is verified at connection time and stored in known_hosts file..",
+      "range": {
+        "startLine": 12,
+        "startChar": 34,
+        "endLine": 12,
+        "endChar": 45
+      },
+      "revId": "42b566a0c41de13a9ae8ede443131ed0732b710e",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
