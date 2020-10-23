@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a803fd9d_f32d5a44",
+        "filename": ".testr.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75e0e917_cb361516",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 19
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "372ea1b1_d9d0c722",
         "filename": "Dockerfile",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1ac5bbc_e35adb8f",
+        "filename": "Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "372ea1b1_d9d0c722",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 162
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "678e060d_d270831c",
+        "filename": "bash_tests/k8s_manifests_k8s.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Has replied in skype",
+      "parentUuid": "84e6b041_c178de43",
+      "range": {
+        "startLine": 9,
+        "startChar": 63,
+        "endLine": 9,
+        "endChar": 78
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c371f96c_494b1dfd",
         "filename": "deployment_test.py",
         "patchSetId": 1
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "bb677d67_1f928d97",
+        "filename": "deployment_test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Move discussion to the skype",
+      "parentUuid": "c371f96c_494b1dfd",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea1fb0d6_cb81b568",
         "filename": "deployment_test.py",
         "patchSetId": 1
@@ -114,6 +210,30 @@
       "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f26fbdb_fd3effe2",
+        "filename": "deployment_test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea1fb0d6_cb81b568",
+      "range": {
+        "startLine": 22,
+        "startChar": 66,
+        "endLine": 22,
+        "endChar": 67
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +283,54 @@
     },
     {
       "key": {
+        "uuid": "ba492020_ce5fe5eb",
+        "filename": "deployment_test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "246296a4_44d9b426",
+      "range": {
+        "startLine": 24,
+        "startChar": 64,
+        "endLine": 24,
+        "endChar": 65
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "272ef380_39b0f4d2",
+        "filename": "deployment_test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64113307_9ba59917",
+      "range": {
+        "startLine": 24,
+        "startChar": 25,
+        "endLine": 24,
+        "endChar": 86
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7314e274_d9deefd9",
         "filename": "entrypoint.sh",
         "patchSetId": 1
@@ -183,6 +351,30 @@
       "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c43be37_21458a60",
+        "filename": "entrypoint.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7314e274_d9deefd9",
+      "range": {
+        "startLine": 6,
+        "startChar": 10,
+        "endLine": 6,
+        "endChar": 11
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     },
     {
       "key": {
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "c741c935_bea2beeb",
+        "filename": "entrypoint.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Up a question in the skype",
+      "parentUuid": "0176f13c_267f1edf",
+      "range": {
+        "startLine": 9,
+        "startChar": 35,
+        "endLine": 9,
+        "endChar": 47
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a1dfacfd_1f030fd1",
         "filename": "my_fixtures/host_fixture.py",
         "patchSetId": 1
@@ -229,6 +445,30 @@
       "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c7c4e14_3dd479ee",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1dfacfd_1f030fd1",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 8
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     },
     {
       "key": {
@@ -255,6 +495,30 @@
     },
     {
       "key": {
+        "uuid": "f615b8f1_4660b035",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "I\u0027ve added TF_ prefix to all the env variables I create (TF_HOST_USER, TF_HOST_KEY, TF_HOST_ADDR)",
+      "parentUuid": "f72fa7ea_41fe1589",
+      "range": {
+        "startLine": 13,
+        "startChar": 35,
+        "endLine": 13,
+        "endChar": 44
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c7d97d0a_dffdd591",
         "filename": "my_fixtures/host_fixture.py",
         "patchSetId": 1
@@ -275,6 +539,30 @@
       "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53221c63_ab32cb0a",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7d97d0a_dffdd591",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 4
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     },
     {
       "key": {
@@ -321,6 +609,54 @@
       "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34f70727_65af8e46",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce4431f7_13fa499c",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 43
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fd3ab919_2748605e",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-10-23T10:10:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6139da8b_8604144a",
+      "range": {
+        "startLine": 42,
+        "startChar": 18,
+        "endLine": 42,
+        "endChar": 19
+      },
+      "revId": "0d43aa13aefd01ac84b6f8985cdde6b90ea4a2c7",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     }
   ]
 }
