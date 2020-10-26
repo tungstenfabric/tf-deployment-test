@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ea55565_d2d24dfc",
+        "filename": "testrunner.sh",
+        "patchSetId": 24
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T12:51:49Z",
+      "side": 1,
+      "message": "exit 1 \n?",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 28
+      },
+      "revId": "b9c6024908af5034b8c14d0c7597f8fd77e83064",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
