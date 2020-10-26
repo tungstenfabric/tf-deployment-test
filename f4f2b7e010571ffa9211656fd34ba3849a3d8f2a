@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "460dedb0_371b63db",
+        "filename": "apply_defaults_tests/test_apply_defaults.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "use $my_dir instead hardcoded path",
+      "range": {
+        "startLine": 12,
+        "startChar": 27,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae3f266d_7a26110f",
+        "filename": "apply_defaults_tests/test_apply_defaults.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "I would assume that test expect that value must be default and\nwe can treat this case an error.",
+      "range": {
+        "startLine": 20,
+        "startChar": 8,
+        "endLine": 20,
+        "endChar": 15
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74ecaec9_aa95bc8d",
+        "filename": "apply_defaults_tests/test_apply_defaults.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "The first check against default is the pervious \u0027if\u0027... what is this for?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 2
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d5c5433_f6dfa520",
+        "filename": "apply_defaults_tests/test_apply_defaults.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "$SSH_USER\n(this variable should be set, if not then temporary define it in your common)",
+      "range": {
+        "startLine": 42,
+        "startChar": 20,
+        "endLine": 42,
+        "endChar": 26
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59eb144e_ada6f105",
+        "filename": "apply_defaults_tests/test_apply_defaults.sh",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "what for?   note use use here current host name .. not the name of ssh node",
+      "range": {
+        "startLine": 42,
+        "startChar": 90,
+        "endLine": 42,
+        "endChar": 99
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78bdb33b_14cdcc23",
+        "filename": "apply_defaults_tests/tools/change_encap_priority.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "tool must fail in case of error, no needs to print error.\nso, i would dont catch exceptions at all.. let python to print it into stderror and just fail execution.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 13
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e7d5614_68d963c1",
+        "filename": "apply_defaults_tests/tools/get_beauty_encap_value.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-10-26T11:45:46Z",
+      "side": 1,
+      "message": "why you need separate (and python) file?\n\nyour tools get_encap_ and set_encap.. may give string \u0027MPLSoUDP,MPLSoGRE,VXLAN\u0027 as an input argument and output result.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "f4f2b7e010571ffa9211656fd34ba3849a3d8f2a",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
