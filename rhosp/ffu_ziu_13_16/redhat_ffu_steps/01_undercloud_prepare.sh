@@ -27,7 +27,7 @@ for node in overcloud-controller-0 overcloud-contrailcontroller-0 overcloud-nova
     ssh $node_admin_username@$ip "rpm -qa" >${node}_installed_packages.txt
     ssh $node_admin_username@$ip "cat /etc/os-release" >${node}_os-release
     ssh $node_admin_username@$ip "sudo docker ps -a" >${node}_docker_ps.output
-done    
+done
 
 cd ~
 
