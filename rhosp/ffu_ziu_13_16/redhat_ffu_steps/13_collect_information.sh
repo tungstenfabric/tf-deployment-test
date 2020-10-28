@@ -27,6 +27,6 @@ for node in overcloud-controller-0 overcloud-contrailcontroller-0 overcloud-nova
     ssh $node_admin_username@$ip "rpm -qa" >${node}_installed_packages.txt
     ssh $node_admin_username@$ip "cat /etc/os-release" >${node}_os-release
     ssh $node_admin_username@$ip "sudo podman ps -a" >${node}_podman_ps.output
-done    
+done
 
 echo $(date) "------------------ FINISHED: $0 ------------------"
