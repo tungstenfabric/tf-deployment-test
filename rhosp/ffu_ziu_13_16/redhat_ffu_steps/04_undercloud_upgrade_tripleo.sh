@@ -33,15 +33,16 @@ cat containers-prepare-parameter.yaml
 
 #6.8. UPDATING THE UNDERCLOUD.CONF FILE
 sed -i '/undercloud_public_host\|undercloud_admin_host\|container_images_file\|custom_env_files/d' undercloud.conf
-sed -i "/\[DEFAULT\]/ a undercloud_public_host = ${undercloud_public_host}" undercloud.conf
-sed -i "/\[DEFAULT\]/ a undercloud_admin_host = ${undercloud_admin_host}" undercloud.conf
+sed -i "/^\[DEFAULT\]/ a undercloud_public_host = ${undercloud_public_host}" undercloud.conf
+sed -i "/^\[DEFAULT\]/ a undercloud_admin_host = ${undercloud_admin_host}" undercloud.conf
 
 #Local mirrors case (CICD)
-sed -i "/\[DEFAULT\]/ a custom_env_files = custom-undercloud-params.yaml" undercloud.conf
+sed -i "/^\[DEFAULT\]/ a custom_env_files = custom-undercloud-params.yaml" undercloud.conf
 cp $my_dir/../redhat_files/custom-undercloud-params.yaml .
 
-sed -i "/\[DEFAULT\]/ a container_images_file = containers-prepare-parameter.yaml" undercloud.conf
+sed -i "/^\[DEFAULT\]/ a container_images_file = containers-prepare-parameter.yaml" undercloud.conf
 sed -i "s/eth/em/" undercloud.conf
+sed -i 's/#local_interface[ ]*=/local_interface =/g' undercloud.conf
 cat undercloud.conf
 
 #6.10. RUNNING THE DIRECTOR UPGRADE
