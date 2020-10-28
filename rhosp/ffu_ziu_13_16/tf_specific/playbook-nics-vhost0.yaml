@@ -24,12 +24,16 @@
             replace: "BIND_INT={{ prefix }}"
           when: nic_result.stat.exists
         - name: remove ifcfg-ethX if any
-          file: 
+          file:
             path: /etc/sysconfig/network-scripts/ifcfg-eth*
             state: absent
         - name: remove ifcfg-pktX if any
-          file: 
+          file:
             path: /etc/sysconfig/network-scripts/ifcfg-pkt*
+            state: absent
+        - name: remove contrail.org.ifcfg-* if any
+          file:
+            path: /etc/sysconfig/network-scripts/contrail.org.ifcfg-*
             state: absent
     - name: run vrouter-init if exists
       shell: |
@@ -42,6 +46,6 @@
         set -x
         rule_file=/etc/udev/rules.d/70-persistent-net.rules
         if [[ -f $rule_file ]] && grep -q eth $rule_file ; then
-          rm -f $rule_file 
+          rm -f $rule_file
         fi
 
