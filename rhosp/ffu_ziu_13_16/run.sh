@@ -16,10 +16,30 @@ source $my_dir/functions.sh
 checkForVariable SSH_USER
 checkForVariable mgmt_ip
 checkForVariable ssh_private_key
-checkForVariable undercloud_public_host
-checkForVariable undercloud_admin_host
+checkForVariable NODE_ADMIN_USERNAME
 checkForVariable CONTAINER_REGISTRY_FFU
 checkForVariable CONTRAIL_CONTAINER_TAG_FFU
+checkForVariable OPENSTACK_CONTAINER_REGISTRY_FFU
+
+#Setting FFU parameters 
+rm /tmp/rhosp-environment.sh
+scp $SSH_USER@$mgmt_ip:rhosp-environment.sh /tmp/
+
+#Adding FFU and RHOSP16 variables
+undercloud_local_ip=$(grep -o "prov_ip=.*" ~/rhosp-environment.sh | cut -d '=' -f 2 | tr -d '"')
+
+undercloud_public_host=$(echo $undercloud_local_ip | sed s/1$/2/)
+undercloud_admin_host=$(echo $undercloud_local_ip | sed s/1$/3/)
+
+add_variable /tmp/rhosp-environment.sh SSH_USER $SSH_USER
+add_variable /tmp/rhosp-environment.sh mgmt_ip $mgmt_ip
+add_variable /tmp/rhosp-environment.sh ssh_private_key $ssh_private_key
+add_variable /tmp/rhosp-environment.sh NODE_ADMIN_USERNAME $NODE_ADMIN_USERNAME
+add_variable /tmp/rhosp-environment.sh CONTAINER_REGISTRY_FFU $CONTAINER_REGISTRY_FFU
+add_variable /tmp/rhosp-environment.sh CONTRAIL_CONTAINER_TAG_FFU $CONTRAIL_CONTAINER_TAG_FFU
+add_variable /tmp/rhosp-environment.sh OPENSTACK_CONTAINER_REGISTRY_FFU $OPENSTACK_CONTAINER_REGISTRY_FFU
+add_variable /tmp/rhosp-environment.sh undercloud_admin_host $undercloud_admin_host
+add_variable /tmp/rhosp-environment.sh undercloud_public_host $undercloud_public_host
 
 cd
 echo "Copiyng ffu/* to undercloud node"

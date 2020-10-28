@@ -76,3 +76,12 @@ function checkForVariable() {
     exit 1
   fi
 }
+
+function add_variable() {
+  local file=$1 
+  local var_name=$2
+  local var_value=${3}
+  sed -i "/^export $var_name/d" $file
+  echo "export $var_name=\"$var_value\"" >>$file
+}
+
