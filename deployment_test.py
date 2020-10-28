@@ -14,6 +14,11 @@ class BaseTestCase(testtools.TestCase):
             self.logger.info("%s " % line)
         for line in stderr.readlines():
             self.logger.info("bash.stderr: %s " % line)
+        try:
+            if (exec_res is not True) and (int(exec_res) > 0):
+                exec_res = False
+        except:
+            pass
         self.assertFalse(exec_res)
 
     def run_bash_test_on_host(self, bash_file_name):
