@@ -36,6 +36,7 @@ sudo yum install -y leapp
 sudo tar -xzf $my_dir/../redhat_files/leapp-data8.tar.gz -C /etc/leapp/files
 
 #Local mirrors case (CICD)
+sudo rm -f /etc/yum.repos.d/*
 sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
 
 
