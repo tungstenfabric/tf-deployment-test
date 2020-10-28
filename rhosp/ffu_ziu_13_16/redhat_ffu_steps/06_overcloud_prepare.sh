@@ -4,7 +4,7 @@ my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
 source ~/rhosp-environment.sh
-source $my_dir/functions.sh
+source $my_dir/../functions.sh
 
 exec 3>&1 1> >(tee ${0}.log) 2>&1
 echo $(date) "------------------ STARTED: $0 -------------------"
@@ -24,9 +24,7 @@ pcs_bootstrap_node_ip=$(openstack server list --name $pcs_bootstrap_node_name -c
 ssh $node_admin_username@$pcs_bootstrap_node_ip "sudo pcs property set stonith-enabled=false"
 
 #7.5. Creating an overcloud inventory file
-#For nightly lab
-#tripleo-ansible-inventory --ansible_ssh_user stack -static-yaml-inventory inventory.yaml
-tripleo-ansible-inventory --static-yaml-inventory inventory.yaml
+tripleo-ansible-inventory --ansible_ssh_user $NODE_ADMIN_USERNAME --static-yaml-inventory inventory.yaml
 
 #Red Hat Registration Case
 #ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
@@ -35,8 +33,8 @@ tripleo-ansible-inventory --static-yaml-inventory inventory.yaml
 #Local mirrors case (CICD)
 for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
     scp $my_dir/../redhat_files/rhel8.repo ${SSH_USER}@${ip}:
-    ssh ${SSH_USER}@${ip} "sudo rm -f /etc/yum.repos.d/*"
-    ssh ${SSH_USER}@${ip} "sudo cp rhel8.repo /etc/yum.repos.d/"
+    #Fix for RHEL7.8 overcloud
+    yum update -y
 done
 
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-leapp-data.yaml
@@ -45,7 +43,7 @@ ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-leapp-data.y
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-nics.yaml
 
 #TF Specific part
-source tf-specific/06_overcloud_prepare.sh
+source $my_dir/../tf_specific/06_overcloud_prepare.sh
 
 #8.5. SETTING THE SSH ROOT PERMISSION PARAMETER ON THE OVERCLOUD
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-ssh.yaml
@@ -55,12 +53,12 @@ ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop"
 echo "Rebooting overclouds"
 
 for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
-    reboot_and_wait_overcloud_node $ip 
+    reboot_and_wait_overcloud_node $ip $NODE_ADMIN_USERNAME
 done
 
 #Fix dns issue after yum update
-ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.8.8" >>/etc/resolv.conf'
-ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.4.4" >>/etc/resolv.conf'
+#ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.8.8" >>/etc/resolv.conf'
+#ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.4.4" >>/etc/resolv.conf'
 
 ansible overcloud -i inventory.yaml -m ping
 ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster start"
