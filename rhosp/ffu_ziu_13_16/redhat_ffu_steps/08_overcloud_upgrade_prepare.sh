@@ -20,13 +20,20 @@ role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
   -r $role_file \
   -p tripleo-heat-templates/
 
+#Local mirrors case (CICD)
+rhsm_parameters=''
+
+#Red Hat Registration case
+#rhsm_parameters='-e rhsm.yaml'
+#rhsm_parameters+=" -e tripleo-heat-templates/environments/rhsm.yaml"
+
 #17.1. Running the overcloud upgrade preparation
 openstack overcloud upgrade prepare \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
+  --overcloud-ssh-user $NODE_ADMIN_USERNAME \
   --roles-file $role_file \
-  -e tripleo-heat-templates/environments/rhsm.yaml \
-  -e rhsm.yaml \
+  $rhsm_parameters \
   -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
   -e tripleo-heat-templates/environments/contrail/contrail-net-single.yaml \
   -e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml \
@@ -34,8 +41,7 @@ openstack overcloud upgrade prepare \
   -e misc_opts.yaml \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml \
-  -e tripleo-heat-templates/upgrades-environment.yaml \
-  -e tripleo-heat-templates/workaround.yaml
+  -e tripleo-heat-templates/upgrades-environment.yaml
 
 openstack overcloud external-upgrade run --stack overcloud --tags container_image_prepare
 
