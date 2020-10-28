@@ -28,7 +28,7 @@ sudo dnf module enable -y container-tools:2.0
 #sudo dnf module disable -y virt:rhel
 #sudo dnf module enable -y virt:8.2
 
-sudo dnf distro-sync -y 
+sudo dnf distro-sync -y
 
 echo "Perform reboot: sudo reboot"
 echo $(date) "------------------ FINISHED: $0 ------------------"
