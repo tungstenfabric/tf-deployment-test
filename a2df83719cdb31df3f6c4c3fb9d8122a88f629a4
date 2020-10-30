@@ -22,6 +22,30 @@
       "revId": "a2df83719cdb31df3f6c4c3fb9d8122a88f629a4",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1d980ee_5f67f7a9",
+        "filename": "rhosp/ffu_ziu_13_16/redhat_ffu_steps/08_overcloud_upgrade_prepare.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 844
+      },
+      "writtenOn": "2020-10-30T09:53:50Z",
+      "side": 0,
+      "message": "Yes, this file was removed from official documentation",
+      "parentUuid": "2c6d40f9_dfbedd0a",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 43
+      },
+      "revId": "a2df83719cdb31df3f6c4c3fb9d8122a88f629a4",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     }
   ]
 }

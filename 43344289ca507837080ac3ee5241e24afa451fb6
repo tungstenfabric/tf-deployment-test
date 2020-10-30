@@ -45,6 +45,30 @@
       "revId": "43344289ca507837080ac3ee5241e24afa451fb6",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e80b58b_f0d7f690",
+        "filename": "rhosp/ffu_ziu_13_16/redhat_ffu_steps/08_overcloud_upgrade_prepare.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 844
+      },
+      "writtenOn": "2020-10-30T09:53:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2a36cbd_bb4ad538",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "43344289ca507837080ac3ee5241e24afa451fb6",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     }
   ]
 }
