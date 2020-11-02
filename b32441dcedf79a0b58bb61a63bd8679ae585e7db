@@ -2,6 +2,213 @@
   "comments": [
     {
       "key": {
+        "uuid": "a4851ec6_8d2ecd6b",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "It looks like you have to create a separate fixture for vnc_api and use it then everywhere in the tests",
+      "range": {
+        "startLine": 22,
+        "startChar": 8,
+        "endLine": 22,
+        "endChar": 60
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1cdbdf1_0fac4619",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "wrap vnc api into fixture",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 68
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eaba4701_b3dab2b7",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "this looks like common method not specific for apply_defaults only - you can put it into the base class.",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 34
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0a2a277_4a40b0c6",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "it looks like common method - not specific for apply_defaults only. Think about move it to base class",
+      "range": {
+        "startLine": 59,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 56
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4abf3d3b_2550692f",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "use ssh fixture",
+      "range": {
+        "startLine": 64,
+        "startChar": 17,
+        "endLine": 64,
+        "endChar": 36
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "628a968c_e26153b1",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "this is have to be fixture method",
+      "range": {
+        "startLine": 67,
+        "startChar": 37,
+        "endLine": 67,
+        "endChar": 61
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92d849a6_b62c3da4",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "it looks like you want to create your own testtools. Why don\u0027t use testtools Assertions? https://testtools.readthedocs.io/en/latest/for-test-authors.html#assertions",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 43
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef8871e2_ca999efe",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "It not clear. Please use testtools assertions for readability of your code. It\u0027s not need to invent the new way of testing here. You can use tf-test for reference: https://github.com/tungstenfabric/tf-test/tree/master/scripts",
+      "range": {
+        "startLine": 91,
+        "startChar": 13,
+        "endLine": 91,
+        "endChar": 29
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86dda494_98c285aa",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like you need to separate all this logic to separate functions. If you write it in one test method it be more readable.",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 81
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0502a871_7025ce52",
         "filename": "my_helpers/apply_defaults.py",
         "patchSetId": 21
@@ -18,6 +225,121 @@
         "startChar": 0,
         "endLine": 109,
         "endChar": 73
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c528c51c_2c1edd72",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "1. it looks like not specific for apply_defaults - move to to baseclass.\n2. Why don\u0027t you use os.system here?",
+      "range": {
+        "startLine": 114,
+        "startChar": 3,
+        "endLine": 117,
+        "endChar": 3
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd7b6ea6_789506cd",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "move it in separate fixture and use ssh calls like fixture usage",
+      "range": {
+        "startLine": 154,
+        "startChar": 8,
+        "endLine": 154,
+        "endChar": 19
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee48fbc7_df8e9eb4",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "move it to fixture. It\u0027s not test specific functional",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 32
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98ebc056_d875f3ec",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "to fixture",
+      "range": {
+        "startLine": 189,
+        "startChar": 8,
+        "endLine": 189,
+        "endChar": 27
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3858f8f0_e28b80f1",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:31:20Z",
+      "side": 1,
+      "message": "remove this. Use self.logger.info() or similar calls",
+      "range": {
+        "startLine": 213,
+        "startChar": 8,
+        "endLine": 213,
+        "endChar": 18
       },
       "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
