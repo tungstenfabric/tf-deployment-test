@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0502a871_7025ce52",
+        "filename": "my_helpers/apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-11-02T12:27:02Z",
+      "side": 1,
+      "message": "imho: such logs are just part of that test workflow.. \nin my opinion such  functions are useless because they are only for one particular case and cannot be reused anywhere else\n\nIn general, I doubt you need separate class.. helping methods might be members of that main class with names like \"def _some_name..\"  that underline that they are kind of private members",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 73
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb0aebac_39cd9d5a",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-11-02T12:27:02Z",
+      "side": 1,
+      "message": "this test for now looks orchestrator independed.. \ndef test_apply_defaults(self)\nNot clear what to put to attr, Ivan?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cc14f5f_7a6bec82",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-11-02T12:27:02Z",
+      "side": 1,
+      "message": "not clear why it is needed",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 40
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33d284e8_744a2e0c",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 437
+      },
+      "writtenOn": "2020-11-02T12:27:02Z",
+      "side": 1,
+      "message": "could we convert to bool and return boolean type from function, not needed in python compare bool like strings..",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 35
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
