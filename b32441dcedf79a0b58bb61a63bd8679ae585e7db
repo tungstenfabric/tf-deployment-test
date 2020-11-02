@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "78736d57_d74a7e56",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:07:05Z",
+      "side": 1,
+      "message": "1. Dmitry, it looks like you have to use more meaningfull test name. i.e. test_apply_defaults as Alexey suggests. \n2. Now test suite supports only orchestrator/deployer dependent tests run. For support orchestrator independent tests needs implement this on test suite level. i.e. add new attr like \"all_orchestrators\" and call it when testr starts.",
+      "parentUuid": "cb0aebac_39cd9d5a",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5cc14f5f_7a6bec82",
         "filename": "scripts/test_apply_defaults.py",
         "patchSetId": 21
@@ -59,6 +83,30 @@
       "writtenOn": "2020-11-02T12:27:02Z",
       "side": 1,
       "message": "not clear why it is needed",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 40
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da4ebabf_9e2677db",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-02T14:07:05Z",
+      "side": 1,
+      "message": "1. Incorrect logging use.\nself.logger \u003d logging.getLogger(__name__ + \u0027.ansible_k8s_smoke\u0027)\nself.logger.info(\u0027Bla bla bla\u0027)\nor\nself.logger.debug(), self.logger.error()\n\n2. self.host_fixture._client.close() - remove this. Create your own fisture for your own purpose as we discussed in skype",
+      "parentUuid": "5cc14f5f_7a6bec82",
       "range": {
         "startLine": 17,
         "startChar": 0,
