@@ -754,6 +754,30 @@
     },
     {
       "key": {
+        "uuid": "22ba0c50_b7c874b6",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 991
+      },
+      "writtenOn": "2020-11-03T11:54:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78736d57_d74a7e56",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "b32441dcedf79a0b58bb61a63bd8679ae585e7db",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5cc14f5f_7a6bec82",
         "filename": "scripts/test_apply_defaults.py",
         "patchSetId": 21
