@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88c2bb2a_12ce8c43",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-03T12:54:56Z",
+      "side": 1,
+      "message": "use _setUp for fixture init. This functional is quite heavy for the constructor.\nLook here for example: https://pypi.org/project/fixtures/",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 16
+      },
+      "revId": "20a1e014c5d671133685ba7e9d0a9c895f1614f1",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6033591f_2a1cb6a8",
+        "filename": "my_fixtures/host_fixture.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-03T12:54:56Z",
+      "side": 1,
+      "message": "looks like this logger created for use not for __init__ method only but for the whole class.\n\u0027HostFixture\u0027 looks more fit for the logger name",
+      "range": {
+        "startLine": 16,
+        "startChar": 53,
+        "endLine": 16,
+        "endChar": 69
+      },
+      "revId": "20a1e014c5d671133685ba7e9d0a9c895f1614f1",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6b2b76c_69463532",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-03T12:54:56Z",
+      "side": 1,
+      "message": "test_apply_defaults?",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 30
+      },
+      "revId": "20a1e014c5d671133685ba7e9d0a9c895f1614f1",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29e917d7_59e6c38e",
+        "filename": "scripts/test_apply_defaults.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 872
+      },
+      "writtenOn": "2020-11-03T12:54:56Z",
+      "side": 1,
+      "message": "test_apply_defaults?",
+      "range": {
+        "startLine": 17,
+        "startChar": 53,
+        "endLine": 17,
+        "endChar": 70
+      },
+      "revId": "20a1e014c5d671133685ba7e9d0a9c895f1614f1",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
