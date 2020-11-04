@@ -1,4 +1,4 @@
-from deployment_test import BaseTestCase
+from common.deployment_test import BaseTestCase
 from testtools.testcase import attr, WithAttributes
 import logging
 
