@@ -14,7 +14,7 @@ source rhosp-environment.sh
 #17.4. Upgrading Compute nodes
 for node in $(openstack server list --name overcloud-novacompute -c Name -f value) ; do
   source $my_dir/../tf_specific/11_overcloud_upgrade_compute.sh
-  openstack overcloud upgrade run --stack overcloud --limit $node
+  openstack overcloud upgrade run $force --stack overcloud --limit $node
 done
 
 echo $(date) "------------------ FINISHED: $0 ------------------"

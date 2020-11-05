@@ -29,12 +29,22 @@ rhsm_parameters=''
 
 overcloud_ssh_user=''
 if [ "$NODE_ADMIN_USERNAME" != "heat-admin" ]; then
-    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME" 
+    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
 fi
+
+#Temporary fix for old package python3-openstackclient-4.0.0-0.20200310193636.aa64eb6.el8ost.noarch
+#It will be removed after refreshing local mirrors
+OPENSTACK_PACKAGE_VERSION=$(rpm -qf /usr/bin/openstack)
+force=''
+if [ "$OPENSTACK_PACKAGE_VERSION" != "python3-openstackclient-4.0.0-0.20200310193636.aa64eb6.el8ost.noarch" ]; then
+   force='--yes'
+fi
+echo "export force='${force}'" >> rhosp-environment.sh
 
 
 #17.1. Running the overcloud upgrade preparation
 openstack overcloud upgrade prepare \
+  $force \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \
