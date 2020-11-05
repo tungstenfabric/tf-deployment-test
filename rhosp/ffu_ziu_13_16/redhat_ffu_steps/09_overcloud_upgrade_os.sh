@@ -9,6 +9,7 @@ echo $(date) "------------------ STARTED: $0 -------------------"
 cd ~
 source stackrc
 source rhosp-environment.sh
+source $my_dir/../functions.sh
 
 #17.2. Upgrading Controller nodes
 ctrl_ip=$(openstack server list --name overcloud-controller-0 -c Networks -f value | cut -d '=' -f2)
@@ -23,7 +24,7 @@ openstack overcloud external-upgrade run --stack overcloud --tags ceph_systemd \
 openstack overcloud upgrade run --stack overcloud --tags system_upgrade --limit $pcs_bootstrap_node
 openstack overcloud external-upgrade run --stack overcloud --tags system_upgrade_transfer_data
 openstack overcloud upgrade run --stack overcloud --playbook upgrade_steps_playbook.yaml --tags nova_hybrid_state --limit all
-openstack overcloud upgrade run --stack overcloud --limit $pcs_bootstrap_node
+retry 3 openstack overcloud upgrade run --stack overcloud --limit $pcs_bootstrap_node
 
 upgraded_controllers=$pcs_bootstrap_node
 for node in $(openstack server list --name overcloud-controller -c Name -f value | grep -v "$pcs_bootstrap_node" ) ; do

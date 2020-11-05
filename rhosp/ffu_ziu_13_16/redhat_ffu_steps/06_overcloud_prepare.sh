@@ -31,12 +31,28 @@ tripleo-ansible-inventory --ansible_ssh_user $NODE_ADMIN_USERNAME --static-yaml-
 #ansible overcloud -i inventory.yaml -b -m shell -a 'yum update -y'
 
 #Local mirrors case (CICD)
+jobs=''
 for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
     scp $my_dir/../redhat_files/*.repo ${SSH_USER}@${ip}:
     #Fix for RHEL7.8 overcloud
-    ssh ${SSH_USER}@${ip} sudo cp local.repo /etc/yum.repos.d/
-    ssh ${SSH_USER}@${ip} sudo yum update -y
+    ssh ${SSH_USER}@${ip} sudo cp /tmp/local.repo /etc/yum.repos.d/
+    #parallel ssh
+    ssh ${SSH_USER}@${ip} sudo yum update -y &
+    jobs+=" $!"
 done
+echo Parallel yum-update on overcloud nodes. pids: $jobs. Waiting...
+
+res=0
+for i in $jobs ; do
+    command wait $i || {
+        echo "ERROR: job $i failed"
+        res=1
+    }
+done
+if [[ "${res}" == 1 ]]; then
+    echo "ERROR: errors appeared during parallel yum update on overcloud nodes"
+    exit 1
+fi
 
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-leapp-data.yaml
 
