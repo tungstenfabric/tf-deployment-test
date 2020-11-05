@@ -11,8 +11,8 @@ source stackrc
 source rhosp-environment.sh
 
 for node in $(openstack server list --name overcloud-contrailcontroller -c Name -f value) ; do
-  openstack overcloud upgrade run --stack overcloud --tags system_upgrade --limit $node
-  openstack overcloud upgrade run --stack overcloud --limit $node
+  openstack overcloud upgrade run $force --stack overcloud --tags system_upgrade --limit $node
+  openstack overcloud upgrade run $force --stack overcloud --limit $node
 done
 
 echo $(date) "------------------ FINISHED: $0 ------------------"

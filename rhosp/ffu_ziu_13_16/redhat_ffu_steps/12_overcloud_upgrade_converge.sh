@@ -22,12 +22,18 @@ rhsm_parameters=''
 #rhsm_parameters='-e rhsm.yaml'
 #rhsm_parameters+=" -e tripleo-heat-templates/environments/rhsm.yaml"
 
+overcloud_ssh_user=''
+if [ "$NODE_ADMIN_USERNAME" != "heat-admin" ]; then
+    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
+fi
+
 #17.5. Synchronizing the overcloud stack
 
-openstack overcloud upgrade converge \
+openstack overcloud upgrade converge $force \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \
+  $overcloud_ssh_user \
   $rhsm_parameters \
   -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
   -e tripleo-heat-templates/environments/contrail/contrail-net-single.yaml \
