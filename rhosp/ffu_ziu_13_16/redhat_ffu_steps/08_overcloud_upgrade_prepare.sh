@@ -29,12 +29,12 @@ rhsm_parameters=''
 
 overcloud_ssh_user=''
 if [ "$NODE_ADMIN_USERNAME" != "heat-admin" ]; then
-    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME" 
+    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
 fi
 
 
 #17.1. Running the overcloud upgrade preparation
-openstack overcloud upgrade prepare \
+openstack overcloud upgrade prepare --yes \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \

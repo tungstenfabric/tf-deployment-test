@@ -9,8 +9,17 @@ echo $(date) "------------------ STARTED: $0 -------------------"
 cd ~
 source stackrc
 source rhosp-environment.sh
+source $my_dir/../functions.sh
 
 /sbin/ip addr list
+
+#4.5. Converting to next generation power management drivers
+OLDDRIVER="pxe_ipmitool"
+NEWDRIVER="ipmi"
+for NODE in $(openstack baremetal node list --driver $OLDDRIVER -c UUID -f value) ; do
+    retry 5 openstack baremetal node set $NODE --driver $NEWDRIVER
+done
+
 
 #5.1. REMOVING RED HAT OPENSTACK PLATFORM DIRECTOR PACKAGES
 sudo systemctl stop openstack-* httpd haproxy mariadb rabbitmq* docker xinetd || true
@@ -36,6 +45,9 @@ sudo yum install -y leapp
 sudo tar -xzf $my_dir/../redhat_files/leapp-data8.tar.gz -C /etc/leapp/files
 
 #Local mirrors case (CICD)
+#copy local.repo file for overcloud nodes
+cp /etc/yum.repos.d/local.repo /tmp/
+cat $my_dir/../redhat_files/rhel8.repo.template | envsubst > $my_dir/../redhat_files/rhel8.repo
 sudo rm -f /etc/yum.repos.d/*
 sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
 

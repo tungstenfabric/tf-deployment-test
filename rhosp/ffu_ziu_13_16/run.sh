@@ -4,9 +4,7 @@ my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
 cd
-source rhosp-environment.sh
 source $my_dir/functions.sh
-
 
 #Red Hat Registration case
 #checkForVariable RHEL_USER
@@ -20,6 +18,7 @@ checkForVariable NODE_ADMIN_USERNAME
 checkForVariable CONTAINER_REGISTRY_FFU
 checkForVariable CONTRAIL_CONTAINER_TAG_FFU
 checkForVariable OPENSTACK_CONTAINER_REGISTRY_FFU
+checkForVariable RHEL_LOCAL_MIRROR_FFU
 
 #Setting FFU parameters
 rm /tmp/rhosp-environment.sh || true
@@ -38,12 +37,15 @@ add_variable /tmp/rhosp-environment.sh NODE_ADMIN_USERNAME $NODE_ADMIN_USERNAME
 add_variable /tmp/rhosp-environment.sh CONTAINER_REGISTRY_FFU $CONTAINER_REGISTRY_FFU
 add_variable /tmp/rhosp-environment.sh CONTRAIL_CONTAINER_TAG_FFU $CONTRAIL_CONTAINER_TAG_FFU
 add_variable /tmp/rhosp-environment.sh OPENSTACK_CONTAINER_REGISTRY_FFU $OPENSTACK_CONTAINER_REGISTRY_FFU
+add_variable /tmp/rhosp-environment.sh RHEL_LOCAL_MIRROR_FFU $RHEL_LOCAL_MIRROR_FFU
 add_variable /tmp/rhosp-environment.sh undercloud_admin_host $undercloud_admin_host
 add_variable /tmp/rhosp-environment.sh undercloud_public_host $undercloud_public_host
 
 cd
-echo "Copiyng ffu/* to undercloud node"
+#Updating rhosp-environment.sh
+ssh $SSH_USER@$mgmt_ip cp rhosp-environment.sh rhosp-environment-rhosp13-backup.sh
 scp -r /tmp/rhosp-environment.sh $SSH_USER@$mgmt_ip:
+echo "Copying ffu/* to undercloud node"
 scp -r $my_dir $SSH_USER@$mgmt_ip:ffu
 
 echo $(date) START: Start upgrading undercloud | tee -a run.log
