@@ -29,7 +29,7 @@ rhsm_parameters=''
 
 overcloud_ssh_user=''
 if [ "$NODE_ADMIN_USERNAME" != "heat-admin" ]; then
-    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME" 
+    overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
 fi
 
 
