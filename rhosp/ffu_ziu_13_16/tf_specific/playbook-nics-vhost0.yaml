@@ -23,14 +23,20 @@
             regexp: "^BIND_INT=eth"
             replace: "BIND_INT={{ prefix }}"
           when: nic_result.stat.exists
-        - name: remove ifcfg-ethX if any
-          file: 
-            path: /etc/sysconfig/network-scripts/ifcfg-eth*
+        - name: find ifcfg files for delete
+          find:
+            paths: /etc/sysconfig/network-scripts/
+            use_regex: true
+            patterns:
+              - "contrail.org.ifcfg-eth*"
+              - "ifcfg-eth*"
+              - "ifcfg-pkt*"
+          register: files_to_delete
+        - name: removing old ifcfg files
+          file:
+            path: "{{ item.path }}"
             state: absent
-        - name: remove ifcfg-pktX if any
-          file: 
-            path: /etc/sysconfig/network-scripts/ifcfg-pkt*
-            state: absent
+          with_items: "{{ files_to_delete.files }}"
     - name: run vrouter-init if exists
       shell: |
         set -x
@@ -42,6 +48,6 @@
         set -x
         rule_file=/etc/udev/rules.d/70-persistent-net.rules
         if [[ -f $rule_file ]] && grep -q eth $rule_file ; then
-          rm -f $rule_file 
+          rm -f $rule_file
         fi
 

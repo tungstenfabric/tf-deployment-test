@@ -12,9 +12,10 @@ checkForVariable mgmt_ip
 checkForVariable ssh_private_key
 checkForVariable undercloud_public_host
 checkForVariable undercloud_admin_host
+checkForVariable NODE_ADMIN_USERNAME
 checkForVariable CONTAINER_REGISTRY_FFU
 checkForVariable CONTRAIL_CONTAINER_TAG_FFU
-
+checkForVariable OPENSTACK_CONTAINER_REGISTRY_FFU
 
 cd
 
