@@ -34,7 +34,7 @@ cat <<EOF >> contrail-parameters.yaml
     - ${container_node_ip}:8787
 EOF
 
-#13.1. Updating network interface templates
+#14.1. Updating network interface templates
 $my_dir/../redhat_files/update_nic_templates.sh
 
 role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
