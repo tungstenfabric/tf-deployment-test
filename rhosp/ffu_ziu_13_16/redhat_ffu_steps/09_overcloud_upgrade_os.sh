@@ -9,7 +9,7 @@ echo $(date) "------------------ STARTED: $0 -------------------"
 cd ~
 source stackrc
 source rhosp-environment.sh
-source $my_dir/../functions.sh
+source $my_dir/../../common//functions.sh
 
 #19.2. Upgrading Controller nodes
 ctrl_ip=$(openstack server list --name overcloud-controller-0 -c Networks -f value | cut -d '=' -f2)

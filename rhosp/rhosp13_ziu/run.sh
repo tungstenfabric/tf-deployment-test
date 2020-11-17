@@ -10,7 +10,7 @@ fi
 my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
-source $my_dir/functions.sh
+source $my_dir/../common/functions.sh
 cd
 source rhosp-environment.sh
 source ziu.sh || true
@@ -93,4 +93,5 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
      -e contrail-parameters.yaml \
      -e docker_registry.yaml
 
+echo $(date) Successfully finished | tee -a run.log
 

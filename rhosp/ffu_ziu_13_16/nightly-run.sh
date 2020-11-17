@@ -5,7 +5,7 @@ my_dir="$(dirname "$my_file")"
 
 cd
 source nightly-env.sh
-source $my_dir/functions.sh
+source $my_dir/../common/functions.sh
 
 checkForVariable SSH_USER
 checkForVariable mgmt_ip

@@ -9,7 +9,7 @@ echo $(date) "------------------ STARTED: $0 -------------------"
 cd ~
 source stackrc
 source rhosp-environment.sh
-source $my_dir/../functions.sh
+source $my_dir/../../common/functions.sh
 
 /sbin/ip addr list
 

@@ -4,7 +4,7 @@ my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
 cd
-source $my_dir/functions.sh
+source $my_dir/../common/functions.sh
 
 #Red Hat Registration case
 #checkForVariable RHEL_USER

@@ -4,7 +4,7 @@ my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
 source ~/rhosp-environment.sh
-source $my_dir/../functions.sh
+source $my_dir/../../common/functions.sh
 
 exec 3>&1 1> >(tee ${0}.log) 2>&1
 echo $(date) "------------------ STARTED: $0 -------------------"
