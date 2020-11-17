@@ -22,11 +22,11 @@ sudo dnf -y remove python2*
 #  --enable=openstack-16.1-for-rhel-8-x86_64-rpms \
 #  --enable=satellite-tools-6.5-for-rhel-8-x86_64-rpms
 
+sudo subscription-manager release --set=8.2
 sudo dnf module disable -y container-tools:rhel8
 sudo dnf module enable -y container-tools:2.0
-#https://bugzilla.redhat.com/show_bug.cgi?id=1883379
-#sudo dnf module disable -y virt:rhel
-#sudo dnf module enable -y virt:8.2
+sudo dnf module disable -y virt:rhel
+sudo dnf module enable -y virt:8.2
 
 sudo dnf distro-sync -y
 
