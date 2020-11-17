@@ -45,42 +45,42 @@ cd
 #Updating rhosp-environment.sh
 ssh $SSH_USER@$mgmt_ip cp rhosp-environment.sh rhosp-environment-rhosp13-backup.sh
 scp -r /tmp/rhosp-environment.sh $SSH_USER@$mgmt_ip:
-echo "Copying ffu/* to undercloud node"
-scp -r $my_dir $SSH_USER@$mgmt_ip:ffu
+echo "Copying tf-deployment-test to undercloud node"
+scp -r $my_dir/../../* $SSH_USER@$mgmt_ip:tf-deployment-test
 
 echo $(date) START: Start upgrading undercloud | tee -a run.log
 echo "Preparing for undercloud RHEL upgrade"
-run_ssh_undercloud './ffu/redhat_ffu_steps/01_undercloud_prepare.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/01_undercloud_prepare.sh'
 reboot_and_wait_undercloud
 
-run_ssh_undercloud './ffu/redhat_ffu_steps/02_undercloud_upgrade_rhel_step1.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/02_undercloud_upgrade_rhel_step1.sh'
 reboot_and_wait_undercloud
 
-run_ssh_undercloud './ffu/redhat_ffu_steps/03_undercloud_upgrade_rhel_step2.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/03_undercloud_upgrade_rhel_step2.sh'
 reboot_and_wait_undercloud
 
-run_ssh_undercloud './ffu/redhat_ffu_steps/04_undercloud_upgrade_tripleo.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/04_undercloud_upgrade_tripleo.sh'
 
 echo $(date) Preparing contrail images | tee -a run.log
-run_ssh_undercloud './ffu/tf_specific/05_contrail_images_prepare.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/tf_specific/05_contrail_images_prepare.sh'
 
 ######################################################
 #                  OVERCLOUD                         #
 ######################################################
 echo $(date) Preparing overcloud nodes | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/06_overcloud_prepare.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/06_overcloud_prepare.sh'
 echo $(date) Preparing heat template | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/07_overcloud_prepare_templates.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/07_overcloud_prepare_templates.sh'
 echo $(date) Start overcloud upgrade prepare | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/08_overcloud_upgrade_prepare.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/08_overcloud_upgrade_prepare.sh'
 echo $(date) Start overcloud controller update | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/09_overcloud_upgrade_os.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/09_overcloud_upgrade_os.sh'
 echo $(date) Start overcloud contrail-controller update | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/10_overcloud_upgrade_contrail_ctrl.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/10_overcloud_upgrade_contrail_ctrl.sh'
 echo $(date) Start overcloud compute update | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/11_overcloud_upgrade_compute.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/11_overcloud_upgrade_compute.sh'
 echo $(date) Start overcloud upgrade converge | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/12_overcloud_upgrade_converge.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/12_overcloud_upgrade_converge.sh'
 echo $(date) FINISH: Collecting the information | tee -a run.log
-run_ssh_undercloud './ffu/redhat_ffu_steps/13_collect_information.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/13_collect_information.sh'
 
