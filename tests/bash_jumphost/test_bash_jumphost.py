@@ -15,3 +15,10 @@ class BashJumphostTests(WithAttributes,BaseTestCase):
         current_directory = 'tests/test_bash_jumphost'
         file_name = os.path.join(current_directory, 'k8s_manifests_k8s.sh')
         self.run_bash_test_on_host(file_name)
+
+    @attr("juju-all")
+    def test_k8s_auth_keystone(self):
+        self.logger = logging.getLogger(__name__ + '.k8s_auth_keystone')
+        current_directory = 'tests/bash_jumphost'
+        file_name = os.path.join(current_directory, 'k8s_auth_keystone.sh')
+        self.run_bash_test_on_host(file_name)
