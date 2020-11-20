@@ -30,11 +30,11 @@ cat contrail_containers.yaml
 #Download new contrail images and put them into local registry
 openstack overcloud container image upload --config-file ./contrail_containers.yaml
 
-#Changing contrail-parameters.yaml
-cp contrail-parameters.yaml contrail-parameters.yaml.before_ziu
-sed -i "s/${CONTRAIL_CONTAINER_TAG}/${CONTRAIL_NEW_IMAGE_TAG}/" contrail-parameters.yaml
-echo contrail-parameters.yaml was changed
-cat contrail-parameters.yaml
+#Changing misc_opts.yaml
+cp misc_opts.yaml misc_opts.yaml.before_ziu
+sed -i "s/${CONTRAIL_CONTAINER_TAG}/${CONTRAIL_NEW_IMAGE_TAG}/" misc_opts.yaml
+echo misc_opts.yaml was changed
+cat misc_opts.yaml
 
 #Distribute local mirrors configuration to overcloud nodes
 for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do

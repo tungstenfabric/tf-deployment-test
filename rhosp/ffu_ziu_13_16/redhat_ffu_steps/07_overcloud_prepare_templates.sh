@@ -28,7 +28,7 @@ cp $my_dir/../redhat_files/upgrades-environment.yaml tripleo-heat-templates/
 #9.3. Configuring access to the undercloud registry
 container_node_name=$(sudo hiera container_image_prepare_node_names | sed 's/[]["]//g')
 container_node_ip=$(sudo hiera container_image_prepare_node_ips | sed 's/[]["]//g')
-cat <<EOF >> contrail-parameters.yaml
+cat <<EOF >> misc_opts.yaml
   DockerInsecureRegistryAddress:
     - ${container_node_name}:8787
     - ${container_node_ip}:8787
