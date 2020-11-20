@@ -1,14 +1,15 @@
-from common.fixtures.vnc_api_fixture import VncApiFixture
-from common.fixtures.host_fixture import HostFixture
-from testtools.testcase import attr, WithAttributes
-from common.deployment_test import BaseTestCase
-import logging
 import os
+import logging
+from testtools.testcase import attr, WithAttributes
 
+from common.fixtures.vnc_api_fixture import VncApiFixture
+from common.deployment_test_case import DeploymentTestCase
+
+# TODO: allow to set level in config
 logging.basicConfig(level=logging.INFO)
 
 
-class ApplyDefaultsTests(WithAttributes, BaseTestCase):
+class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
 
     @attr("all-deployers-all-orchestrator")
     def test_apply_defaults(self):
@@ -25,6 +26,7 @@ class ApplyDefaultsTests(WithAttributes, BaseTestCase):
         encap_after_change = vnc_api_client.get_encap_priority()
         assert encap_before_test != encap_after_change, "ERROR: encap_priority was not changed by api"
 
+        # TODO: rework this ugly hack
         cont_name = "tf-deployment-test"
         self.restart_containers_without_our_container_by_name(cont_name)
 
@@ -37,4 +39,4 @@ class ApplyDefaultsTests(WithAttributes, BaseTestCase):
         else:
             assert encap_after_change == encap_after_restart, "ERROR: encap_priority was reseted after restarting containers"
 
-        self.logger.info('apply_default test: PASSEDs')
+        self.logger.info('apply_default test: PASSED')
