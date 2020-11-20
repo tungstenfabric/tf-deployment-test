@@ -30,7 +30,7 @@ class VncApiFixture(fixtures.Fixture):
         return master_node
 
     def get_encap_priority(self):
-        # TODO: add supproting SSL
+        # TODO: add SSL supproting SSL
         # my_fq_name type list
         gr_obj = self.vnc_lib.global_vrouter_config_read(fq_name=self.fq_name)
         current_encap_priority = gr_obj.get_encapsulation_priorities()
@@ -41,7 +41,7 @@ class VncApiFixture(fixtures.Fixture):
         # after "MPLSoUDP,MPLSoGRE,VXLAN"
 
     def set_encap_priority(self, encaps):
-        # TODO: add supproting SSL
+        # TODO: add SSL support
         self.logger.info(f"we begining set encap_priority = {encaps}")
         new_encap = encaps.split(",")
         encap_obj = EncapsulationPrioritiesType(encapsulation=new_encap)

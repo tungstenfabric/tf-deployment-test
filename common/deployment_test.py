@@ -1,8 +1,9 @@
-import testtools
-from common.fixtures.host_fixture import HostFixture
 import os
 import time
 import datetime
+import testtools
+
+from common.fixtures.host_fixture import HostFixture
 
 
 class BaseTestCase(testtools.TestCase):
@@ -35,6 +36,7 @@ class BaseTestCase(testtools.TestCase):
         self.logger.info(f'master_node is {master_node}')
         return master_node
 
+    # TODO: rename this!
     def restart_containers_without_our_container_by_name(self, cont_name):
         # TODO: reboot only contrail containers
         # but now we reboot all another containers
@@ -79,4 +81,3 @@ class BaseTestCase(testtools.TestCase):
         self.logger.info(f"return container:\n{cmd_output}".strip())
         self.logger.info("=" * 20)
         return cmd_output
-    # END def run_cmd_here

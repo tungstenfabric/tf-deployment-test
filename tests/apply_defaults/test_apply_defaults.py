@@ -1,9 +1,9 @@
-from common.fixtures.vnc_api_fixture import VncApiFixture
-from common.fixtures.host_fixture import HostFixture
-from testtools.testcase import attr, WithAttributes
-from common.deployment_test import BaseTestCase
-import logging
 import os
+import logging
+from testtools.testcase import attr, WithAttributes
+
+from common.fixtures.vnc_api_fixture import VncApiFixture
+from common.deployment_test import BaseTestCase
 
 logging.basicConfig(level=logging.INFO)
 
@@ -37,4 +37,4 @@ class ApplyDefaultsTests(WithAttributes, BaseTestCase):
         else:
             assert encap_after_change == encap_after_restart, "ERROR: encap_priority was reseted after restarting containers"
 
-        self.logger.info('apply_default test: PASSEDs')
+        self.logger.info('apply_default test: PASSED')
