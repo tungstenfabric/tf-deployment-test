@@ -4,7 +4,8 @@ FROM $LINUX_DISTR:$LINUX_DISTR_VER
 
 COPY . /tf-deployment-test
 
-RUN yum install -y python3 rsync openssh-clients && \
+RUN cp /tf-deployment-test/testrunner.sh / && \
+    yum install -y python3 rsync openssh-clients && \
     pip3 install --upgrade --no-compile pip && \
     pip3 install --no-compile -r /tf-deployment-test/requirements.txt && \
     yum clean all -y && \
