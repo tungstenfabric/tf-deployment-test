@@ -1,5 +1,4 @@
 import os
-import stat
 import logging
 import fixtures
 import paramiko
@@ -10,27 +9,21 @@ class HostFixture(fixtures.Fixture):
 
     def __init__(self, hostname=None, username=None):
         self.logger = logging.getLogger(__name__ + '.HostFixture')
-        self.host_user = username or os.getenv("TF_HOST_USER")
-        self.host = hostname or os.getenv("TF_HOST_ADDR")
+        self.host_user = username or os.getenv("JUMPHOST_HOST_USER")
+        self.host = hostname or os.getenv("JUMPHOST_HOST_ADDR")
         self.logger.info(f"init ssh connection with {self.host}")
 
     def _setUp(self):
-        self.host_key = os.getenv("TF_SSH_KEY")
-        ssh_file = os.path.expanduser('pk.key')
-        with open(ssh_file, 'w') as fd:
-            fd.write(self.host_key)
-        os.chmod(ssh_file, stat.S_IRWXU)
-        rsync_cmd = "rsync -Pav -e \"ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no\" /tf-deployment-test %s@%s:/tmp/" % (ssh_file, self.host_user, self.host)
+        rsync_cmd = "rsync -Pav -e \"ssh -i /root/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no\" /tf-deployment-test %s@%s:/tmp/" % (self.host_user, self.host)
         code = os.system(rsync_cmd)
         if code:
             raise Exception("ERROR: rsync tests to host fails with code %s " % code)
-        if not self.host_user or not self.host_key or not self.host:
+        if not self.host_user or not self.host:
             raise Exception("ERROR: Need to pass host credentials to run the tests")
         self._client = paramiko.SSHClient()
         self._client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self._client.connect(self.host, username=self.host_user, key_filename=ssh_file, timeout=5)
         self.addCleanup(delattr, self, 'host_user')
-        self.addCleanup(delattr, self, 'host_key')
         self.addCleanup(delattr, self, 'host')
         self.addCleanup(self._client.close)
 
