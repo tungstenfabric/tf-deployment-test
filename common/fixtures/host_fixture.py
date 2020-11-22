@@ -33,8 +33,10 @@ class HostFixture(fixtures.Fixture):
 
     def exec_command(self, command):
         ssh = self._get_connection()
+        env = dict(os.environ)
         with ssh.get_transport().open_session() as channel:
             channel.fileno()  # Register event pipe
+            channel.update_environment(env)
             channel.exec_command(command)
             channel.shutdown_write()
 
