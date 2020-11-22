@@ -20,7 +20,7 @@ class HostFixture(fixtures.Fixture):
         dest_path = f"{self.ssh_user}@{self.ssh_host}:/tmp/"
         rsync_cmd = ["rsync", "-Pav", "-e", "ssh " + self.SSH_OPTS, "/tf-deployment-test", dest_path]
         check_call(rsync_cmd)
-        rsync_cmd = ["rsync", "-Pav", "-e", "ssh " + self.SSH_OPTS, "/input/test.env", "/tmp/test.env"]
+        rsync_cmd = ["rsync", "-Pav", "-e", "ssh " + self.SSH_OPTS, "/input/test.env", dest_path]
         check_call(rsync_cmd)
 
     def _get_connection(self):
