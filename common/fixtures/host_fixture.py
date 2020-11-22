@@ -29,12 +29,14 @@ class HostFixture(fixtures.Fixture):
         return ssh
 
     def get_remote_path(self, local_file_path):
-        return os.path.join("/tmp/tf-deployment-test", local_file_path)
+        return os.path.join("/tmp", local_file_path)
 
     def exec_command(self, command):
         ssh = self._get_connection()
+        env = dict(os.environ)
         with ssh.get_transport().open_session() as channel:
             channel.fileno()  # Register event pipe
+            channel.update_environment(env)
             channel.exec_command(command)
             channel.shutdown_write()
 
