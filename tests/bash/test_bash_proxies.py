@@ -27,3 +27,9 @@ class BashTests(WithAttributes, DeploymentTestCase):
         self.logger = logging.getLogger(__name__ + '.k8s_auth_keystone')
         file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_auth_keystone.sh')
         self.run_test_remotely(file_name)
+
+    @attr("ansible-openstack")
+    def test_k8s_auth_keystone(self):
+        self.logger = logging.getLogger(__name__ + '.k8s_auth_keystone')
+        file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_auth_keystone.sh')
+        self.run_test_remotely(file_name)
