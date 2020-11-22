@@ -11,6 +11,8 @@ TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-d
 env_opts=""
 env_opts+=" --env SSH_USER=$(whoami)"
 env_opts+=" --env SSH_HOST=$(hostname -i | awk '{print $1}')"
+env_opts+=" --env CONTAINER_REGISTRY_ORIGINAL=$CONTAINER_REGISTRY_ORIGINAL"
+env_opts+=" --env CONTRAIL_CONTAINER_TAG_ORIGINAL=$CONTRAIL_CONTAINER_TAG_ORIGINAL"
 
 vol_opts=""
 vol_opts+=" -v ${TF_CONFIG_DIR}:/root/.tf"
