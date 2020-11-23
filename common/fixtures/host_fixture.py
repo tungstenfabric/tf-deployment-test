@@ -31,7 +31,7 @@ class HostFixture(fixtures.Fixture):
     def get_remote_path(self, local_file_path):
         return os.path.join("/tmp/tf-deployment-test", local_file_path)
 
-    def exec(self, command):
+    def exec_command(self, command):
         ssh = self._get_connection()
         with ssh.get_transport().open_session() as channel:
             channel.fileno()  # Register event pipe
