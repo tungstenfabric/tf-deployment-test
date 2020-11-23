@@ -12,7 +12,7 @@ class DeploymentTestCase(testtools.TestCase):
         remote_path = host_fixture.get_remote_path(local_file_path)
         return host_fixture.exec(remote_path)
 
-    def get_controller_nodes():
+    def get_controller_nodes(self):
         # list can be space or comma separated
         return os.environ["CONTROLLER_NODES"].replace(",", " ").split(",")
 
