@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3af821e_01dce74a",
+        "filename": "common/fixtures/host_fixture.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 416
+      },
+      "writtenOn": "2020-11-28T16:11:36Z",
+      "side": 1,
+      "message": "insert the call for the first rsync please",
+      "revId": "e0a9b6d4622f935b4d0ac8e68dcc552f870deec4",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
