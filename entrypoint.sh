@@ -1,22 +1,17 @@
 #!/bin/bash -e
 
-if [ -f /root/.tf/stack.env ] ; then
-    set -a
-    source /root/.tf/stack.env
-    set +a
-fi
+scriptdir=$(realpath $(dirname "$0"))
 
 if [[ -z "$ORCHESTRATOR" || -z "$DEPLOYER" ]]; then
     echo "ERROR: ORCHESTRATOR and DEPLOYER must be set in stack.env"
     exit 1
 fi
 
-export WORKSPACE=/tf-deployment-test
-cd $WORKSPACE
-if [[ ! -d "$WORKSPACE/.testrepository" ]]; then
+cd $scriptdir
+
+if [[ ! -d ".testrepository" ]]; then
     testr init
 fi
-
 tests_tag="${DEPLOYER}-${ORCHESTRATOR}"
 testr run "${tests_tag}|all-deployers-all-orchestrator"
 

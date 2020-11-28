@@ -17,7 +17,9 @@ class HostFixture(fixtures.Fixture):
     def _setUp(self):
         if not self.ssh_user or not self.ssh_host:
             raise Exception(f"ERROR: credentials are invalid: ssh_host={self.ssh_host} ssh_user={self.ssh_user}")
-        rsync_cmd = ["rsync", "-Pav", "-e", "ssh " + self.SSH_OPTS, "/tf-deployment-test", f"{self.ssh_user}@{self.ssh_host}:/tmp/"]
+        dest_path = f"{self.ssh_user}@{self.ssh_host}:/tmp/"
+        rsync_cmd = ["rsync", "-Pav", "-e", "ssh " + self.SSH_OPTS, "/tf-deployment-test", dest_path]
+        rsync_cmd = ["rsync", "-Pav", "-e", "ssh " + self.SSH_OPTS, "/input/test.env", dest_path]
         check_call(rsync_cmd)
 
     def _get_connection(self):

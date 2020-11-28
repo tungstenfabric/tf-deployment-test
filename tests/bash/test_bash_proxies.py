@@ -9,7 +9,7 @@ from common.deployment_test_case import DeploymentTestCase
 logging.basicConfig(level=logging.INFO)
 
 
-CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+CURRENT_DIRECTORY = "tests/bash"
 
 
 class BashTests(WithAttributes, DeploymentTestCase):
