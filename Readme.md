@@ -19,12 +19,12 @@ Also user can clone this repo to the same place as testrunner.sh to be able to h
 
 ```bash
 set -a ; source $HOME/.tf/stack.env ; set +a
-TF_TEST_IMAGE="${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}"
+TF_DEPLOYMENT_TEST_IMAGE="${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}"
 
 # copy testrunner.sh locally
-sudo docker pull $TF_TEST_IMAGE
+sudo docker pull $TF_DEPLOYMENT_TEST_IMAGE
 tmp_name=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1)
-sudo docker create --name $tmp_name $TF_TEST_IMAGE
+sudo docker create --name $tmp_name $TF_DEPLOYMENT_TEST_IMAGE
 sudo docker cp $tmp_name:/testrunner.sh ./testrunner.sh
 sudo docker rm $tmp_name
 
