@@ -13,7 +13,7 @@ if [[ ! -d ".testrepository" ]]; then
     testr init
 fi
 tests_tag="${DEPLOYER}-${ORCHESTRATOR}"
-testr run "${tests_tag}|all-deployers-all-orchestrator"
+testr run "${tests_tag}|all-deployers|all-orchestrator"
 
-# TODO Add subunitl logs:
+# TODO: Add subunit logs:
 #testr run --subunit ${tests_tag} | subunit2junitxml -f -o report.xml

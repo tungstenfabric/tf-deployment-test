@@ -13,6 +13,7 @@ class VncApiProxy(object):
         controller_nodes = os.environ["CONTROLLER_NODES"].replace(",", " ").split(",")
         # TODO: add keystone creds
         # TODO: add ssl
+        self.logger.info(f'api_servers: {controller_nodes}')
         self.vnc_lib = vnc_api.VncApi(api_server_host=controller_nodes)
 
     def get_encap_priorities(self):
