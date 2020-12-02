@@ -28,4 +28,4 @@ cat test_list
 testr run --load-list test_list
 
 # TODO: Add subunit logs:
-#testr run --subunit ${tests_tag} | subunit2junitxml -f -o report.xml
+testr last --subunit | subunit2junitxml -f -o report.xml
