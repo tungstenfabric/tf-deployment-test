@@ -1,6 +1,9 @@
 #!/bin/bash -e
 
 scriptdir=$(realpath $(dirname "$0"))
+set -a
+source /input/test.env
+set +a
 
 if [[ -z "$ORCHESTRATOR" || -z "$DEPLOYER" ]]; then
     echo "ERROR: ORCHESTRATOR and DEPLOYER must be set in stack.env"
@@ -27,5 +30,5 @@ testr list-tests | grep -e "\[.*${DEPLOYER_TAG}" -e "\[.*all-deployers" | grep -
 cat test_list
 testr run --load-list test_list
 
-# TODO: Add subunit logs:
-#testr run --subunit ${tests_tag} | subunit2junitxml -f -o report.xml
+# TODO: Add informative logs:
+# testr last --subunit | subunit2junitxml -f -o report.xml
