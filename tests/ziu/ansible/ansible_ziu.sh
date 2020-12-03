@@ -77,7 +77,7 @@ cd $tf_deployer_dir
 # Upgrade contrail_container_tag in ziu_instances.yaml
 cp $TF_CONFIG_DIR/instances.yaml $TF_CONFIG_DIR/ziu_instances.yaml
 sed -i "s/CONTRAIL_CONTAINER_TAG:.*/CONTRAIL_CONTAINER_TAG: $CONTRAIL_CONTAINER_TAG/g" $TF_CONFIG_DIR/ziu_instances.yaml
-sed -i "s/CONTAINER_REGISTRY:.*/CONTAINER_REGISTRY: $СONTAINER_REGISTRY/g" $TF_CONFIG_DIR/ziu_instances.yaml
+sed -i "s/CONTAINER_REGISTRY:.*/CONTAINER_REGISTRY: $CONTAINER_REGISTRY/g" $TF_CONFIG_DIR/ziu_instances.yaml
 
 # Run controller stage of ziu.yml
 sudo -E ansible-playbook -v -e stage=controller -e orchestrator=openstack -e config_file=$TF_CONFIG_DIR/ziu_instances.yaml playbooks/ziu.yml
