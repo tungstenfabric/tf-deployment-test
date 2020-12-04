@@ -1,8 +1,8 @@
 #!/bin/bash -eu
-
 #Check if it's running on undercloud node
+
 hostname=$(hostname -s)
-if [ "$hostname" != "undercloud" ]; then
+if [[ ${hostname} != *"undercloud"* ]]; then
    echo This script must be run on RHOSP13 undercloud node. Exiting
    exit 1
 fi
@@ -15,7 +15,7 @@ cd
 source rhosp-environment.sh
 source ziu.sh || true
 source stackrc
-
+printenv > ziu_env
 #Checking mandatory env variables
 checkForVariable SSH_USER
 checkForVariable CONTRAIL_NEW_IMAGE_TAG
@@ -61,19 +61,16 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
 
 echo $(date) pre-syncing images to overcloud nodes. Stoping containers | tee -a run.log
 ~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
-
 #Upgrading contrail controllers
 for node in $(openstack server list --name overcloud-contrailcontroller -c Name -f value); do
     echo $(date) Upgrading $node | tee -a run.log
     openstack overcloud update run --ssh-user $SSH_USER --nodes $node
 done
-
 #Upgrading openstack controllers
 for node in $(openstack server list --name overcloud-controller -c Name -f value); do
     echo $(date) Upgrading $node | tee -a run.log
     openstack overcloud update run --ssh-user $SSH_USER --nodes $node
 done
-
 #Upgrading computes
 for node in $(openstack server list --name overcloud-novacompute -c Name -f value); do
     echo $(date) Upgrading $node | tee -a run.log
@@ -94,4 +91,4 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
      -e docker_registry.yaml
 
 echo $(date) Successfully finished | tee -a run.log
-
+echo "Successfully finished!" > it_works
