@@ -8,6 +8,7 @@ from common.utils.vnc_api import VncApiProxy
 
 # TODO: allow to set level in config
 # TODO: move this to single base test class
+# WIP for Juju
 logging.basicConfig(level=logging.INFO)
 
 
