@@ -1,8 +1,9 @@
 #!/bin/bash -eu
 
 #Check if it's running on undercloud node
+
 hostname=$(hostname -s)
-if [ "$hostname" != "undercloud" ]; then
+if [[ ${hostname} != *"undercloud"* ]]; then
    echo This script must be run on RHOSP13 undercloud node. Exiting
    exit 1
 fi
@@ -15,7 +16,7 @@ cd
 source rhosp-environment.sh
 source ziu.sh || true
 source stackrc
-
+printenv > ziu_env
 #Checking mandatory env variables
 checkForVariable SSH_USER
 checkForVariable CONTRAIL_NEW_IMAGE_TAG
@@ -94,4 +95,4 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
      -e docker_registry.yaml
 
 echo $(date) Successfully finished | tee -a run.log
-
+echo "Successfully finished!" > it_works
