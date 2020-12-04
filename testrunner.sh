@@ -20,7 +20,8 @@ fi
 echo "CONTAINER_REGISTRY_ORIGINAL=$CONTAINER_REGISTRY_ORIGINAL" >> $TEST_ENV_FILE
 echo "CONTRAIL_CONTAINER_TAG_ORIGINAL=$CONTRAIL_CONTAINER_TAG_ORIGINAL" >> $TEST_ENV_FILE
 echo "SSH_USER=$(whoami)" >> $TEST_ENV_FILE
-echo "SSH_HOST=$(hostname -i | awk '{print $1}')" >> $TEST_ENV_FILE
+PHYS_INT=`ip route get 1 | grep -o 'dev.*' | awk '{print($2)}'`
+echo "SSH_HOST=$(ip addr show dev $PHYS_INT | grep 'inet ' | awk '{print $2}' | head -n 1 | cut -d '/' -f 1)" >> $TEST_ENV_FILE
 echo "DEPLOYMENT_TEST_TAGS=$DEPLOYMENT_TEST_TAGS" >> $TEST_ENV_FILE
 cat $TEST_ENV_FILE
 
