@@ -20,7 +20,7 @@ fi
 echo "CONTAINER_REGISTRY_ORIGINAL=$CONTAINER_REGISTRY_ORIGINAL" >> $TEST_ENV_FILE
 echo "CONTRAIL_CONTAINER_TAG_ORIGINAL=$CONTRAIL_CONTAINER_TAG_ORIGINAL" >> $TEST_ENV_FILE
 echo "SSH_USER=$(whoami)" >> $TEST_ENV_FILE
-echo "SSH_HOST=$(hostname -i | awk '{print $1}')" >> $TEST_ENV_FILE
+echo "SSH_HOST=$(hostname -I | awk '{print $1}')" >> $TEST_ENV_FILE
 echo "DEPLOYMENT_TEST_TAGS=$DEPLOYMENT_TEST_TAGS" >> $TEST_ENV_FILE
 cat $TEST_ENV_FILE
 
@@ -34,7 +34,7 @@ if [ -d $scriptdir/tf-deployment-test ]; then
 fi
 
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
-sudo docker run --rm -i $vol_opts $TF_DEPLOYMENT_TEST_IMAGE || res=1
+sudo docker run -i $vol_opts --env-file $TEST_ENV_FILE $TF_DEPLOYMENT_TEST_IMAGE || res=1
 
 # TODO: collect logs
 
