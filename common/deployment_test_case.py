@@ -16,6 +16,9 @@ class DeploymentTestCase(testtools.TestCase):
         # list can be space or comma separated
         return os.environ["CONTROLLER_NODES"].replace(",", " ").split(",")
 
+    def get_agent_nodes(self):
+        return os.environ["AGENT_NODES"].replace(",", " ").split(",")
+
     def restart_containers(self, name_filter=""):
         # TODO: reboot only contrail containers
         # but now we reboot all another containers
@@ -29,3 +32,15 @@ class DeploymentTestCase(testtools.TestCase):
 
         # TODO: use correct wait. think about usefulness of this wait
         time.sleep(10)
+
+    def checking_tag_changes(self):
+        new_tag = os.environ["CONTRAIL_CONTAINER_TAG"]
+        nodes = (os.environ["CONTROLLER_NODES"] + ',' + os.environ["AGENT_NODES"])
+        nodes = nodes.replace(',', ' ').split(',')
+        for node in nodes:
+            host_fixture = self.useFixture(HostFixture(ssh_host=node))
+            cmd = "sudo contrail-status | sed '/^$/q' | sed '1d;$d' | awk '{print $4}' | grep -v '^" + new_tag + "$'"
+            stdout = host_fixture.exec_command(cmd)
+            if stdout != '':
+                raise Exception(f'contrail-status contains wrong tags\nnode: {node}\ncommand: {cmd}\noutput: {stdout}\n')
+
