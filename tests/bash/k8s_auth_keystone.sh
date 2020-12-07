@@ -23,7 +23,7 @@ kubectl config set-credentials keystone-user --exec-command=/snap/bin/client-key
 kubectl config set-credentials keystone-user --exec-api-version=client.authentication.k8s.io/v1beta1
 
 # export the correct address to keystone
-. stackrc
+source stackrc
 
 # test kubectl in keystone context
 kubectl get pods -A
@@ -36,10 +36,13 @@ fi
 random=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 K8S_USER="user_$random"
 K8S_PASSWORD="$random"
-K8S_PROJECT_NAME="k8s_$random"
-export OS_USERNAME=$K8S_USER
-export OS_PASSWORD=$K8S_PASSWORD
-export OS_PROJECT_NAME=$K8S_PROJECT_NAME
+K8S_PROJECT_NAME="k8s"
+echo "# created by deployment-test" > stackrc_k8s
+echo "export OS_USERNAME=$K8S_USER" >> stackrc_k8s
+echo "export OS_PASSWORD=$K8S_PASSWORD" >> stackrc_k8s
+echo "export OS_PROJECT_NAME=$K8S_PROJECT_NAME" >> stackrc_k8s
+
+source stackrc_k8s
 
 kubectl get pods -A
 if [[ $? == '0' ]] ; then
@@ -48,16 +51,14 @@ if [[ $? == '0' ]] ; then
 fi
 
 # add k8s project and user
-. stackrc
+source stackrc
 
 openstack project create --domain $OS_DOMAIN_NAME $K8S_PROJECT_NAME
 openstack user create --project $K8S_PROJECT_NAME --project-domain $OS_PROJECT_DOMAIN_NAME --password $K8S_PASSWORD --domain $OS_DOMAIN_NAME $K8S_USER
 openstack role add --project $K8S_PROJECT_NAME --project-domain $OS_PROJECT_DOMAIN_NAME --user $K8S_USER --user-domain $OS_USER_DOMAIN_NAME  admin
 
 # test kubectl with k8s user
-export OS_USERNAME=$K8S_USER
-export OS_PASSWORD=$K8S_PASSWORD
-export OS_PROJECT_NAME=$K8S_PROJECT_NAME
+source stackrc_k8s
 
 kubectl get pods -A
 if [[ $? != '0' ]] ; then
@@ -66,6 +67,7 @@ if [[ $? != '0' ]] ; then
 fi
 
 # remove project/user/role for idempotence
+source stackrc
 openstack role remove --user $K8S_USER --project $K8S_PROJECT_NAME admin
-openstack user delete --project $K8S_PROJECT_NAME $K8S_USER
+openstack user delete $K8S_USER
 openstack project delete $K8S_PROJECT_NAME
