@@ -36,7 +36,7 @@ fi
 random=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 K8S_USER="user_$random"
 K8S_PASSWORD="$random"
-K8S_PROJECT_NAME="k8s_$random"
+K8S_PROJECT_NAME="k8s"
 export OS_USERNAME=$K8S_USER
 export OS_PASSWORD=$K8S_PASSWORD
 export OS_PROJECT_NAME=$K8S_PROJECT_NAME
@@ -66,6 +66,7 @@ if [[ $? != '0' ]] ; then
 fi
 
 # remove project/user/role for idempotence
+. stackrc
 openstack role remove --user $K8S_USER --project $K8S_PROJECT_NAME admin
-openstack user delete --project $K8S_PROJECT_NAME $K8S_USER
+openstack user delete $K8S_USER
 openstack project delete $K8S_PROJECT_NAME
