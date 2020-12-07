@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
 
-    @attr("all-deployers", "all-orchestrators")
+    @attr("all-deployers", "kubernetes")
     def test_apply_defaults(self):
         self.logger = logging.getLogger(__name__ + '.test_apply_defaults')
         self.logger.info('Go test check')
