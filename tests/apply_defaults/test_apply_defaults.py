@@ -8,12 +8,13 @@ from common.utils.vnc_api import VncApiProxy
 
 # TODO: allow to set level in config
 # TODO: move this to single base test class
+# WIP for Juju
 logging.basicConfig(level=logging.INFO)
 
 
 class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
 
-    @attr("all-deployers", "kubernetes")
+    @attr("ansible", "kubernetes")
     def test_apply_defaults(self):
         self.logger = logging.getLogger(__name__ + '.test_apply_defaults')
         self.logger.info('Go test check')
