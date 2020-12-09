@@ -34,6 +34,7 @@ if [ -d $scriptdir/tf-deployment-test ]; then
 fi
 
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
+TF_DEPLOYMENT_TEST_IMAGE="localhost:5000/tf-deployment-test:dev"
 sudo docker run --rm -i $vol_opts $TF_DEPLOYMENT_TEST_IMAGE || res=1
 
 # TODO: collect logs
