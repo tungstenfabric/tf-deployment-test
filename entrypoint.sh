@@ -19,7 +19,7 @@ fi
 DEPLOYER_TAG=$DEPLOYER
 ORCHESTRATOR_TAG=$ORCHESTRATOR
 # TODO: will be renamed to hybrid
-if [[ $ORCHESTRATOR == 'all' ]] ; then
+if [[ $ORCHESTRATOR == 'hybrid' ]] ; then
     ORCHESTRATOR_TAG='hybrid'
 fi
 echo "Testing with deployment tag: ${DEPLOYMENT_TEST_TAGS}"
