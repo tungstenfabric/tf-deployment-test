@@ -47,7 +47,7 @@ class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
             # TODO: rework this to resources that must be restored
             vnc_api_client.set_encap_priorities(original_encap_priorities)
 
-    @attr("juju", "all-orchestrators")
+    @attr("juju", "kubernetes")
     def test_juju_action_apply_defaults(self):
         self.logger = logging.getLogger(__name__ + '.test_juju_apply_defaults')
         self.logger.info('Go test check')
