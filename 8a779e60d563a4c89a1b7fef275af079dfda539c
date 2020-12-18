@@ -22,6 +22,30 @@
       "revId": "8a779e60d563a4c89a1b7fef275af079dfda539c",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ca3a672_3d036329",
+        "filename": "rhosp/rhosp13_ziu/run.sh",
+        "patchSetId": 28
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-18T10:33:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8ee6c2f_45a7c299",
+      "range": {
+        "startLine": 89,
+        "startChar": 55,
+        "endLine": 89,
+        "endChar": 58
+      },
+      "revId": "8a779e60d563a4c89a1b7fef275af079dfda539c",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     }
   ]
 }
