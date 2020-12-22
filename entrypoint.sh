@@ -16,13 +16,11 @@ if [[ ! -d ".testrepository" ]]; then
     testr init
 fi
 
-DEPLOYER_TAG=$DEPLOYER
-ORCHESTRATOR_TAG=$ORCHESTRATOR
 echo "Testing with deployment tag: ${DEPLOYMENT_TEST_TAGS}"
 # get list of tests
 # we filter the list by deployer, orchestrator, and additional if needed
-# TODO: there can be several DEPLOYMENT_TEST_TAGS, no we support one only
-testr list-tests | grep -e "\[.*${DEPLOYER_TAG}" -e "\[.*all-deployers" | grep -e "\[.*${ORCHESTRATOR_TAG}" -e "\[.*all-orchestrators" | grep -e "\[.*${DEPLOYMENT_TEST_TAGS}" > test_list
+testr list-tests | python3 filter_tests.py > test_list
+echo "List of tests:"
 cat test_list
 testr run --load-list test_list
 
