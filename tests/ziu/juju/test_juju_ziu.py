@@ -13,7 +13,7 @@ CURRENT_DIRECTORY = 'tests/ziu/juju'
 
 
 class JujuZiuTests(WithAttributes, DeploymentTestCase):
-    @attr("juju", "all-orchestrators", "ziu")
+    @attr("juju", "openstack", "ziu")
     def test_juju_ziu(self):
         self.logger = logging.getLogger(__name__ + '.juju_ziu')
         file_name = os.path.join(CURRENT_DIRECTORY, 'juju_ziu.sh')
