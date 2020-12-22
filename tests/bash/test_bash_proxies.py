@@ -27,3 +27,9 @@ class BashTests(WithAttributes, DeploymentTestCase):
         self.logger = logging.getLogger(__name__ + '.k8s_auth_keystone')
         file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_auth_keystone.sh')
         self.run_test_remotely(file_name)
+
+    @attr("juju", "all-orchestrators", "nrpe")
+    def test_juju_nrpe(self):
+        self.logger = logging.getLogger(__name__ + '.juju_nrpe')
+        file_name = os.path.join(CURRENT_DIRECTORY, 'juju_nrpe.sh')
+        self.run_test_remotely(file_name)
