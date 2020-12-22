@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b47083d_8f862ae1",
+        "filename": "rhosp/rhosp13_ziu/run.sh",
+        "patchSetId": 40
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 844
+      },
+      "writtenOn": "2020-12-22T14:27:36Z",
+      "side": 1,
+      "message": "this section is needed for PROVIDER\u003dbmc and $ENABLE_RHEL_REGISTRATION\" \u003d\u003d \u0027false\u0027",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 4
+      },
+      "revId": "a16523501ba5ee33339696c0605004731fb8a8c4",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
