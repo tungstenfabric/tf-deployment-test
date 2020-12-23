@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5e8e81a_845cc8b0",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 48
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-12-23T06:03:02Z",
+      "side": 1,
+      "message": "why such name?",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 29
+      },
+      "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08fec9c1_332d13ce",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 48
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-12-23T06:03:02Z",
+      "side": 1,
+      "message": "what is this file?",
+      "range": {
+        "startLine": 17,
+        "startChar": 40,
+        "endLine": 17,
+        "endChar": 46
+      },
+      "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4edd1bc5_98a97cdf",
+        "filename": "tests/ziu/rhosp/test_rhosp_ziu.py",
+        "patchSetId": 48
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 382
+      },
+      "writtenOn": "2020-12-23T06:03:02Z",
+      "side": 1,
+      "message": "as I told previously - creation of such check is a seprate task and has to be done separately.",
+      "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    }
+  ]
+}
