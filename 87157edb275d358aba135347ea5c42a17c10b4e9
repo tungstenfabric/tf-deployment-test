@@ -60,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "5fe7ee50_33e82faa",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 44
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T01:15:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df0d03a0_2dbef653",
+      "range": {
+        "startLine": 1,
+        "startChar": 12,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "87157edb275d358aba135347ea5c42a17c10b4e9",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e7de23b3_3750b657",
         "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
         "patchSetId": 44
@@ -80,6 +104,30 @@
       "revId": "87157edb275d358aba135347ea5c42a17c10b4e9",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c97e2e0d_245f3e44",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 44
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T01:15:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7de23b3_3750b657",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 13
+      },
+      "revId": "87157edb275d358aba135347ea5c42a17c10b4e9",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": false
     },
     {
       "key": {
