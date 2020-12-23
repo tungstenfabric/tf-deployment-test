@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1674a26c_3d15beab",
+        "filename": "testrunner.sh",
+        "patchSetId": 44
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T01:10:25Z",
+      "side": 1,
+      "message": "it needs to be discussed with Alex",
+      "parentUuid": "33e79241_38633da6",
+      "revId": "87157edb275d358aba135347ea5c42a17c10b4e9",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df0d03a0_2dbef653",
         "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
         "patchSetId": 44
@@ -88,6 +106,30 @@
     },
     {
       "key": {
+        "uuid": "82ed3136_446c7ffe",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 44
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T01:10:25Z",
+      "side": 1,
+      "message": "because of some unknown reasons just echo \"some log\" does not print anything into main deployment-test\u0027s jenkins ci log",
+      "parentUuid": "57d79e74_a3266fae",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 29
+      },
+      "revId": "87157edb275d358aba135347ea5c42a17c10b4e9",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "451c591a_1ab49596",
         "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
         "patchSetId": 44
@@ -99,6 +141,30 @@
       "writtenOn": "2020-12-22T20:02:54Z",
       "side": 1,
       "message": "it shouldn\u0027t be here. it should be a common test for all deployers",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 13
+      },
+      "revId": "87157edb275d358aba135347ea5c42a17c10b4e9",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb3bd36e_b1ba13ef",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 44
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T01:10:25Z",
+      "side": 1,
+      "message": "what do you mean by \"common test for all deployers\"? this function confirms that tag has been changed in contrail-status after ZIU. \n\ndo you want me to create a python method in common/deployment_test_case.py that will check contrail-status or add this bash function for both juju and ansible?",
+      "parentUuid": "451c591a_1ab49596",
       "range": {
         "startLine": 92,
         "startChar": 0,
