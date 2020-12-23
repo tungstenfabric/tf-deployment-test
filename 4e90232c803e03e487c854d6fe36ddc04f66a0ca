@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8912c882_83b307c7",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 48
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T11:09:46Z",
+      "side": 1,
+      "message": "because it is required name for rhosp/rhosp13_ziu/run.sh",
+      "parentUuid": "b5e8e81a_845cc8b0",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 29
+      },
+      "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "08fec9c1_332d13ce",
         "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
         "patchSetId": 48
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "6ab23e82_1717a98c",
+        "filename": "tests/ziu/rhosp/rhosp_ziu.sh",
+        "patchSetId": 48
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T11:09:46Z",
+      "side": 1,
+      "message": "\u003e what is this file?\n\nin original rhosp/rhosp13_ziu/run.sh ziu.sh is sourced. i have asked Gleb and he told that i can keep some required env variables for ziu processing script in ziu.sh",
+      "parentUuid": "08fec9c1_332d13ce",
+      "range": {
+        "startLine": 17,
+        "startChar": 40,
+        "endLine": 17,
+        "endChar": 46
+      },
+      "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4edd1bc5_98a97cdf",
         "filename": "tests/ziu/rhosp/test_rhosp_ziu.py",
         "patchSetId": 48
@@ -59,6 +107,24 @@
       "writtenOn": "2020-12-23T06:03:02Z",
       "side": 1,
       "message": "as I told previously - creation of such check is a seprate task and has to be done separately.",
+      "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
+      "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ebae037_6abd713a",
+        "filename": "tests/ziu/rhosp/test_rhosp_ziu.py",
+        "patchSetId": 48
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 958
+      },
+      "writtenOn": "2020-12-23T11:09:46Z",
+      "side": 1,
+      "message": "can you please explain what do you want? you want me to delete this check from ziu tests? or create separate patch set about checking tag changes?",
+      "parentUuid": "4edd1bc5_98a97cdf",
       "revId": "4e90232c803e03e487c854d6fe36ddc04f66a0ca",
       "serverId": "c72cd27d-1743-4a55-84a4-cd13b8400c52",
       "unresolved": true
