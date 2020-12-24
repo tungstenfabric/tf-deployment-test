@@ -65,3 +65,4 @@ if [[ ${USE_PREDEPLOYED_NODES+x} && "$USE_PREDEPLOYED_NODES" == true ]]; then
   fi
 fi
 
+echo "$(date) pre_deploy_nodes_env_files are $pre_deploy_nodes_env_files" | tee -a ~/ziu_run.log

@@ -45,7 +45,7 @@ openstack overcloud container image upload --config-file ./contrail_containers.y
 echo "$(date) change misc_opts.yaml" | tee -a ziu_run.log
 #Changing misc_opts.yaml
 cp misc_opts.yaml misc_opts.yaml.before_ziu
-sed -i "s/${CONTRAIL_CONTAINER_TAG_ORIGINAL}${TAG_SUFFIX}/${CONTRAIL_CONTAINER_TAG}/" misc_opts.yaml
+sed -i "s/${CONTRAIL_CONTAINER_TAG_ORIGINAL}/${CONTRAIL_CONTAINER_TAG}/" misc_opts.yaml
 echo "$(date) misc_opts.yaml was changed" | tee -a ziu_run.log
 cat misc_opts.yaml
 
