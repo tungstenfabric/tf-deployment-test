@@ -13,40 +13,43 @@ set -a
 source $my_dir/../common/functions.sh
 source $my_dir/../common/set_common_ziu_var.sh
 source $my_dir/set_ziu_variables.sh
+source /tmp/test.env
+
 cd
 source rhosp-environment.sh
 source stackrc
-source /tmp/test.env
-
-printenv > ziu_env
 echo "$(date) INFO:  env in ziu_env"
+printenv > ziu_env
 #Checking mandatory env variables
 checkForVariable SSH_USER
+checkForVariable CONTRAIL_NEW_IMAGE_TAG
 checkForVariable CONTAINER_REGISTRY_ORIGINAL
 checkForVariable CONTRAIL_CONTAINER_TAG
-checkForVariable CONTRAIL_NEW_IMAGE_TAG
 checkForVariable USE_PREDEPLOYED_NODES
 checkForVariable ENABLE_RHEL_REGISTRATION
 
+
+########################### UPLOAD #####################################
 echo "$(date) INFO:  preparing contrail images"
 mv contrail_containers.yaml contrail_containers.yaml.before_ziu
 ./contrail-tripleo-heat-templates/tools/contrail/import_contrail_container.sh \
     -f ./contrail_containers.yaml -r ${CONTAINER_REGISTRY_ORIGINAL} -t ${CONTRAIL_NEW_IMAGE_TAG}
-
-echo "$(date) INFO:  prov_ip for contrail_containers.yaml: $prov_ip"
 sed -i ./contrail_containers.yaml -e "s/192.168.24.1/${prov_ip}/"
 
 cat contrail_containers.yaml
-
-#Download new contrail images and put them into local registry
 echo "$(date) INFO:  download new contrail images and put them into local registry"
-openstack overcloud container image upload --config-file ./contrail_containers.yaml
+sudo openstack overcloud container image upload --config-file ./contrail_containers.yaml
 
 #Changing misc_opts.yaml
 echo "$(date) INFO:  change misc_opts.yaml"
 cp misc_opts.yaml misc_opts.yaml.before_ziu
 sed -i "s/${CONTRAIL_CONTAINER_TAG}/${CONTRAIL_NEW_IMAGE_TAG}/" misc_opts.yaml
-echo "$(date) misc_opts.yaml was changed"
+
+if [[ "$USE_PREDEPLOYED_NODES" == 'true' ]]; then
+   echo "  SkipRhelEnforcement: true" >> misc_opts.yaml
+fi
+
+echo misc_opts.yaml was changed
 cat misc_opts.yaml
 
 if [[ "$ENABLE_RHEL_REGISTRATION" == 'false' && "$USE_PREDEPLOYED_NODES" == 'false' ]]; then
@@ -58,46 +61,55 @@ if [[ "$ENABLE_RHEL_REGISTRATION" == 'false' && "$USE_PREDEPLOYED_NODES" == 'fal
     done
 fi
 
+
 ######################################################
 #                  ZIU                               #
 ######################################################
-echo "$(date)  INFO:   openstack overcloud update prepare"
-openstack overcloud update prepare --templates tripleo-heat-templates/ \
-     --overcloud-ssh-user tripleo-admin \
-     --roles-file $role_file \
-     -e docker_registry.yaml \
-     $rhel_reg_env_files \
-     $pre_deploy_nodes_env_files \
-     -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
-     $network_env_files \
-     $storage_env_files \
-     -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
-     $tls_env_files \
-     -e misc_opts.yaml \
-     -e contrail-parameters.yaml
+echo "$(date) INFO:  prepare templates"
+./tripleo-heat-templates/tools/process-templates.py --clean \
+  -r $role_file \
+  -p tripleo-heat-templates/
 
-echo "$(date) INFO:  pre-syncing images to overcloud nodes. stop containers"
+./tripleo-heat-templates/tools/process-templates.py \
+  -r $role_file \
+  -p tripleo-heat-templates/
+
+echo "$(date) INFO:  openstack overcloud update prepare"
+openstack overcloud update prepare --templates tripleo-heat-templates/ \
+  --stack overcloud --libvirt-type kvm \
+  --roles-file $role_file \
+  -e overcloud_containers.yaml \
+  $rhel_reg_env_files \
+  $pre_deploy_nodes_env_files \
+  -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
+  $network_env_files \
+  -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
+  $tls_env_files \
+  -e misc_opts.yaml \
+  -e contrail-parameters.yaml \
+  -e containers-prepare-parameter.yaml
+
+echo "$(date) INFO:  update_contrail_preparation.sh"
 ~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
 
 for node in $overcloud_instance_list; do
     echo "$(date) INFO:  Upgrading $node"
-    openstack overcloud update run --ssh-user tripleo-admin --nodes $node
+    openstack overcloud update run --ssh-user tripleo-admin --limit $node
 done
 
 echo "$(date) INFO:  openstack overcloud update converge"
 openstack overcloud update converge --templates tripleo-heat-templates/ \
-     --overcloud-ssh-user tripleo-admin \
-     --roles-file $role_file \
-     -e docker_registry.yaml \
-     $rhel_reg_env_files \
-     $pre_deploy_nodes_env_files \
-     -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
-     $network_env_files \
-     $storage_env_files \
-     -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
-     $tls_env_files \
-     -e misc_opts.yaml \
-     -e contrail-parameters.yaml
+  --stack overcloud --libvirt-type kvm \
+  --roles-file $role_file \
+  -e overcloud_containers.yaml \
+  $rhel_reg_env_files \
+  $pre_deploy_nodes_env_files \
+  -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
+  $network_env_files \
+  -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
+  $tls_env_files \
+  -e misc_opts.yaml \
+  -e contrail-parameters.yaml \
+  -e containers-prepare-parameter.yaml
 
 echo "$(date) Successfully finished"
-

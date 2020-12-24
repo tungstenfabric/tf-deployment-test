@@ -1,17 +1,18 @@
 #!/bin/bash -e
 
+exec 3>&1 1> >(tee ziu_run.log) 2>&1
+
 [ "${DEBUG,,}" == "true" ] && set -x
 
 my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
 TF_CONFIG_DIR=${TF_CONFIG_DIR:-"$HOME/.tf"}
+
 source /tmp/test.env
 
-export CONTAINER_REGISTRY="$CONTAINER_REGISTRY_ORIGINAL"
-
+export CONTRAIL_NEW_IMAGE_TAG="$CONTRAIL_CONTAINER_TAG_ORIGINAL"
 export SSH_OPTIONS=${SSH_OPTIONS:-"-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"}
-export SSH_USER=tripleo-admin
 
 function wait_cmd_success() {
     i=0

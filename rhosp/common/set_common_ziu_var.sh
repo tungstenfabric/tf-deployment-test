@@ -16,6 +16,3 @@ for nodes in "$CONTROLLER_NODES" "$OPENSTACK_CONTROLLER_NODES" "$AGENT_NODES"; d
         fi
     done
 done
-
-echo "$(date) overcloud_prov_ip_list:  $overcloud_prov_ip_list" | tee -a ~/ziu_run.log
-echo "$(date) overcloud_instance_list: $overcloud_instance_list" | tee -a ~/ziu_run.log
