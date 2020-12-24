@@ -4,7 +4,7 @@ source /tmp/test.env
 source rhosp-environment.sh
 
 tls_env_files=''
-if [[ -n "$ENABLE_TLS" ]] ; then
+if [[ "$ENABLE_TLS" == 'ipa' ]] ; then
   tls_env_files+=' -e tripleo-heat-templates/environments/contrail/contrail-tls.yaml'
   tls_env_files+=' -e tripleo-heat-templates/environments/ssl/tls-everywhere-endpoints-dns.yaml'
   tls_env_files+=' -e tripleo-heat-templates/environments/services/haproxy-public-tls-certmonger.yaml'
@@ -15,23 +15,19 @@ else
 fi
 
 rhel_reg_env_files=''
-if [[ "$ENABLE_RHEL_REGISTRATION" == 'true' ]] ; then
-  rhel_reg_env_files+=" -e environment-rhel-registration.yaml"
-  rhel_reg_env_files+=" -e tripleo-heat-templates/extraconfig/pre_deploy/rhel-registration/rhel-registration-resource-registry.yaml"
+if [[ "$ENABLE_RHEL_REGISTRATION" == 'true' && "$USE_PREDEPLOYED_NODES" != 'true' ]] ; then
+  # use rhel registration options in eneabled and for non predeployed nodes.
+  # for predeployed nodes registration is made in rhel_provisioning.sh
+  rhel_reg_env_files+=" -e tripleo-heat-templates/environments/rhsm.yaml"
+  rhel_reg_env_files+=" -e rhsm.yaml"
 fi
 
 network_env_files=''
-if [[ ${ENABLE_NETWORK_ISOLATION+x} && "$ENABLE_NETWORK_ISOLATION" == true ]] ; then
+if [[ "$ENABLE_NETWORK_ISOLATION" == true ]] ; then
     network_env_files+=' -e tripleo-heat-templates/environments/network-isolation.yaml'
     network_env_files+=' -e tripleo-heat-templates/environments/contrail/contrail-net.yaml'
 else
     network_env_files+=' -e tripleo-heat-templates/environments/contrail/contrail-net-single.yaml'
-fi
-
-storage_env_files=''
-if [[ ${overcloud_ceph_instance+x} && -n "$overcloud_ceph_instance" ]] ; then
-    storage_env_files+=' -e tripleo-heat-templates/environments/ceph-ansible/ceph-ansible.yaml'
-    storage_env_files+=' -e tripleo-heat-templates/environments/ceph-ansible/ceph-mds.yaml'
 fi
 
 if [[ -z "$CONTROLLER_NODES" && -z "$AGENT_NODES" ]] ; then
@@ -40,12 +36,13 @@ else
   role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
 fi
 
+
 pre_deploy_nodes_env_files=''
 if [[ ${USE_PREDEPLOYED_NODES+x} && "$USE_PREDEPLOYED_NODES" == true ]]; then
   pre_deploy_nodes_env_files+=" --disable-validations"
+  pre_deploy_nodes_env_files+=" --deployed-server"
+  pre_deploy_nodes_env_files+=" --overcloud-ssh-user $SSH_USER"
   pre_deploy_nodes_env_files+=" -e tripleo-heat-templates/environments/deployed-server-environment.yaml"
-  pre_deploy_nodes_env_files+=" -e tripleo-heat-templates/environments/deployed-server-bootstrap-environment-rhel.yaml"
-  pre_deploy_nodes_env_files+=" -e tripleo-heat-templates/environments/deployed-server-pacemaker-environment.yaml"
   pre_deploy_nodes_env_files+=" -e ctlplane-assignments.yaml"
   pre_deploy_nodes_env_files+=" -e hostname-map.yaml"
 
@@ -59,4 +56,3 @@ if [[ ${USE_PREDEPLOYED_NODES+x} && "$USE_PREDEPLOYED_NODES" == true ]]; then
     export ContrailController_hosts="${overcloud_ctrlcont_prov_ip//,/ }"
   fi
 fi
-
