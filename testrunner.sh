@@ -25,8 +25,8 @@ echo "SSH_HOST=$(ip addr show dev $phys_int | grep 'inet ' | awk '{print $2}' | 
 echo "DEPLOYMENT_TEST_TAGS=$DEPLOYMENT_TEST_TAGS" >> $TEST_ENV_FILE
 cat $TEST_ENV_FILE
 
-vol_opts=" -v $TEST_ENV_FILE:/input/test.env"
-vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa"
+vol_opts=" -v $TEST_ENV_FILE:/input/test.env:ro"
+vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:ro"
 
 # NOTE: to be able to have sources locally that will be executed
 # user can clone this repo from script dir and it will be used as a source code
@@ -35,7 +35,7 @@ if [ -d $scriptdir/tf-deployment-test ]; then
 fi
 
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
-sudo docker run --rm -i $vol_opts $TF_DEPLOYMENT_TEST_IMAGE || res=1
+sudo docker run --rm=true -i $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE || res=1
 
 # TODO: collect logs
 
