@@ -10,7 +10,7 @@ class DeploymentTestCase(testtools.TestCase):
     def run_test_remotely(self, local_file_path):
         host_fixture = self.useFixture(HostFixture())
         remote_path = host_fixture.get_remote_path(local_file_path)
-        return host_fixture.exec_command(remote_path)
+        host_fixture.exec_command(remote_path)
 
     def get_controller_nodes(self):
         # list can be space or comma separated
@@ -23,8 +23,8 @@ class DeploymentTestCase(testtools.TestCase):
         for node in controller_nodes:
             host_fixture = self.useFixture(HostFixture(ssh_host=node))
             cmd = f'sudo docker ps -q -f name={name_filter}'
-            stdout, stderr = host_fixture.exec_command(cmd)
-            cmd = 'sudo docker restart ' + ' '.join(stdout.split())
+            result = host_fixture.exec_command_result(cmd)
+            cmd = 'sudo docker restart ' + ' '.join(result.split())
             host_fixture.exec_command(cmd)
 
         # TODO: use correct wait. think about usefulness of this wait
