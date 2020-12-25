@@ -57,7 +57,7 @@ class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
         config_set_cmd = 'juju config contrail-controller encap-priority={}'
         apply_cmd = 'juju run-action contrail-controller/0 apply-defaults --wait'
 
-        original_juju_encap_priorities = host_fixture.exec_command(config_get_cmd)[0].strip().split(",")
+        original_juju_encap_priorities = host_fixture.exec_command_result(config_get_cmd).strip().split(",")
         original_api_encap_priorities = vnc_api_client.get_encap_priorities()
         self.logger.info(f'original_juju: {original_juju_encap_priorities} ; original_api: {original_api_encap_priorities}')
         assert original_juju_encap_priorities == original_api_encap_priorities, "ERROR: juju encap_priority differs from api encap_priority"
@@ -72,7 +72,7 @@ class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
             self.logger.info(f'original_api: {original_api_encap_priorities} ; current_api_before: {current_api_encap_priorities}')
             assert original_api_encap_priorities == current_api_encap_priorities, "ERROR: api encap_priority was changed"
 
-            result_apply_defaults = host_fixture.exec_command(apply_cmd)[0]
+            result_apply_defaults = host_fixture.exec_command_result(apply_cmd)
             self.logger.info(f'result_apply_defaults: {result_apply_defaults}')
 
             current_api_encap_priorities = vnc_api_client.get_encap_priorities()
@@ -80,7 +80,7 @@ class ApplyDefaultsTests(WithAttributes, DeploymentTestCase):
             assert new_juju_encap_priorities == current_api_encap_priorities, "ERROR: api encap_priority was not set or set incorrectly"
         finally:
             host_fixture.exec_command(config_set_cmd.format(','.join(original_api_encap_priorities)))
-            finally_apply_defaults = host_fixture.exec_command(apply_cmd)[0]
+            finally_apply_defaults = host_fixture.exec_command_result(apply_cmd)
             self.logger.info(f'finally_apply: {finally_apply_defaults}')
 
         self.logger.info('juju_action_apply_default test: PASSED')
