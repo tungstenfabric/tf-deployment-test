@@ -36,7 +36,7 @@ function wait_cmd_success() {
 function sync_time() {
     local machine
     for machine in $(echo "$CONTROLLER_NODES $AGENT_NODES" | tr " " "\n" | sort -u) ; do
-        scp $SSH_OPTIONS ${my_dir}/sync_time.sh $SSH_USER@$machine:/tmp/sync_time.sh
+        scp $SSH_OPTIONS ${my_dir}/../../../common/scripts/sync_time.sh $SSH_USER@$machine:/tmp/sync_time.sh
         ssh $SSH_OPTIONS $SSH_USER@$machine /tmp/sync_time.sh
     done
 }

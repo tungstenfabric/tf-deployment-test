@@ -18,15 +18,15 @@ class BashTests(WithAttributes, DeploymentTestCase):
     # and orchestrator  is kubernetes
     # this test will be run for k8s_manifests deployer and kubernetes orchestrator
     @attr("k8s_manifests", "kubernetes")
-    def test_manifests_k8s_smoke(self):
-        self.logger = logging.getLogger(__name__ + '.manifests_k8s_smoke')
-        file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_manifests_k8s.sh')
+    def test_check_agent_status(self):
+        self.logger = logging.getLogger(__name__ + '.check_agent_status')
+        file_name = os.path.join(CURRENT_DIRECTORY, 'check_agent_status.sh')
         self.run_test_remotely(file_name)
 
     @attr("juju", "hybrid")
-    def test_k8s_auth_keystone(self):
-        self.logger = logging.getLogger(__name__ + '.k8s_auth_keystone')
-        file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_auth_keystone.sh')
+    def test_k8s_keystone_auth(self):
+        self.logger = logging.getLogger(__name__ + '.k8s_keystone_auth')
+        file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_keystone_auth.sh')
         self.run_test_remotely(file_name)
 
     @skipIf(os.getenv("ENABLE_NAGIOS", 'false') != 'true', "Skipped as nrpe isn't enabled")
