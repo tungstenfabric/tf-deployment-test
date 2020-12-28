@@ -1,20 +1,22 @@
-import logging
-import os
-
 from vnc_api.vnc_api import EncapsulationPrioritiesType
 from vnc_api import vnc_api
 
 
 class VncApiProxy(object):
 
-    def __init__(self):
-        self.logger = logging.getLogger(__name__ + '.VncApiPropxy')
-        # list can be space or comma separated
-        controller_nodes = os.environ["CONTROLLER_NODES"].replace(",", " ").split(",")
-        # TODO: add keystone creds
-        # TODO: add ssl
-        self.logger.info(f'api_servers: {controller_nodes}')
-        self.vnc_lib = vnc_api.VncApi(api_server_host=controller_nodes)
+    def __init__(self, controller_nodes, logger):
+        self.controller_nodes = controller_nodes
+        self.logger = logger
+        self._vnc_lib = None
+
+    @property
+    def vnc_lib(self):
+        if self._vnc_lib is None:
+            # TODO: add keystone creds
+            # TODO: add ssl
+            self.logger.info(f'Create VncApi client: api_servers="{self.controller_nodes}"')
+            self._vnc_lib = vnc_api.VncApi(api_server_host=self.controller_nodes)
+        return self._vnc_lib
 
     def get_encap_priorities(self):
         fq_name = ['default-global-system-config', 'default-global-vrouter-config']
