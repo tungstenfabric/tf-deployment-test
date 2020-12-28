@@ -1,4 +1,7 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
 
 scriptdir=$(realpath $(dirname "$0"))
 set -a
@@ -17,11 +20,11 @@ if [[ ! -d ".testrepository" ]]; then
     testr init
 fi
 
-echo "Testing with deployment tag: ${DEPLOYMENT_TEST_TAGS}"
+echo "INFO: Testing with deployment tag: ${DEPLOYMENT_TEST_TAGS}"
 # get list of tests
 # we filter the list by deployer, orchestrator, and additional if needed
 testr list-tests | python3 filter_tests.py > test_list
-echo "List of tests:"
+echo "INFO List of tests:"
 cat test_list
 testr run --load-list test_list
 
