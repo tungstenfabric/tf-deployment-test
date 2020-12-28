@@ -3,7 +3,6 @@ my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
 export PATH=$PATH:/snap/bin
-TF_CONFIG_DIR=${TF_CONFIG_DIR:-"$HOME/.tf"}
 source /tmp/test.env
 
 export CONTAINER_REGISTRY="$CONTAINER_REGISTRY_ORIGINAL"
