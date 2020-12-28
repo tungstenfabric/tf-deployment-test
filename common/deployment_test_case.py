@@ -1,16 +1,41 @@
+import logging
 import os
-import time
+import sys
 import testtools
+import time
 
 from common.fixtures.host_fixture import HostFixture
+from common.utils.vnc_api import VncApiProxy
+
+from testtools.testcase import WithAttributes
 
 
-class DeploymentTestCase(testtools.TestCase):
+class DeploymentTestCase(WithAttributes, testtools.TestCase):
 
-    def run_test_remotely(self, local_file_path):
-        host_fixture = self.useFixture(HostFixture())
-        remote_path = host_fixture.get_remote_path(local_file_path)
-        host_fixture.exec_command(remote_path)
+    def __init__(self, ssh_host=None, ssh_user=None, **kwargs):
+        super(DeploymentTestCase, self).__init__(**kwargs)
+        # init logging
+        level = logging.DEBUG if os.environ.get('DEBUG', False) else logging.INFO
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(level)
+        handler.setFormatter(logging.Formatter(
+            '%(asctime)s.%(msecs)03d %(levelname)s: %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'))
+        self.logger = logging.getLogger()
+        self.logger.setLevel(level)
+        self.logger.addHandler(handler)
+        # init host fixture
+        self.ssh_host = ssh_host if ssh_host else os.getenv("SSH_HOST")
+        self.ssh_user = ssh_user if ssh_user else os.getenv("SSH_USER")
+
+    def setUp(self):
+        self.host_fixture = self.useFixture(
+            HostFixture(self.ssh_host, self.ssh_user, self.logger))
+        self.vnc_api_client = VncApiProxy(self.logger)
+
+    def run_test_remotely(self, test_file):
+        remote_path = self.host_fixture.get_remote_path(test_file)
+        self.host_fixture.exec_command(remote_path)
 
     def get_controller_nodes(self):
         # list can be space or comma separated
@@ -19,13 +44,13 @@ class DeploymentTestCase(testtools.TestCase):
     def restart_containers(self, name_filter=""):
         # TODO: reboot only contrail containers
         # but now we reboot all another containers
-        controller_nodes = self.get_controller_nodes()
-        for node in controller_nodes:
-            host_fixture = self.useFixture(HostFixture(ssh_host=node))
-            cmd = f'sudo docker ps -q -f name={name_filter}'
-            result = host_fixture.exec_command_result(cmd)
-            cmd = 'sudo docker restart ' + ' '.join(result.split())
-            host_fixture.exec_command(cmd)
+        for node in self.get_controller_nodes():
+            hf = self.useFixture(
+                HostFixture(node, self.ssh_user, self.logger))
+            containers = hf.exec_command_result(
+                f'sudo docker ps -q -f name={name_filter}')
+            hf.exec_command(
+                'sudo docker restart ' + ' '.join(containers.split()))
 
         # TODO: use correct wait. think about usefulness of this wait
         time.sleep(10)
