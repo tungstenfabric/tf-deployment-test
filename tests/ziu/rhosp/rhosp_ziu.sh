@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-exec 3>&1 1> >(tee ziu_run.log) 2>&1
+exec 3>&1 1> >(tee logs/ziu_run.log) 2>&1
 
 [ "${DEBUG,,}" == "true" ] && set -x
 

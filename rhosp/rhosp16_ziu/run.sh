@@ -13,6 +13,7 @@ set -a
 source $my_dir/../common/functions.sh
 source $my_dir/../common/set_common_ziu_var.sh
 source $my_dir/set_ziu_variables.sh
+source $my_dir/collect_contrail_version.sh
 source /tmp/test.env
 
 cd
@@ -61,6 +62,8 @@ if [[ "$ENABLE_RHEL_REGISTRATION" == 'false' && "$USE_PREDEPLOYED_NODES" == 'fal
     done
 fi
 
+
+collect_contrail_version $overcloud_prov_ip_list $SSH_USER 'contrail_version.before_ziu' 
 
 ######################################################
 #                  ZIU                               #
@@ -111,5 +114,7 @@ openstack overcloud update converge --templates tripleo-heat-templates/ \
   -e misc_opts.yaml \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml
+
+collect_contrail_version $overcloud_prov_ip_list $SSH_USER 'contrail_version.after_ziu' 
 
 echo "$(date) Successfully finished"
