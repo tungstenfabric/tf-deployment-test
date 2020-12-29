@@ -1,6 +1,12 @@
 #!/bin/bash -e
 
-exec 3>&1 1> >(tee ziu_run.log) 2>&1
+export log_path='output/logs/ziu'
+
+if [ ! -d $log_path ]; then
+     mkdir -p $log_path
+fi
+
+exec 3>&1 1> >(tee ${log_path}/run.log) 2>&1
 
 [ "${DEBUG,,}" == "true" ] && set -x
 

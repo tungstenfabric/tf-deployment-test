@@ -13,6 +13,7 @@ set -a
 source $my_dir/../common/functions.sh
 source $my_dir/../common/set_common_ziu_var.sh
 source $my_dir/set_ziu_variables.sh
+source $my_dir/collect_contrail_version.sh
 source /tmp/test.env
 
 cd
@@ -61,6 +62,16 @@ if [[ "$ENABLE_RHEL_REGISTRATION" == 'false' && "$USE_PREDEPLOYED_NODES" == 'fal
     done
 fi
 
+if [[ "$ENABLE_RHEL_REGISTRATION" == 'true' && "$USE_PREDEPLOYED_NODES" == 'false' ]]; then
+    echo "$(date) INFO:  sudo subscription-manager release --set=8.2 on overcloud nodes"
+    for ip in $overcloud_prov_ip_list; do
+        ssh $SSH_USER@$ip "sudo subscription-manager release --set=8.2"
+    done
+fi
+
+
+
+collect_contrail_version $SSH_USER ${log_path}/contrail_version.before_ziu $overcloud_prov_ip_list
 
 ######################################################
 #                  ZIU                               #
@@ -76,6 +87,7 @@ echo "$(date) INFO:  prepare templates"
 
 echo "$(date) INFO:  openstack overcloud update prepare"
 openstack overcloud update prepare --templates tripleo-heat-templates/ \
+  $yes \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \
   -e overcloud_containers.yaml \
@@ -94,11 +106,12 @@ echo "$(date) INFO:  update_contrail_preparation.sh"
 
 for node in $overcloud_instance_list; do
     echo "$(date) INFO:  Upgrading $node"
-    openstack overcloud update run --ssh-user tripleo-admin --limit $node
+    openstack overcloud update run $yes --ssh-user tripleo-admin --limit $node
 done
 
 echo "$(date) INFO:  openstack overcloud update converge"
 openstack overcloud update converge --templates tripleo-heat-templates/ \
+  $yes \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \
   -e overcloud_containers.yaml \
@@ -111,5 +124,8 @@ openstack overcloud update converge --templates tripleo-heat-templates/ \
   -e misc_opts.yaml \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml
+
+collect_contrail_version $SSH_USER ${log_path}/contrail_version.after_ziu $overcloud_prov_ip_list
+
 
 echo "$(date) Successfully finished"
