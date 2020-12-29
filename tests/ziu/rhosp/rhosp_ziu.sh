@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
-exec 3>&1 1> >(tee ziu_run.log) 2>&1
+if [ ! -d logs/ziu ]; then 
+     mkdir -p logs/ziu
+fi 
+
+exec 3>&1 1> >(tee logs/ziu/run.log) 2>&1
 
 [ "${DEBUG,,}" == "true" ] && set -x
 
