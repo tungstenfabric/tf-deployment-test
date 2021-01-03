@@ -43,7 +43,7 @@ Run testrunner.sh in bash debug mode
 bash -ex ./testrunner.sh
 ```
 
-Then copy string of docker run and use `-it` instead of `-i` and add `--entrypoint bash`. Run it.
+Then copy string of docker run and use `-it` instead of `-i`(or `-t`) and add `--entrypoint bash`. Run it.
 Now you are inside container with tests. You can edit code and run it.
 
 ```bash

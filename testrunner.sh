@@ -35,6 +35,7 @@ if [ -d $scriptdir/tf-deployment-test ]; then
 fi
 
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
+echo "INFO: command to run: sudo docker run --privileged=true --rm=true -i $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE"
 sudo docker run --privileged=true --rm=true -i $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE || res=1
 
 # TODO: collect logs
