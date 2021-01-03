@@ -1,10 +1,9 @@
 #!/bin/bash -e
 
 scriptdir=$(realpath $(dirname "$0"))
-set -a
-source /input/test.env
-set +a
-eval export $(sed 's/=.*//' /input/test.env )
+
+set -a ; source /input/test.env ; set +a
+eval export $(sed 's/=.*//' /input/test.env)
 
 if [[ -z "$ORCHESTRATOR" || -z "$DEPLOYER" ]]; then
     echo "ERROR: ORCHESTRATOR and DEPLOYER must be set in stack.env"
@@ -25,5 +24,8 @@ echo "List of tests:"
 cat test_list
 testr run --load-list test_list
 
-# TODO: Add informative logs:
-# testr last --subunit | subunit2junitxml -f -o report.xml
+# show results
+echo "INFO: last results"
+testr last --subunit | subunit-trace
+echo "INFO: generate report"
+testr last --subunit | subunit2junitxml -o /output/logs/report.xml

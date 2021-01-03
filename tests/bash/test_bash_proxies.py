@@ -29,7 +29,7 @@ class BashTests(WithAttributes, DeploymentTestCase):
         file_name = os.path.join(CURRENT_DIRECTORY, 'k8s_keystone_auth.sh')
         self.run_test_remotely(file_name)
 
-    @skipIf(os.getenv("ENABLE_NAGIOS", 'false') != 'true', "Skipped as nrpe isn't enabled")
+    @skipIf(os.getenv("ENABLE_NAGIOS", 'false').lower() != 'true', "Skipped as nrpe isn't enabled")
     @attr("juju", "all-orchestrators")
     def test_juju_nrpe(self):
         self.logger = logging.getLogger(__name__ + '.juju_nrpe')
