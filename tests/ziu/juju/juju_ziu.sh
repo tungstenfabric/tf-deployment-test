@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -e
 my_file="$(readlink -e "$0")"
 my_dir="$(dirname "$my_file")"
 
@@ -76,4 +76,3 @@ if ! wait_cmd_success 60 40 "juju status | grep -q \"waiting\|blocked\|maintenan
     echo "ERROR: tf is not active after ziu"
     exit 1
 fi
-
