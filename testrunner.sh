@@ -12,9 +12,7 @@ echo "INFO: create test.env"
 rm -f $TEST_ENV_FILE
 touch $TEST_ENV_FILE
 if [ -f $TF_CONFIG_DIR/stack.env ]; then
-  set -a
-  source $TF_CONFIG_DIR/stack.env
-  set +a
+  set -a ; source $TF_CONFIG_DIR/stack.env ; set +a
   cat $TF_CONFIG_DIR/stack.env > $TEST_ENV_FILE
 fi
 echo "CONTAINER_REGISTRY_ORIGINAL=$CONTAINER_REGISTRY_ORIGINAL" >> $TEST_ENV_FILE
@@ -26,7 +24,11 @@ echo "DEPLOYMENT_TEST_TAGS=$DEPLOYMENT_TEST_TAGS" >> $TEST_ENV_FILE
 cat $TEST_ENV_FILE
 
 vol_opts=" -v $TEST_ENV_FILE:/input/test.env"
+
 vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa"
+
+mkdir -p $scriptdir/output/logs
+vol_opts+=" -v $scriptdir/output:/output"
 
 # NOTE: to be able to have sources locally that will be executed
 # user can clone this repo from script dir and it will be used as a source code
@@ -35,9 +37,14 @@ if [ -d $scriptdir/tf-deployment-test ]; then
 fi
 
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
+echo "INFO: command to run: sudo docker run --privileged=true --rm=true -i $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE"
 sudo docker run --privileged=true --rm=true -i $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE || res=1
 
-# TODO: collect logs
+pushd $scriptdir/output
+tar -cvf $WORKSPACE/logs.tar logs
+popd
+gzip $WORKSPACE/logs.tar
+mv $WORKSPACE/logs.tar.gz $WORKSPACE/logs.tgz
 
 if [[ "$res" == 1 ]]; then
   echo "ERROR: Tests failed"

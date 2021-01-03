@@ -43,13 +43,14 @@ Run testrunner.sh in bash debug mode
 bash -ex ./testrunner.sh
 ```
 
-Then copy string of docker run and use `-it` instead of `-i` and add `--entrypoint bash`. Run it.
+Then copy string of docker run and use `-it` instead of `-i`(or `-t`) and add `--entrypoint bash`. Run it.
 Now you are inside container with tests. You can edit code and run it.
 
 ```bash
-set -a ; source $HOME/.tf/stack.env ; set +a
+set -a ; source /input/test.env ; set +a
+eval export $(sed 's/=.*//' /input/test.env)
 cd /tf-deployment-test
-testr run "all-deployers-all-orchestrator"
+testr run
 ```
 
 In case of first run please run `testr init` first.
