@@ -25,5 +25,6 @@ echo "List of tests:"
 cat test_list
 testr run --load-list test_list
 
-# TODO: Add informative logs:
-# testr last --subunit | subunit2junitxml -f -o report.xml
+# show results
+testr last --subunit
+testr last --subunit | subunit2junitxml -f -o report.xml
