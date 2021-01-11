@@ -3,6 +3,7 @@ import os
 import sys
 import testtools
 import time
+import json
 
 from common.fixtures.host_fixture import HostFixture
 from common.utils.vnc_api import VncApiProxy
@@ -61,3 +62,16 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
                 'sudo docker restart ' + ' '.join(containers.split()))
         # TODO: use correct wait. think about usefulness of this wait
         time.sleep(10)
+
+    def check_container_tags(self, tag):
+        nodes = (os.getenv("CONTROLLER_NODES") + ',' +
+                 os.getenv("AGENT_NODES")).replace(' ', ',').split(',')
+        for node in nodes:
+            host_fixture = self.useFixture(HostFixture(ssh_host=node))
+            cmd = 'sudo contrail-status --format json'
+            result = host_fixture.exec_command_result(cmd)
+            contrail_status_obj = json.loads(result.replace('\\', ''))
+            for item in contrail_status_obj.get('containers').items():
+                if items[1].get('Original Version') != tag:
+                    raise Exception('WARNING: {}\'s tag {} != {}'.format(item[0], items[1].get('Original Version'), tag))
+
