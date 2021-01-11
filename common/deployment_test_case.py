@@ -3,6 +3,7 @@ import os
 import sys
 import testtools
 import time
+import json
 
 from common.fixtures.host_fixture import HostFixture
 from common.utils.vnc_api import VncApiProxy
@@ -36,7 +37,9 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         cls.ssh_user = os.getenv("SSH_USER")
         # list can be space or comma separated
         cls.controller_nodes = os.getenv(
-            "CONTROLLER_NODES", "").replace(" ", ",").split(",")
+            "CONTROLLER_NODES", "").strip().replace(" ", ",").split(",")
+        cls.agent_nodes = os.getenv(
+            "AGENT_NODES", "").strip().replace(" ", ",").split(",")
         cls.vnc_api_client = VncApiProxy(cls.controller_nodes, cls.logger)
         cls.host_fixture = HostFixture(cls.ssh_host, cls.ssh_user, cls.logger)
         cls.host_fixture.setUp()
@@ -61,3 +64,14 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
                 'sudo docker restart ' + ' '.join(containers.split()))
         # TODO: use correct wait. think about usefulness of this wait
         time.sleep(10)
+
+    def check_container_tags(self, tag):
+        nodes = self.controller_nodes + self.agent_nodes
+        for node in nodes:
+            host_fixture = self.useFixture(HostFixture(node, self.ssh_user, self.logger))
+            result = host_fixture.exec_command_result('sudo contrail-status --format json')
+            containers = json.loads(result.replace('\\', '')).get('containers')
+            for key in containers:
+                if containers[key].get('Original Version') != tag:
+                    raise Exception("WARNING: {}'s tag {} is not equal to {}".format(
+                                    key, containers[key].get('Original Version'), tag))
