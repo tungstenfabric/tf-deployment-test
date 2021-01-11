@@ -58,6 +58,15 @@ if [[ "$ENABLE_RHEL_REGISTRATION" == 'false' && "$USE_PREDEPLOYED_NODES" == 'fal
     done
 fi
 
+first_node_ip=$(echo "$overcloud_prov_ip_list" | tr '\n' ' ' | cut -d ' ' -f 1)
+
+cat <<EOF | ssh $SSH_USER@$first_node_ip
+echo stack_action=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_action)
+echo stack_update_type=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_update_type)
+echo update_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml update_identifier)
+echo deploy_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml deploy_identifier)
+EOF
+
 ######################################################
 #                  ZIU                               #
 ######################################################
@@ -76,6 +85,13 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
      -e misc_opts.yaml \
      -e contrail-parameters.yaml
 
+cat <<EOF | ssh $SSH_USER@$first_node_ip
+echo stack_action=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_action)
+echo stack_update_type=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_update_type)
+echo update_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml update_identifier)
+echo deploy_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml deploy_identifier)
+EOF
+
 echo "$(date) INFO:  pre-syncing images to overcloud nodes. stop containers"
 ~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
 
@@ -83,6 +99,13 @@ for node in $overcloud_instance_list; do
     echo "$(date) INFO:  Upgrading $node"
     openstack overcloud update run --ssh-user tripleo-admin --nodes $node
 done
+
+cat <<EOF | ssh $SSH_USER@$first_node_ip
+echo stack_action=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_action)
+echo stack_update_type=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_update_type)
+echo update_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml update_identifier)
+echo deploy_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml deploy_identifier)
+EOF
 
 echo "$(date) INFO:  openstack overcloud update converge"
 openstack overcloud update converge --templates tripleo-heat-templates/ \
@@ -98,6 +121,13 @@ openstack overcloud update converge --templates tripleo-heat-templates/ \
      $tls_env_files \
      -e misc_opts.yaml \
      -e contrail-parameters.yaml
+
+cat <<EOF | ssh $SSH_USER@$first_node_ip
+echo stack_action=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_action)
+echo stack_update_type=\$(sudo hiera -c /etc/puppet/hiera.yaml stack_update_type)
+echo update_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml update_identifier)
+echo deploy_identifier=\$(sudo hiera -c /etc/puppet/hiera.yaml deploy_identifier)
+EOF
 
 echo "$(date) Successfully finished"
 
