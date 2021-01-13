@@ -8,5 +8,4 @@ class AnsibleZiuTests(DeploymentTestCase):
     @attr("ansible", "openstack", "ziu")
     def test_ansible_ziu(self):
         self.run_test_remotely('tests/ziu/ansible/ansible_ziu.sh')
-        self.check_container_tags(os.getenv("CONTRAIL_CONTAINER_TAG_ORIGINAL") +
-                                  os.getenv("TAG_SUFFIX", ""))
+        self.check_container_tags(os.getenv("CONTRAIL_CONTAINER_TAG_ORIGINAL", ""))
