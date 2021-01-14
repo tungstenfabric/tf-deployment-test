@@ -29,6 +29,7 @@ source stackrc
 kubectl get pods -A
 if [[ $? != '0' ]] ; then
     echo "ERROR: kubectl isn't authorized"
+    kubectl config use-context juju-context
     exit 1
 fi
 
@@ -48,6 +49,7 @@ source stackrc_demo_user
 kubectl get pods -A
 if [[ $? == '0' ]] ; then
     echo "ERROR: kubectl should fail, user is absent, but didn't"
+    kubectl config use-context juju-context
     exit 1
 fi
 
@@ -64,11 +66,13 @@ source stackrc_demo_user
 kubectl get pods -A
 if [[ $? != '0' ]] ; then
     echo "ERROR: kubectl isn't authorized"
+    kubectl config use-context juju-context
     exit 1
 fi
 
 # remove project/user/role for idempotence
 source stackrc
+kubectl config use-context juju-context
 openstack role remove --user $K8S_USER --project $K8S_PROJECT_NAME admin
 openstack user delete $K8S_USER
 openstack project delete $K8S_PROJECT_NAME
