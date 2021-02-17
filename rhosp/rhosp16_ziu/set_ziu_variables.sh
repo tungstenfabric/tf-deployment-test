@@ -15,12 +15,12 @@ else
 fi
 
 #Now --yes is needed only on fresh red hat repos. Later this option would be needed for bmc and vexx
-yes=''
+#enabled --yes for vexx (17.02.2021)
+yes=' --yes'
 rhel_reg_env_files=''
 if [[ "$ENABLE_RHEL_REGISTRATION" == 'true' && "$USE_PREDEPLOYED_NODES" != 'true' ]] ; then
   # use rhel registration options in enabled and for non predeployed nodes.
   # for predeployed nodes registration is made in rhel_provisioning.sh
-  yes=' --yes'
   rhel_reg_env_files+=" -e tripleo-heat-templates/environments/rhsm.yaml"
   rhel_reg_env_files+=" -e rhsm.yaml"
 fi
