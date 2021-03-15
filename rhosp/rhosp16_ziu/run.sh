@@ -101,8 +101,10 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml
 
-echo "$(date) INFO:  update_contrail_preparation.sh"
-~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
+#This step doens't work properly in vexx environment becouse it can't get ip addresses of the nodes in openstack undercloud.
+#TODO create the procedure which is working for vexx
+#echo "$(date) INFO:  update_contrail_preparation.sh"
+#~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
 
 for node in $overcloud_instance_list; do
     echo "$(date) INFO:  Upgrading $node"
