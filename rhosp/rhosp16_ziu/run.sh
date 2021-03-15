@@ -3,7 +3,7 @@
 #Check if it's running on undercloud node
 hostname=$(hostname -s)
 if [[ ${hostname} != *"undercloud"* ]]; then
-   echo This script must be run on RHOSP13 undercloud node. Exiting
+   echo This script must be run on RHOSP16 undercloud node. Exiting
    exit 1
 fi
 
@@ -13,7 +13,7 @@ set -a
 source $my_dir/../common/functions.sh
 source $my_dir/../common/set_common_ziu_var.sh
 source $my_dir/set_ziu_variables.sh
-source $my_dir/collect_contrail_version.sh
+source $my_dir/functions.sh
 source /tmp/test.env
 
 cd
@@ -102,14 +102,17 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
   -e containers-prepare-parameter.yaml
 
 #This step doens't work properly in vexx environment becouse it can't get ip addresses of the nodes in openstack undercloud.
-#TODO create the procedure which is working for vexx
+#we use functions update_contrail_preparation in VEXX
 #echo "$(date) INFO:  update_contrail_preparation.sh"
 #~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
+
+update_contrail_preparation $overcloud_prov_ip_list
 
 for node in $overcloud_instance_list; do
     echo "$(date) INFO:  Upgrading $node"
     openstack overcloud update run $yes --ssh-user tripleo-admin --limit $node
 done
+
 
 echo "$(date) INFO:  openstack overcloud update converge"
 openstack overcloud update converge --templates tripleo-heat-templates/ \
@@ -128,6 +131,5 @@ openstack overcloud update converge --templates tripleo-heat-templates/ \
   -e containers-prepare-parameter.yaml
 
 collect_contrail_version $SSH_USER ${log_path}/contrail_version.after_ziu $overcloud_prov_ip_list
-
 
 echo "$(date) Successfully finished"
