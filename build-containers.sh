@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -e
+set -o pipefail
 
 CONTRAIL_REGISTRY=${CONTRAIL_REGISTRY:-"localhost:5000"}
 CONTRAIL_CONTAINER_TAG=${CONTRAIL_CONTAINER_TAG:-"dev"}
