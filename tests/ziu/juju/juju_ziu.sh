@@ -10,7 +10,7 @@ export CONTRAIL_CONTAINER_TAG="$CONTRAIL_CONTAINER_TAG_ORIGINAL"
 export SSH_OPTIONS=${SSH_OPTIONS:-"-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"}
 
 CONTROLLERS_COUNT=`echo "$( echo $CONTROLLER_NODES | tr ',' ' ' )" | awk -F ' ' '{print NF}'`
-analyticsdb_enabled=$(( $(juju status | cut -d " " -f1 | grep -q contrail-analyticsdb; echo $?) == 0 ))
+analyticsdb_enabled=$(( $(juju status | cut -d " " -f 1 | grep -q tf-analyticsdb; echo $?) == 0 ))
 status_nodes=$(( $CONTROLLERS_COUNT * (2 + $analyticsdb_enabled) ))
 
 function ziu_status() {
@@ -40,18 +40,18 @@ function sync_time() {
     done
 }
 
-juju run-action contrail-controller/leader upgrade-ziu
+juju run-action tf-controller/leader upgrade-ziu
 
 if ! wait_cmd_success 10 60 "ziu_status \"ziu is in progress - stage\/done = 0\/None\"" ; then
     echo "ERROR: ziu have not started"
     exit 1
 fi
 
-juju config contrail-analytics image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
-(( $analyticsdb_enabled )) && juju config contrail-analyticsdb image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
-juju config contrail-agent image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
-juju config contrail-openstack image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
-juju config contrail-controller image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+juju config tf-analytics image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+(( $analyticsdb_enabled )) && juju config tf-analyticsdb image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+juju config tf-agent image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+juju config tf-openstack image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+juju config tf-controller image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
 
 if ! wait_cmd_success 20 540 "ziu_status \"ziu is in progress - stage\/done = 5\/5\"" ; then
     echo "ERROR: ziu've got an error before stage 5"
@@ -60,7 +60,7 @@ fi
 # wait a bit when all agents consume stage 5
 sleep 60
 
-for agent in $(juju status | grep -o "contrail-agent/[0-9]*"); do
+for agent in $(juju status | grep -o "tf-agent/[0-9]*"); do
     juju run-action --wait $agent upgrade
 done
 

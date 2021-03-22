@@ -53,7 +53,7 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         self.host_fixture.exec_command(remote_path, log_output=True)
 
     def restart_containers(self, name_filter=""):
-        # TODO: reboot only contrail containers
+        # TODO: reboot only tf containers
         # but now we reboot all another containers
         for node in self.controller_nodes:
             hf = self.useFixture(

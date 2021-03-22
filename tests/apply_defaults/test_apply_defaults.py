@@ -39,9 +39,9 @@ class ApplyDefaultsTests(DeploymentTestCase):
     @attr("juju", "kubernetes")
     def test_juju_action_apply_defaults(self):
         self.logger.info('Go test check')
-        config_get_cmd = 'juju config contrail-controller encap-priority'
-        config_set_cmd = 'juju config contrail-controller encap-priority={}'
-        apply_cmd = 'juju run-action contrail-controller/0 apply-defaults --wait'
+        config_get_cmd = 'juju config tf-controller encap-priority'
+        config_set_cmd = 'juju config tf-controller encap-priority={}'
+        apply_cmd = 'juju run-action tf-controller/0 apply-defaults --wait'
 
         original_juju_encap_priorities = self.host_fixture.exec_command_result(config_get_cmd).strip().split(",")
         original_api_encap_priorities = self.vnc_api_client.get_encap_priorities()
