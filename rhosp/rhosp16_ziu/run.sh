@@ -13,7 +13,7 @@ set -a
 source $my_dir/../common/functions.sh
 source $my_dir/../common/set_common_ziu_var.sh
 source $my_dir/set_ziu_variables.sh
-source $my_dir/functions.sh
+source $my_dir/collect_contrail_version.sh
 source /tmp/test.env
 
 cd

@@ -84,6 +84,8 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
 #echo "$(date) INFO:  pre-syncing images to overcloud nodes. stop containers"
 #~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
 
+update_contrail_preparation $overcloud_prov_ip_list
+
 for node in $overcloud_instance_list; do
     echo "$(date) INFO:  Upgrading $node"
     openstack overcloud update run --ssh-user tripleo-admin --nodes $node
