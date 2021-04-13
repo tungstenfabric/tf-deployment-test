@@ -1,7 +1,10 @@
 #!/bin/bash -eu
 
+fmy_file="${BASH_SOURCE[0]}"
+fmy_dir="$(dirname $fmy_file)"
+
 function run_ssh() {
-  local user=$1	
+  local user=$1
   local addr=$2
   local ssh_key=${3:-''}
   local command=$4
@@ -118,8 +121,27 @@ function update_contrail_preparation() {
 
     for ip in "${nodelist[@]}"; do
         echo "--- node: ${ip}  Stoping containers:"
-        ssh ${SSH_OPTIONS} ${SSH_USER}@${ip} STOP_CONTAINERS="${STOP_CONTAINERS_ESC}" ./stop_contrail_api_containers.sh 
+        ssh ${SSH_OPTIONS} ${SSH_USER}@${ip} STOP_CONTAINERS="${STOP_CONTAINERS_ESC}" ./stop_contrail_api_containers.sh
     done
 
+}
+
+function sync_time() {
+  local user=${1:-$SSH_USER}
+  shift || true
+  local nodes="${@:-$CONTROLLER_NODES $AGENT_NODES $OPENSTACK_CONTROLLER_NODES}"
+  echo "INFO: check time sync on nodes and force sync $(date)"
+  echo "INFO: controller nodes - $CONTROLLER_NODES"
+  echo "INFO: agent nodes - $AGENT_NODES"
+  echo "INFO: openstack controller nodes - $OPENSTACK_CONTROLLER_NODES"
+
+  local machine
+  for machine in $(echo $nodes | tr " " "\n" | sort -u) ; do
+    local addr="$machine"
+    [ -z "$user" ] || addr="$user@$addr"
+    echo "INFO: sync time on machine $addr"
+    scp $SSH_OPTIONS $fmy_dir/../../common/scripts/sync_time.sh ${addr}:/tmp/sync_time.sh
+    ssh $SSH_OPTIONS ${addr} DEBUG=$DEBUG /tmp/sync_time.sh
+  done
 }
 

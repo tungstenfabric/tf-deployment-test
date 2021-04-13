@@ -106,6 +106,9 @@ openstack overcloud update converge --templates tripleo-heat-templates/ \
      -e misc_opts.yaml \
      -e contrail-parameters.yaml
 
+echo "$(date) INFO: Sync time on the overcloud nodes"
+sync_time $SSH_USER $overcloud_prov_ip_list
+
 collect_contrail_version $SSH_USER ${log_path}/contrail_version.after_ziu $overcloud_prov_ip_list
 
 
