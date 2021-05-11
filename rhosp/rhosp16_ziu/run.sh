@@ -101,8 +101,8 @@ openstack overcloud update prepare --templates tripleo-heat-templates/ \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml
 
-#This step doens't work properly in vexx environment becouse it can't get ip addresses of the nodes in openstack undercloud.
-#we use functions update_contrail_preparation in VEXX
+#This step doens't work properly in openstack environment because it can't get ip addresses of the nodes in openstack undercloud.
+#we use functions update_contrail_preparation in openstack
 #echo "$(date) INFO:  update_contrail_preparation.sh"
 #~/contrail-tripleo-heat-templates/tools/contrail/update_contrail_preparation.sh
 
