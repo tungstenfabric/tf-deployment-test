@@ -14,8 +14,8 @@ else
   tls_env_files+=' -e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml'
 fi
 
-#Now --yes is needed only on fresh red hat repos. Later this option would be needed for bmc and vexx
-#enabled --yes for vexx (17.02.2021)
+#Now --yes is needed only on fresh red hat repos. Later this option would be needed for bmc and openstack
+#enabled --yes for openstack (17.02.2021)
 yes=' --yes'
 rhel_reg_env_files=''
 if [[ "$ENABLE_RHEL_REGISTRATION" == 'true' && "$USE_PREDEPLOYED_NODES" != 'true' ]] ; then
