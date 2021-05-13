@@ -45,6 +45,8 @@ sudo openstack overcloud container image upload --config-file ./contrail_contain
 echo "$(date) INFO:  change misc_opts.yaml"
 cp misc_opts.yaml misc_opts.yaml.before_ziu
 sed -i "s/${CONTRAIL_CONTAINER_TAG}/${CONTRAIL_NEW_IMAGE_TAG}/" misc_opts.yaml
+#Fix https://access.redhat.com/solutions/5912141
+echo "  DnfStreams: [{'module':'container-tools', 'stream':'2.0'}]" >> misc_opts.yaml
 
 if [[ "$USE_PREDEPLOYED_NODES" == 'true' ]]; then
    echo "  SkipRhelEnforcement: true" >> misc_opts.yaml
