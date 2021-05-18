@@ -63,13 +63,34 @@ function reboot_and_wait_undercloud() {
   wait_ssh $SSH_USER $mgmt_ip $ssh_private_key
 }
 
-function reboot_and_wait_overcloud_node() {
-  local ip=$1
+function reboot_and_wait_overcloud_nodes() {
+  local ipaddr_list=$(echo $1 | sed 's/,/ /g')
   local user=${2:-'heat-admin'}
   local ssh_opts='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o PasswordAuthentication=no'
-  echo "Rebooting overcloud node $ip"
-  ssh ${user}@${ip} 'sudo reboot' || true
-  wait_ssh $user $ip
+  local ipaddr
+  declare -A nodes
+  for ipaddr in $ipaddr_list; do
+       echo "Rebooting overcloud node $ipaddr"
+       ssh ${user}@${ipaddr} 'sudo reboot' || true
+       nodes+=([$ipaddr]=1)
+  done
+  echo "Waiting 2 min..."
+  sleep 120
+  local test=$(mktemp)
+  local iter=0
+  local max_iter=60
+  while (( iter <= $max_iter && ${#nodes[@]} > 0 )); do
+      echo "Checking availability for nodes: ${!nodes[@]}"
+      for ipaddr in ${!nodes[@]}; do
+          if scp $ssh_opts -B $test ${user}@${ipaddr}:/tmp/; then
+              echo "$ipaddr: Node is back!"
+              unset nodes[$ipaddr]
+          fi
+      done
+      sleep 15
+      ((++iter))
+  done
+  echo "All the nodes ($ipaddr_list) are back after rebooting"
 }
 
 function checkForVariable() {

@@ -24,7 +24,7 @@ echo Generating yaml files
 #      ${RHEL_USER}: '${RHEL_PASSWORD}'"
 #
 #
-##10.1. Red Hat Subscription Manager (RHSM) composable service
+###10.1. Red Hat Subscription Manager (RHSM) composable service
 #cat $my_dir/../redhat_files/rhsm.yaml.template | envsubst > rhsm.yaml
 
 #6.5. CONTAINER IMAGE PREPARATION PARAMETERS
@@ -44,6 +44,12 @@ sed -i "/^\[DEFAULT\]/ a container_images_file = containers-prepare-parameter.ya
 sed -i "s/eth/em/" undercloud.conf
 sed -i 's/#local_interface[ ]*=/local_interface =/g' undercloud.conf
 cat undercloud.conf
+
+#FIXING KNOWN ISSUES
+sudo sed -i "s/eth/em/" /etc/os-net-config/config.json
+cat /etc/os-net-config/config.json
+sudo pip3 uninstall -y Jinja2
+sudo pip3 freeze
 
 #6.10. RUNNING THE DIRECTOR UPGRADE
 openstack undercloud upgrade -y

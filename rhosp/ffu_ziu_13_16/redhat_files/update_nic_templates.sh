@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 cd ~
 STACK_NAME="overcloud"
 ROLES_DATA="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"

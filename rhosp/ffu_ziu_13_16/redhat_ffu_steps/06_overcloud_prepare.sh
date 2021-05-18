@@ -33,11 +33,11 @@ tripleo-ansible-inventory --ansible_ssh_user $NODE_ADMIN_USERNAME --static-yaml-
 #Local mirrors case (CICD)
 jobs=''
 for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
-    scp $my_dir/../redhat_files/*.repo /tmp/local.repo ${SSH_USER}@${ip}:
+    scp $my_dir/../redhat_files/*.repo /tmp/local.repo ${node_admin_username}@${ip}:
     #Fix for RHEL7.8 overcloud
-    ssh ${SSH_USER}@${ip} sudo cp local.repo /etc/yum.repos.d/
+    ssh ${node_admin_username}@${ip} sudo cp local.repo /etc/yum.repos.d/
     #parallel ssh
-    ssh ${SSH_USER}@${ip} sudo yum update -y &
+    ssh ${node_admin_username}@${ip} sudo yum update -y &
     jobs+=" $!"
 done
 echo Parallel yum-update on overcloud nodes. pids: $jobs. Waiting...
@@ -67,10 +67,21 @@ ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-ssh.yaml
 
 ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop --force"
 
-echo "Rebooting overclouds"
+#Sequential rebooting (takes a long time)
+#for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
+#    reboot_and_wait_overcloud_nodes $ip $NODE_ADMIN_USERNAME
+#done
 
-for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
-    reboot_and_wait_overcloud_node $ip $NODE_ADMIN_USERNAME
+#Creating upgrade plans for overcloud (we need batches for parallel rebooting)
+$my_dir/overcloud_prepare_upgrade_plan_4_control_plane.sh
+$my_dir/overcloud_prepare_upgrade_plan_4_computes.sh
+#Joining upgrade_plans
+cat ~/overcloud_controlplane_upgrade_plan > /tmp/rebooting_batches
+cat ~/overcloud_compute_upgrade_plan >> /tmp/rebooting_batches
+
+echo "Rebooting overcloud nodes with batches"
+for line in $(cat /tmp/rebooting_batches); do
+    reboot_and_wait_overcloud_nodes $line
 done
 
 #Fix dns issue after yum update
