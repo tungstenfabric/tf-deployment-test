@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -ex
 
 exec 3>&1 1> >(tee ${0}.log) 2>&1
 echo $(date) "------------------ STARTED: $0 -------------------"

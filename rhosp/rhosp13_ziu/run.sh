@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -e
 
 #Check if it's running on undercloud node
 hostname=$(hostname -s)
