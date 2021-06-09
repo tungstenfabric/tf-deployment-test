@@ -26,6 +26,12 @@ echo "INFO: Testing with deployment tag: ${DEPLOYMENT_TEST_TAGS}"
 testr list-tests | python3 filter_tests.py > test_list
 echo "INFO List of tests:"
 cat test_list
+
+if [[ $(cat test_list | wc -l) == '0' ]]; then
+    echo "WARNING: there is no tests for current filters/project"
+    exit
+fi
+
 testr run --load-list test_list
 
 # show results
