@@ -20,3 +20,7 @@ class BashTests(DeploymentTestCase):
     @attr("juju", "all-orchestrators")
     def test_juju_nrpe(self):
         self.run_test_remotely('tests/bash/juju_nrpe.sh')
+
+    @attr("all-deployers", "kubernetes")
+    def test_simple_ping(self):
+        self.run_test_remotely('tests/bash/simple_ping.sh')
