@@ -56,10 +56,10 @@ echo ''
 
 juju_status=$(juju_status)
 
-ac=$(cat "$juju_status" | awk '/contrail-analytics /{print $4}')
-adbc=$(cat "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
-cc=$(cat "$juju_status" | awk '/contrail-controller /{print $4}')
-kmc=$(cat "$juju_status" | awk '/contrail-kubernetes-master /{print $4}')
+ac=$(echo "$juju_status" | awk '/contrail-analytics /{print $4}')
+adbc=$(echo "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
+cc=$(echo "$juju_status" | awk '/contrail-controller /{print $4}')
+kmc=$(echo "$juju_status" | awk '/contrail-kubernetes-master /{print $4}')
 units_count=$((ac + adbc + cc + kmc))
 echo "INFO: Count of units in control plane = $units_count. Start ZIU...  $(date)"
 
