@@ -16,7 +16,7 @@ role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
 sed -i '/ceph3_.*\|.*_stein/d' containers-prepare-parameter.yaml
 
 #Local mirrors case (CICD)
-rhsm_parameters=''
+#rhsm_parameters=''
 
 #Red Hat Registration case
 #rhsm_parameters='-e rhsm.yaml'
@@ -29,14 +29,15 @@ fi
 
 #19.5. Synchronizing the overcloud stack
 
-openstack overcloud upgrade converge $force \
+openstack overcloud upgrade converge --yes \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \
   $overcloud_ssh_user \
   $rhsm_parameters \
   -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
-  -e tripleo-heat-templates/environments/contrail/contrail-net-single.yaml \
+  -e tripleo-heat-templates/environments/contrail/contrail-net.yaml \
+  -e tripleo-heat-templates/environments/network-isolation.yaml \
   -e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml \
   -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
   -e misc_opts.yaml \

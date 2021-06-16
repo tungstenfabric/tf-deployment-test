@@ -32,26 +32,16 @@ if [ "$NODE_ADMIN_USERNAME" != "heat-admin" ]; then
     overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
 fi
 
-#Temporary fix for old package python3-openstackclient-4.0.0-0.20200310193636.aa64eb6.el8ost.noarch
-#It will be removed after refreshing local mirrors
-OPENSTACK_PACKAGE_VERSION=$(rpm -qf /usr/bin/openstack)
-force=''
-if [ "$OPENSTACK_PACKAGE_VERSION" != "python3-openstackclient-4.0.0-0.20200310193636.aa64eb6.el8ost.noarch" ]; then
-   force='--yes'
-fi
-echo "export force='${force}'" >> rhosp-environment.sh
-
-
 #19.1. Running the overcloud upgrade preparation
-openstack overcloud upgrade prepare \
-  $force \
+openstack overcloud upgrade prepare --yes \
   --templates tripleo-heat-templates/ \
   --stack overcloud --libvirt-type kvm \
   --roles-file $role_file \
   $overcloud_ssh_user \
   $rhsm_parameters \
   -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
-  -e tripleo-heat-templates/environments/contrail/contrail-net-single.yaml \
+  -e tripleo-heat-templates/environments/contrail/contrail-net.yaml \
+  -e tripleo-heat-templates/environments/network-isolation.yaml \
   -e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml \
   -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
   -e misc_opts.yaml \
@@ -59,6 +49,6 @@ openstack overcloud upgrade prepare \
   -e containers-prepare-parameter.yaml \
   -e tripleo-heat-templates/upgrades-environment.yaml
 
-openstack overcloud external-upgrade run --stack overcloud --tags container_image_prepare
+openstack overcloud external-upgrade run --yes --stack overcloud --tags container_image_prepare
 
 echo $(date) "------------------ FINISHED: $0 ------------------"

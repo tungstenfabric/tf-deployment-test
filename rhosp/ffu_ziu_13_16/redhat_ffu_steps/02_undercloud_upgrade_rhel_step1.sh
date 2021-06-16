@@ -42,7 +42,7 @@ sudo rm -rf /etc/httpd /var/lib/docker
 #5.2. PERFORMING A LEAPP UPGRADE ON THE UNDERCLOUD
 sudo yum install -y leapp
 
-sudo tar -xzf $my_dir/../redhat_files/leapp-data8.tar.gz -C /etc/leapp/files
+sudo tar -xzf $my_dir/../redhat_files/leapp-data14.tar.gz -C /etc/leapp/files
 
 #Local mirrors case (CICD)
 #copy local.repo file for overcloud nodes
@@ -56,8 +56,17 @@ echo 'openvswitch2.11' | sudo tee -a /etc/leapp/transaction/to_remove
 echo 'openvswitch2.13' | sudo tee -a /etc/leapp/transaction/to_install
 echo 'ceph-ansible' | sudo tee -a /etc/leapp/transaction/to_keep
 
+#Disable unneeded modules and prepare answers for leapp
+module=floppy; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
+module=pata_acpi; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
+
+sudo leapp answer --add --section remove_pam_pkcs11_module_check.confirm=True
+export LEAPP_UNSUPPORTED=1
+
 #Red Hat Registration case
+#sudo rm -f /etc/yum.repos.d/* || true
 #sudo subscription-manager refresh
+#
 #sudo leapp upgrade --debug \
 #  --enablerepo rhel-8-for-x86_64-baseos-rpms \
 #  --enablerepo rhel-8-for-x86_64-appstream-rpms \
@@ -65,7 +74,8 @@ echo 'ceph-ansible' | sudo tee -a /etc/leapp/transaction/to_keep
 #  --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
 #  --enablerepo ansible-2-for-rhel-8-x86_64-rpms \
 #  --enablerepo openstack-16.1-for-rhel-8-x86_64-rpms \
-#  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms
+#  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
+#  --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
 
 #Local mirrors case (CICD)
 sudo leapp upgrade --no-rhsm --debug \

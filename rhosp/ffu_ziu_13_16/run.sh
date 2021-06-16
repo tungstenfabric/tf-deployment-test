@@ -11,6 +11,13 @@ source $my_dir/../common/functions.sh
 #checkForVariable RHEL_PASSWORD
 #checkForVariable RHEL_POOL_ID
 
+#Adding FFU and RHOSP16 variables
+undercloud_local_ip=$(grep -o "export prov_ip=.*" ~/rhosp-environment.sh | cut -d ' ' -f2 | cut -d '=' -f 2 | tr -d '"')
+
+undercloud_public_host="${prov_subnet}.2"
+undercloud_admin_host="${prov_subnet}.3"
+
+
 checkForVariable SSH_USER
 checkForVariable mgmt_ip
 checkForVariable ssh_private_key
@@ -19,16 +26,12 @@ checkForVariable CONTAINER_REGISTRY_FFU
 checkForVariable CONTRAIL_CONTAINER_TAG_FFU
 checkForVariable OPENSTACK_CONTAINER_REGISTRY_FFU
 checkForVariable RHEL_LOCAL_MIRROR_FFU
+checkForVariable undercloud_public_host
+checkForVariable undercloud_admin_host
 
 #Setting FFU parameters
 rm /tmp/rhosp-environment.sh || true
 scp $SSH_USER@$mgmt_ip:rhosp-environment.sh /tmp/
-
-#Adding FFU and RHOSP16 variables
-undercloud_local_ip=$(grep -o "prov_ip=.*" ~/rhosp-environment.sh | cut -d '=' -f 2 | tr -d '"')
-
-undercloud_public_host=$(echo $undercloud_local_ip | sed s/1$/2/)
-undercloud_admin_host=$(echo $undercloud_local_ip | sed s/1$/3/)
 
 add_variable /tmp/rhosp-environment.sh SSH_USER $SSH_USER
 add_variable /tmp/rhosp-environment.sh mgmt_ip $mgmt_ip
@@ -46,6 +49,7 @@ cd
 ssh $SSH_USER@$mgmt_ip cp rhosp-environment.sh rhosp-environment-rhosp13-backup.sh
 scp -r /tmp/rhosp-environment.sh $SSH_USER@$mgmt_ip:
 echo "Copying tf-deployment-test to undercloud node"
+ssh $SSH_USER@$mgmt_ip "mkdir tf-deployment-test || true"
 scp -r $my_dir/../../* $SSH_USER@$mgmt_ip:tf-deployment-test
 
 echo $(date) START: Start upgrading undercloud | tee -a run.log
@@ -73,12 +77,12 @@ echo $(date) Preparing heat template | tee -a run.log
 run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/07_overcloud_prepare_templates.sh'
 echo $(date) Start overcloud upgrade prepare | tee -a run.log
 run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/08_overcloud_upgrade_prepare.sh'
-echo $(date) Start overcloud controller update | tee -a run.log
-run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/09_overcloud_upgrade_os.sh'
-echo $(date) Start overcloud contrail-controller update | tee -a run.log
-run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/10_overcloud_upgrade_contrail_ctrl.sh'
+echo $(date) Start overcloud bootstrap batch  | tee -a run.log
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/09_overcloud_upgrade_control_plane_step01.sh'
+echo $(date) Start overcloud controlplane  update| tee -a run.log
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/10_overcloud_upgrade_control_plane_step02.sh'
 echo $(date) Start overcloud compute update | tee -a run.log
-run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/11_overcloud_upgrade_compute.sh'
+run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/11_overcloud_upgrade_computes.sh'
 echo $(date) Start overcloud upgrade converge | tee -a run.log
 run_ssh_undercloud './tf-deployment-test/rhosp/ffu_ziu_13_16/redhat_ffu_steps/12_overcloud_upgrade_converge.sh'
 echo $(date) FINISH: Collecting the information | tee -a run.log

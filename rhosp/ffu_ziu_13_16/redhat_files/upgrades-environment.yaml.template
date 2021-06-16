@@ -2,9 +2,14 @@ parameter_defaults:
   #Local mirrors case (CICD)
   SkipRhelEnforcement: true
 
+  #UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1 LEAPP_DEVEL_TARGET_RELEASE=8.2"
+  UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1"
+
   LeappInitCommand: |
-    sudo cp -f /home/stack/rhel8.repo /etc/yum.repos.d/
+    module=floppy; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
+    module=pata_acpi; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
     sudo rm -f /etc/yum.repos.d/local.repo
+    sudo cp -f /home/${NODE_ADMIN_USERNAME}/rhel8.repo /etc/yum.repos.d/
 
   UpgradeLeappDebug: true
   UpgradeInitCommand: |
