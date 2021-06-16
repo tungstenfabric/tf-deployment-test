@@ -54,11 +54,13 @@ echo "INFO: current env  $(date)"
 env|sort
 echo ''
 
-controllers_count=$(echo $CONTROLLER_NODES | tr ',' ' ' | wc -w)
-units_count=$controllers_count
-if [[ ${LEGACY_ANALYTICS_ENABLE,,} == 'true' ]]; then
-    units_count=$((3 * controllers_count))
-fi
+juju_status=$(juju_status)
+
+ac=$(cat "$juju_status" | awk '/contrail-analytics /{print $4}')
+adbc=$(cat "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
+cc=$(cat "$juju_status" | awk '/contrail-controller /{print $4}')
+kmc=$(cat "$juju_status" | awk '/contrail-kubernetes-master /{print $4}')
+units_count=$((ac + adbc + cc + kmc))
 echo "INFO: Count of units in control plane = $units_count. Start ZIU...  $(date)"
 
 juju run-action tf-controller/leader upgrade-ziu
