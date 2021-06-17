@@ -70,7 +70,7 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         for node in nodes:
             host_fixture = self.useFixture(HostFixture(node, self.ssh_user, self.logger))
             result = host_fixture.exec_command_result('sudo contrail-status --format json')
-            containers = json.loads(result.replace('\\', '')).get('containers')
+            containers = json.loads(result.replace('\\"', '').replace('\\', '')).get('containers')
             for key in containers:
                 if containers[key].get('Original Version') != tag:
                     raise Exception("WARNING: {}'s tag {} is not equal to {}".format(
