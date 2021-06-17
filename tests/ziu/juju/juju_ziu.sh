@@ -54,7 +54,7 @@ echo "INFO: current env  $(date)"
 env|sort
 echo ''
 
-juju_status=$(juju_status)
+juju_status=$(juju status)
 
 ac=$(echo "$juju_status" | awk '/contrail-analytics /{print $4}')
 adbc=$(echo "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
