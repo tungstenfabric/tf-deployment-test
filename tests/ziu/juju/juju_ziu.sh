@@ -10,16 +10,17 @@ export CONTRAIL_CONTAINER_TAG="$CONTRAIL_CONTAINER_TAG_ORIGINAL"
 export SSH_OPTIONS=${SSH_OPTIONS:-"-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"}
 
 function ziu_status_for_pattern() {
-    # juju 2.9.0 started to return similar messages in applications as in units - cur app section first
-    if [[ $(juju status | grep -A 2000 "Unit *Workload" | grep "$1" | wc -l) != "$units_count" ]]; then
+    # juju 2.9.0 started to return similar messages in applications as in units - cut app section first
+    if [[ $(juju status | grep -A 2000 "Unit *Workload" | grep "$1" | wc -l) != "$2" ]]; then
         return 1
     fi
     return 0
 }
 
 function juju_status_absent_pattern() {
-    # juju 2.9.0 started to return similar messages in applications as in units - cur app section first
-    if juju status | grep -A 2000 "Unit *Workload" | grep -q "$1" ; then
+    # juju 2.9.0 started to return similar messages in applications as in units - cut app section first
+    # remove docker app/units from output - in case of hybrid env it's always in maintenance state
+    if juju status | grep -A 2000 "Unit *Workload" | grep -v "docker" | grep -q "$1" ; then
         return 1
     fi
     return 0
@@ -56,16 +57,22 @@ echo ''
 
 juju_status=$(juju status)
 
-ac=$(echo "$juju_status" | awk '/contrail-analytics /{print $4}')
-adbc=$(echo "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
 cc=$(echo "$juju_status" | awk '/contrail-controller /{print $4}')
-kmc=$(echo "$juju_status" | awk '/contrail-kubernetes-master /{print $4}')
+ac=$(echo "$juju_status" | awk '/contrail-analytics /{print $4}')
+adbc=0
+if echo "$juju_status" | grep -q "contrail-analyticsdb " ; then
+    adbc=$(echo "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
+fi
+kmc=0
+if echo "$juju_status" | grqp -q "contrail-kubernetes-master " ; then
+    kmc=$(echo "$juju_status" | awk '/contrail-kubernetes-master /{print $4}')
+fi
 units_count=$((ac + adbc + cc + kmc))
 echo "INFO: Count of units in control plane = $units_count. Start ZIU...  $(date)"
 
 juju run-action tf-controller/leader upgrade-ziu
 
-if ! wait_cmd_success 10 60 "ziu_status_for_pattern \"ziu is in progress - stage\/done = 0\/None\"" ; then
+if ! wait_cmd_success 10 60 "ziu_status_for_pattern \"ziu is in progress - stage\/done = 0\/None\" $units_count" ; then
     echo "ERROR: ziu have not started"
     exit 1
 fi
@@ -73,16 +80,21 @@ fi
 echo "INFO: required units are in maintenance state. Update image tags...  $(date)"
 
 juju config tf-analytics image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
-if [[ ${LEGACY_ANALYTICS_ENABLE,,} == 'true' ]]; then
+if [[ $adbc != '0' ]]; then
     juju config tf-analyticsdb image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
 fi
 juju config tf-agent image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
 juju config tf-openstack image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+if [[ $kmc != '0' ]]; then
+    juju config tf-kubernetes-master image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+    juju config tf-kubernetes-node image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
+fi
+# controller must last - it starts ZIU with this event
 juju config tf-controller image-tag=$CONTRAIL_CONTAINER_TAG docker-registry=$CONTAINER_REGISTRY
 
 echo "INFO: wait for control plane done  $(date)"
 
-if ! wait_cmd_success 20 540 "ziu_status_for_pattern \"ziu is in progress - stage\/done = 5\/5\"" ; then
+if ! wait_cmd_success 20 540 "ziu_status_for_pattern \"ziu is in progress - stage\/done = 5\/5\" $units_count" ; then
     echo "ERROR: ziu've got an error before stage 5"
     exit 1
 fi
