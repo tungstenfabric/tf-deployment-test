@@ -64,7 +64,7 @@ if echo "$juju_status" | grep -q "contrail-analyticsdb " ; then
     adbc=$(echo "$juju_status" | awk '/contrail-analyticsdb /{print $4}')
 fi
 kmc=0
-if echo "$juju_status" | grqp -q "contrail-kubernetes-master " ; then
+if echo "$juju_status" | grep -q "contrail-kubernetes-master " ; then
     kmc=$(echo "$juju_status" | awk '/contrail-kubernetes-master /{print $4}')
 fi
 units_count=$((ac + adbc + cc + kmc))
