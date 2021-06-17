@@ -5,6 +5,7 @@ my_dir="$(dirname "$my_file")"
 
 cd
 source $my_dir/../common/functions.sh
+source ~/rhosp-environment.sh
 
 #Red Hat Registration case
 #checkForVariable RHEL_USER
@@ -20,6 +21,7 @@ undercloud_admin_host="${prov_subnet}.3"
 
 checkForVariable SSH_USER
 checkForVariable mgmt_ip
+checkForVariable prov_subnet
 checkForVariable ssh_private_key
 checkForVariable NODE_ADMIN_USERNAME
 checkForVariable CONTAINER_REGISTRY_FFU
