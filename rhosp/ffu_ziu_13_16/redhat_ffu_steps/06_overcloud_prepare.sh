@@ -65,7 +65,7 @@ source $my_dir/../tf_specific/06_overcloud_prepare.sh
 #8.5. SETTING THE SSH ROOT PERMISSION PARAMETER ON THE OVERCLOUD
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-ssh.yaml
 
-ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop --force"
+#ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop --force"
 
 #Sequential rebooting (takes a long time)
 #for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
@@ -75,21 +75,22 @@ ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop 
 #Creating upgrade plans for overcloud (we need batches for parallel rebooting)
 $my_dir/overcloud_prepare_upgrade_plan_4_control_plane.sh
 $my_dir/overcloud_prepare_upgrade_plan_4_computes.sh
-#Joining upgrade_plans
-cat ~/overcloud_controlplane_upgrade_plan > /tmp/rebooting_batches
-cat ~/overcloud_compute_upgrade_plan >> /tmp/rebooting_batches
 
-echo "Rebooting overcloud nodes with batches"
-for line in $(cat /tmp/rebooting_batches); do
-    reboot_and_wait_overcloud_nodes $line
-done
+#Joining upgrade_plans
+#cat ~/overcloud_controlplane_upgrade_plan > /tmp/rebooting_batches
+#cat ~/overcloud_compute_upgrade_plan >> /tmp/rebooting_batches
+#
+#echo "Rebooting overcloud nodes with batches"
+#for line in $(cat /tmp/rebooting_batches); do
+#    reboot_and_wait_overcloud_nodes $line
+#done
 
 #Fix dns issue after yum update
 #ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.8.8" >>/etc/resolv.conf'
 #ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.4.4" >>/etc/resolv.conf'
 
-ansible overcloud -i inventory.yaml -m ping
-ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster start"
-ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs status"
+#ansible overcloud -i inventory.yaml -m ping
+#ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster start"
+#ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs status"
 
 echo $(date) "------------------ FINISHED: $0 ------------------"
