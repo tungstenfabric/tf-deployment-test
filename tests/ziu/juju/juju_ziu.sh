@@ -26,6 +26,29 @@ function juju_status_absent_pattern() {
     return 0
 }
 
+function fetch_deployer() {
+  # pull deployer src container locally and extract files to path
+  # Functions get two required params:
+  #  - deployer image
+  #  - directory path deployer have to be extracted to
+  if [[ $# != 2 ]] ; then
+    echo "ERROR: Deployer image name and path to deployer directory are required for fetch_deployer"
+    return 1
+  fi
+
+  local deployer_image=$1
+  local deployer_dir=$2
+
+  sudo rm -rf $deployer_dir
+
+  local image="$CONTAINER_REGISTRY/$deployer_image"
+  [ -n "$CONTRAIL_CONTAINER_TAG" ] && image+=":$CONTRAIL_CONTAINER_TAG"
+  sudo docker create --name $deployer_image --entrypoint /bin/true $image || return 1
+  sudo docker cp $deployer_image:/src $deployer_dir
+  sudo docker rm -fv $deployer_image
+  sudo chown -R $UID $deployer_dir
+}
+
 function wait_cmd_success() {
     local i=0
     while ! eval $3; do
@@ -71,6 +94,22 @@ units_count=$((ac + adbc + cc + kmc))
 echo "INFO: Count of units in control plane = $units_count. Start ZIU...  $(date)"
 
 juju run-action tf-controller/leader upgrade-ziu
+
+# upgrade-charms
+tf_charms_src_image=${TF_CHARMS_SRC:-"tf-charms-src"}
+tf_charms_dir=${TF_CHARMS_DIR:-"${HOME}/tf-charms"}
+charms_to_upgrade="analytics analyticsdb controller kubernetes-master agent keystone-auth kubernetes-node openstack"
+
+fetch_deployer $tf_charms_src_image $tf_charms_dir
+
+for charm in $charms_to_upgrade ; do
+    if echo "$juju_status" | grep -q "tf-$charm " ; then
+        juju upgrade-charm tf-$charm --path $tf_charms_dir/contrail-$charm
+    fi
+done
+
+# wait for all charms are active
+sleep 60
 
 if ! wait_cmd_success 10 60 "ziu_status_for_pattern \"ziu is in progress - stage\/done = 0\/None\" $units_count" ; then
     echo "ERROR: ziu have not started"
