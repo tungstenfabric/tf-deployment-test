@@ -28,7 +28,7 @@ function is_running() {
 function wait() {
   local check=$1
   local max_time=$2
-  while [[ max_time > 0 ]]; do
+  while [[ $max_time != 0 ]]; do
     if eval $check; then
       return 0
     fi
