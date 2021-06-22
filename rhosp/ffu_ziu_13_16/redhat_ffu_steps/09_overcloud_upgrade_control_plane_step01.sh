@@ -7,6 +7,7 @@ exec 3>&1 1> >(tee ${0}.log) 2>&1
 echo $(date) "------------------ STARTED: $0 -------------------"
 
 cd ~
+source $my_dir/../../common/functions.sh
 source stackrc
 source rhosp-environment.sh
 
@@ -19,6 +20,9 @@ fi
 
 #First line of upgrade_plan contain the bootstrap_node
 batch=$(head -1 $upgrade_plan)
+
+#Reboot batch for finishing network interfaces renaming (eth -> em)
+reboot_and_wait_overcloud_nodes $batch
 
 if [ ! -f .ceph_ran_$batch ]; then
     echo "[$(date)] Started ceph systemd units migration run for $batch"
@@ -51,3 +55,4 @@ fi
 $my_dir/run_overcloud_openstack_upgrade.sh $batch
 
 echo $(date) "------------------ FINISHED: $0 ------------------"
+
