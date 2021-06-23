@@ -27,26 +27,40 @@ function juju_status_absent_pattern() {
 }
 
 function fetch_deployer() {
-  # pull deployer src container locally and extract files to path
-  # Functions get two required params:
-  #  - deployer image
-  #  - directory path deployer have to be extracted to
-  if [[ $# != 2 ]] ; then
-    echo "ERROR: Deployer image name and path to deployer directory are required for fetch_deployer"
-    return 1
-  fi
+    # pull deployer src container locally and extract files to path
+    # Functions get two required params:
+    #  - deployer image
+    #  - directory path deployer have to be extracted to
+    if [[ $# != 2 ]] ; then
+        echo "ERROR: Deployer image name and path to deployer directory are required for fetch_deployer"
+        return 1
+    fi
 
-  local deployer_image=$1
-  local deployer_dir=$2
+    local deployer_image=$1
+    local deployer_dir=$2
 
-  sudo rm -rf $deployer_dir
+    sudo rm -rf $deployer_dir
 
-  local image="$CONTAINER_REGISTRY/$deployer_image"
-  [ -n "$CONTRAIL_CONTAINER_TAG" ] && image+=":$CONTRAIL_CONTAINER_TAG"
-  sudo docker create --name $deployer_image --entrypoint /bin/true $image || return 1
-  sudo docker cp $deployer_image:/src $deployer_dir
-  sudo docker rm -fv $deployer_image
-  sudo chown -R $UID $deployer_dir
+    local image="$CONTAINER_REGISTRY/$deployer_image"
+    [ -n "$CONTRAIL_CONTAINER_TAG" ] && image+=":$CONTRAIL_CONTAINER_TAG"
+    sudo docker create --name $deployer_image --entrypoint /bin/true $image || return 1
+    sudo docker cp $deployer_image:/src $deployer_dir
+    sudo docker rm -fv $deployer_image
+    sudo chown -R $UID $deployer_dir
+}
+
+function get_start_times() {
+    local service=$1
+    local container_name=$2
+
+    local start_times=""
+    local unit_list=$(echo "$juju_status" | grep $service/ | awk '{print $1}' | sed 's/*//g')
+    for unit in $unit_list ; do
+        start_times+=" ${unit}: "
+        start_times+=$(juju ssh $unit "sudo docker inspect $container_name" | jq '.[0]["State"]["StartedAt"]')
+    done
+
+    echo $start_times
 }
 
 function wait_cmd_success() {
@@ -102,6 +116,9 @@ charms_to_upgrade="analytics analyticsdb controller kubernetes-master agent keys
 
 fetch_deployer $tf_charms_src_image $tf_charms_dir
 
+agent_start_times=$(get_start_times tf-agent vrouter_vrouter-agent_1)
+control_start_times=$(get_start_times tf-controller control_control_1)
+
 for charm in $charms_to_upgrade ; do
     if echo "$juju_status" | grep -q "tf-$charm " ; then
         juju upgrade-charm tf-$charm --path $tf_charms_dir/contrail-$charm
@@ -110,6 +127,18 @@ done
 
 # wait for all charms are active
 sleep 60
+
+# check that agent and control were not restarted
+if [[ $agent_start_times != $(get_start_times tf-agent vrouter_vrouter-agent_1) ]] ; then
+    echo "ERROR: some of agent containers were restarted"
+    exit 1
+fi
+
+if [[ $control_start_times != $(get_start_times tf-controller control_control_1) ]] ; then
+    echo "ERROR: some of control containers were restarted"
+    exit 1
+fi
+echo "INFO: Agent and control containers were not restarted"
 
 if ! wait_cmd_success 10 60 "ziu_status_for_pattern \"ziu is in progress - stage\/done = 0\/None\" $units_count" ; then
     echo "ERROR: ziu have not started"
