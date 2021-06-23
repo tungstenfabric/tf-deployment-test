@@ -33,6 +33,8 @@ vol_opts=" -v $TEST_ENV_FILE:/input/test.env"
 
 vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa"
 
+vol_opts+=" -v /etc/contrail/ssl:/etc/contrail/ssl"
+
 mkdir -p $scriptdir/output/logs
 vol_opts+=" -v $scriptdir/output:/output"
 

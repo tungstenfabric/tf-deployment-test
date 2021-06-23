@@ -40,7 +40,19 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
             "CONTROLLER_NODES", "").strip().replace(" ", ",").split(",")
         cls.agent_nodes = os.getenv(
             "AGENT_NODES", "").strip().replace(" ", ",").split(",")
-        cls.vnc_api_client = VncApiProxy(cls.controller_nodes, cls.logger)
+        cls.use_ssl = os.getenv("SSL_ENABLE")
+        cls.domain_name = os.getenv("AUTH_DOMAIN")
+        auth_url = os.getenv("AUTH_URL")
+        cls.auth_token_url = auth_url + "/auth/tokens"
+        if auth_url.endswith("v2.0"):
+            cls.auth_token_url = auth_url + "/tokens"
+        cls.auth_password = os.getenv("AUTH_PASSWORD")
+        cls.vnc_api_client = VncApiProxy(cls.controller_nodes,
+                                         cls.use_ssl,
+                                         cls.domain_name,
+                                         cls.auth_token_url,
+                                         cls.auth_password,
+                                         cls.logger)
         cls.host_fixture = HostFixture(cls.ssh_host, cls.ssh_user, cls.logger)
         cls.host_fixture.setUp()
 
