@@ -109,6 +109,9 @@ echo "INFO: Count of units in control plane = $units_count. Start ZIU...  $(date
 
 juju run-action tf-controller/leader upgrade-ziu
 
+# wait for all charms are in maintenance
+sleep 60
+
 # upgrade-charms
 tf_charms_src_image=${TF_CHARMS_SRC:-"tf-charms-src"}
 tf_charms_dir=${TF_CHARMS_DIR:-"${HOME}/tf-charms"}
@@ -125,7 +128,7 @@ for charm in $charms_to_upgrade ; do
     fi
 done
 
-# wait for all charms are active
+# wait for all charms are finished upgrade
 sleep 60
 
 # check that agent and control were not restarted
