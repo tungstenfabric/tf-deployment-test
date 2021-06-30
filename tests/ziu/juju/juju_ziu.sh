@@ -107,17 +107,25 @@ fi
 units_count=$((ac + adbc + cc + kmc))
 echo "INFO: Count of units in control plane = $units_count. Start ZIU...  $(date)"
 
-juju run-action tf-controller/leader upgrade-ziu
-
-# wait for all charms are in maintenance
-sleep 60
-
-# upgrade-charms
+# load last charms
 tf_charms_src_image=${TF_CHARMS_SRC:-"tf-charms-src"}
 tf_charms_dir=${TF_CHARMS_DIR:-"${HOME}/tf-charms"}
-charms_to_upgrade="analytics analyticsdb controller kubernetes-master agent keystone-auth kubernetes-node openstack"
+charms_to_upgrade="analytics analyticsdb controller agent keystone-auth kubernetes-node openstack"
 
 fetch_deployer $tf_charms_src_image $tf_charms_dir
+
+# upgrade tf-kubernetes-master
+# now it should be upgraded before ziu start, R2011 charm do not have ziu info in config
+# TODO: try to fix it
+if echo "$juju_status" | grep -q "tf-kubernetes-master " ; then
+    juju upgrade-charm tf-kubernetes-master --path $tf_charms_dir/contrail-kubernetes-master
+fi
+sleep 30
+
+juju run-action tf-controller/leader upgrade-ziu
+
+# wait for all charms get ziu
+sleep 60
 
 agent_start_times=$(get_start_times tf-agent vrouter_vrouter-agent_1)
 control_start_times=$(get_start_times tf-controller control_control_1)
