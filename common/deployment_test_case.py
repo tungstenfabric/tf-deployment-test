@@ -42,10 +42,12 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
             "AGENT_NODES", "").strip().replace(" ", ",").split(",")
         cls.use_ssl = os.getenv("SSL_ENABLE")
         cls.domain_name = os.getenv("AUTH_DOMAIN")
+        cls.auth_token_url = None
         auth_url = os.getenv("AUTH_URL")
-        cls.auth_token_url = auth_url + "/auth/tokens"
-        if auth_url.endswith("v2.0"):
-            cls.auth_token_url = auth_url + "/tokens"
+        if auth_url:
+            cls.auth_token_url = auth_url + "/auth/tokens"
+            if auth_url.endswith("v2.0"):
+                cls.auth_token_url = auth_url + "/tokens"
         cls.auth_password = os.getenv("AUTH_PASSWORD")
         cls.vnc_api_client = VncApiProxy(cls.controller_nodes,
                                          cls.use_ssl,
