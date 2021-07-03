@@ -9,6 +9,7 @@ scriptdir=$(realpath $(dirname "$0"))
 TF_CONFIG_DIR=${TF_CONFIG_DIR:-"${HOME}/.tf"}
 CONTAINER_REGISTRY=${CONTAINER_REGISTRY:-"localhost:5000"}
 CONTRAIL_CONTAINER_TAG=${CONTRAIL_CONTAINER_TAG:-"dev"}
+# ?_ORIGINAL params must be set for ZIU tests
 
 TEST_ENV_FILE=$TF_CONFIG_DIR/test.env
 
@@ -22,6 +23,8 @@ if [ -f $TF_CONFIG_DIR/stack.env ]; then
 fi
 echo "CONTAINER_REGISTRY_ORIGINAL=$CONTAINER_REGISTRY_ORIGINAL" >> $TEST_ENV_FILE
 echo "CONTRAIL_CONTAINER_TAG_ORIGINAL=$CONTRAIL_CONTAINER_TAG_ORIGINAL" >> $TEST_ENV_FILE
+echo "DEPLOYER_CONTAINER_REGISTRY_ORIGINAL=$DEPLOYER_CONTAINER_REGISTRY_ORIGINAL" >> $TEST_ENV_FILE
+echo "CONTRAIL_DEPLOYER_CONTAINER_TAG_ORIGINAL=$CONTRAIL_DEPLOYER_CONTAINER_TAG_ORIGINAL" >> $TEST_ENV_FILE
 echo "SSH_USER=$(whoami)" >> $TEST_ENV_FILE
 phys_int=`ip route get 1 | grep -o 'dev.*' | awk '{print($2)}'`
 echo "SSH_HOST=$(ip addr show dev $phys_int | grep 'inet ' | awk '{print $2}' | head -n 1 | cut -d '/' -f 1)" >> $TEST_ENV_FILE

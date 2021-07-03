@@ -7,6 +7,8 @@ source /tmp/test.env
 
 export CONTAINER_REGISTRY="$CONTAINER_REGISTRY_ORIGINAL"
 export CONTRAIL_CONTAINER_TAG="$CONTRAIL_CONTAINER_TAG_ORIGINAL"
+export DEPLOYER_CONTAINER_REGISTRY="$DEPLOYER_CONTAINER_REGISTRY_ORIGINAL"
+export CONTRAIL_DEPLOYER_CONTAINER_TAG="$CONTRAIL_DEPLOYER_CONTAINER_TAG_ORIGINAL"
 export SSH_OPTIONS=${SSH_OPTIONS:-"-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"}
 
 function ziu_status_for_pattern() {
@@ -41,8 +43,8 @@ function fetch_deployer() {
 
     sudo rm -rf $deployer_dir
 
-    local image="$CONTAINER_REGISTRY/$deployer_image"
-    [ -n "$CONTRAIL_CONTAINER_TAG" ] && image+=":$CONTRAIL_CONTAINER_TAG"
+    local image="$DEPLOYER_CONTAINER_REGISTRY/$deployer_image"
+    [ -n "$CONTRAIL_DEPLOYER_CONTAINER_TAG" ] && image+=":$CONTRAIL_DEPLOYER_CONTAINER_TAG"
     sudo docker create --name $deployer_image --entrypoint /bin/true $image || return 1
     sudo docker cp $deployer_image:/src $deployer_dir
     sudo docker rm -fv $deployer_image
@@ -112,7 +114,15 @@ tf_charms_src_image=${TF_CHARMS_SRC:-"tf-charms-src"}
 tf_charms_dir=${TF_CHARMS_DIR:-"${HOME}/tf-charms"}
 charms_to_upgrade="analytics analyticsdb controller agent keystone-auth kubernetes-node openstack"
 
+pushd $tf_charms_dir
+echo "INFO: charms branch"
+git branch -a -vv
+popd
 fetch_deployer $tf_charms_src_image $tf_charms_dir
+pushd $tf_charms_dir
+echo "INFO: charms branch"
+git branch -a -vv
+popd
 
 # upgrade tf-kubernetes-master
 # now it should be upgraded before ziu start, R2011 charm do not have ziu info in config
