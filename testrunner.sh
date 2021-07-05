@@ -36,7 +36,9 @@ vol_opts=" -v $TEST_ENV_FILE:/input/test.env"
 
 vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa"
 
-vol_opts+=" -v /etc/contrail/ssl:/etc/contrail/ssl"
+if [[ "${SSL_ENABLE,,}" == 'true' ]]; then
+  vol_opts+=" -v /etc/contrail/ssl:/etc/contrail/ssl"
+fi
 
 mkdir -p $scriptdir/output/logs
 vol_opts+=" -v $scriptdir/output:/output"
