@@ -36,7 +36,7 @@ class ApplyDefaultsTests(DeploymentTestCase):
             # TODO: rework this to resources that must be restored
             self.vnc_api_client.set_encap_priorities(original_encap_priorities)
 
-    @attr("juju", "kubernetes")
+    @attr("juju", "all-orchestrators")
     def test_juju_action_apply_defaults(self):
         self.logger.info('Go test check')
         config_get_cmd = 'juju config tf-controller encap-priority'
