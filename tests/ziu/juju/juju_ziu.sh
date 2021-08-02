@@ -205,7 +205,7 @@ echo "INFO: agents are ready. Sync time and wait for active state  $(date)"
 
 sync_time
 
-if ! wait_cmd_success 60 40 "juju_status_absent_pattern \"waiting\|blocked\|maintenance\|unknown\"" ; then
+if ! wait_cmd_success 60 40 "juju_status_absent_pattern \"waiting\|blocked\|maintenance\|unknown\|error\"" ; then
     echo "ERROR: tf is not active after ziu"
     exit 1
 fi
