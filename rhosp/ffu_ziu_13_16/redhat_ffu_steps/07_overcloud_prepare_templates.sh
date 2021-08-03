@@ -23,20 +23,37 @@ fi
 #cp -r tf-tripleo-heat-templates/* tripleo-heat-templates/
 
 #Using deployment framework for getting appropriate heat teamplates for RHOSP16
-sed -i s/RHOSP_VERSION=\"rhosp13\"/RHOSP_VERSION=\"rhosp16\"/ rhosp-environment.sh || true
+sed -i s/RHOSP_VERSION=\"rhosp13\"/RHOSP_VERSION=\"rhosp16.1\"/ rhosp-environment.sh || true
+sed -i s/RHOSP_MAJOR_VERSION=\"rhosp13\"/RHOSP_MAJOR_VERSION=\"rhosp16\"/ rhosp-environment.sh || true
+sed -i s/RHEL_VERSION=\"rhel7\"/RHEL_VERSION=\"rhel8.2\"/ rhosp-environment.sh || true
+sed -i s/RHEL_MAJOR_VERSION=\"rhel7\"/RHEL_MAJOR_VERSION=\"rhel8\"/ rhosp-environment.sh || true
 sed -i s/OPENSTACK_VERSION=\"queens\"/OPENSTACK_VERSION=\"train\"/ rhosp-environment.sh || true
 if ! grep -q -E "CONTRAIL_CONTAINER_TAG=.*" rhosp-environment.sh; then
     echo "export CONTRAIL_CONTAINER_TAG=\"${CONTRAIL_CONTAINER_TAG_FFU}\"" >> rhosp-environment.sh
 fi
 
+
 ~/tf-devstack/rhosp/overcloud/04_prepare_heat_templates.sh
 
 #Tuning misc_opts.sh
-sed -E -i "s|ContrailRegistry: '(.*)/.*'$|ContrailRegistry: '\1'|" misc_opts.yaml || true
-sed -i "s/AdminPassword:.*/AdminPassword: 'c0ntrail123'/" misc_opts.yaml || true
-if ! grep -q tripleo_delegate_to misc_opts.yaml; then
-    echo "  tripleo_delegate_to: undercloud" >> misc_opts.yaml
+registry="${CONTAINER_REGISTRY_FFU}"
+tag=${CONTRAIL_CONTAINER_TAG_FFU:-'latest'}
+
+export undercloud_registry_contrail=${prov_ip}:8787
+ns=$(echo ${registry} | cut -s -d '/' -f2-)
+[ -n "$ns" ] && undercloud_registry_contrail+="/$ns"
+
+opts_file="./misc_opts.yaml"
+sed -i $opts_file -e "s|ContrailRegistry: .*$|ContrailRegistry: ${undercloud_registry_contrail}|"
+sed -i $opts_file -e "s/ContrailImageTag: .*$/ContrailImageTag: ${tag}/"
+
+sed -i "s/AdminPassword:.*/AdminPassword: 'c0ntrail123'/" $opts_file || true
+if ! grep -q tripleo_delegate_to $opts_file; then
+    echo "  tripleo_delegate_to: undercloud" >> $opts_file
 fi
+
+cat $opts_file
+
 
 #8.1. CREATING AN UPGRADES ENVIRONMENT FILE
 cat $my_dir/../redhat_files/upgrades-environment.yaml.template | envsubst > $my_dir/../redhat_files/upgrades-environment.yaml

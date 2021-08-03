@@ -16,8 +16,12 @@ echo "[$(date)] Started system upgrade prepare step for $batch"
 
 bkg_pids=""
 for host in $(echo "$batch" | sed "s/,/ /g"); do
-    openstack overcloud upgrade run --yes --stack overcloud --tags system_upgrade_prepare --limit $host | tee -a "RHEL_system_upgrade_prepare_${host}" &
-    bkg_pids+=" $! "
+    if [ -f "success_system_upgrade_prepare_${host}" ]; then
+        echo "File success_system_upgrade_prepare_${host} already exists. Skipping"
+    else 
+        openstack overcloud upgrade run --yes --stack overcloud --tags system_upgrade_prepare --limit $host | tee -a "RHEL_system_upgrade_prepare_${host}" &
+        bkg_pids+=" $! "
+    fi
 done
 
 status=0
@@ -29,6 +33,14 @@ done
 
 if [[ $status == 0 ]]; then
     echo "[$(date)] Finished system upgrade prepare step for $batch"
+    for host in $(echo $batch | sed 's/,/ /g'); do
+        if [ -f "success_system_upgrade_prepare_${host}" ]; then
+            echo "File success_system_upgrade_prepare_${host} already exists. Skipping"
+        else 
+            touch "success_system_upgrade_prepare_${host}"
+            echo "Created file success_system_upgrade_prepare_${host}"
+        fi
+    done
 else
     echo "[$(date)] Failed in system upgrade prepare step for $batch"
     exit 1

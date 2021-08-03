@@ -21,9 +21,6 @@ fi
 #First line of upgrade_plan contain the bootstrap_node
 batch=$(head -1 $upgrade_plan)
 
-#Reboot batch for finishing network interfaces renaming (eth -> em)
-reboot_and_wait_overcloud_nodes $batch
-
 if [ ! -f .ceph_ran_$batch ]; then
     echo "[$(date)] Started ceph systemd units migration run for $batch"
     openstack overcloud external-upgrade run --yes \

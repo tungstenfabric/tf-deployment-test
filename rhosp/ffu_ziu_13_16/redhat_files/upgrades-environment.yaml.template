@@ -6,9 +6,11 @@ parameter_defaults:
   UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1"
 
   LeappInitCommand: |
-    module=floppy; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
-    module=pata_acpi; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
-    sudo rm -f /etc/yum.repos.d/local.repo
+    sudo lsmod | grep -q floppy && { sudo rmmod floppy; echo "module floppy unloaded"; } || echo "module floppy was not loaded"
+    sudo lsmod | grep -q pata_acpi && { sudo rmmod pata_acpi; echo "module pata_acpi unloaded"; } || echo "module pata_acpi was not loaded"
+    sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
+    sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/kernel/checkinstalledkernels/actor.py
+    sudo rm -f /etc/yum.repos.d/*
     sudo cp -f /home/${NODE_ADMIN_USERNAME}/rhel8.repo /etc/yum.repos.d/
 
   UpgradeLeappDebug: true

@@ -11,7 +11,7 @@ parameter_defaults:
       namespace: ${OPENSTACK_CONTAINER_REGISTRY_FFU}/rhosp-rhel8
       neutron_driver: null
       rhel_containers: false
-      tag: '16.1.2'
+      tag: '16.1'
       name_prefix_stein: openstack-
       name_suffix_stein: ''
       namespace_stein: ${OPENSTACK_CONTAINER_REGISTRY_FFU}/rhosp15-rhel8
