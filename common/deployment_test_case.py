@@ -72,12 +72,13 @@ class DeploymentTestCase(testtools.testcase.WithAttributes, testtools.TestCase):
         for node in self.controller_nodes:
             hf = self.useFixture(
                 HostFixture(node, self.ssh_user, self.logger))
-            containers = hf.exec_command_result(
-                f'sudo docker ps -q -f name={name_filter}')
+            # containers may be on docker or containerd, kill processes is universal way to restart
+            processes = hf.exec_command_result(
+                "ps ax -H | grep -v grep |grep -B 2 " + name_filter + " | grep Ss | awk '{print$1}'")
             hf.exec_command(
-                'sudo docker restart ' + ' '.join(containers.split()))
+                'sudo kill -KILL ' + ' '.join(processes.split()))
         # TODO: use correct wait. think about usefulness of this wait
-        time.sleep(10)
+        time.sleep(30)
 
     def check_container_tags(self, tag):
         nodes = self.controller_nodes + self.agent_nodes
