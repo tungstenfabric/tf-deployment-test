@@ -13,6 +13,60 @@ CONTRAIL_CONTAINER_TAG=${CONTRAIL_CONTAINER_TAG:-"dev"}
 
 TEST_ENV_FILE=$TF_CONFIG_DIR/test.env
 
+if which docker >/dev/null 2>&1 ; then
+  RUNTIME=docker
+elif which ctr >/dev/null 2>&1 ; then
+  RUNTIME=containerd
+fi
+
+function docker_run_test_image() {
+  local image=$1
+
+  # define vol_opts
+  vol_opts=" -v $TEST_ENV_FILE:/input/test.env"
+  vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa"
+  if [[ "${SSL_ENABLE,,}" == 'true' ]]; then
+    vol_opts+=" -v /etc/contrail/ssl:/etc/contrail/ssl"
+  fi
+  mkdir -p $scriptdir/output/logs
+  vol_opts+=" -v $scriptdir/output:/output"
+  # NOTE: to be able to have sources locally that will be executed
+  # user can clone this repo from script dir and it will be used as a source code
+  if [ -d $scriptdir/tf-deployment-test ]; then
+    vol_opts+=" -v $scriptdir/tf-deployment-test:/tf-deployment-test"
+  fi
+
+  sudo docker pull $image
+
+  echo "INFO: command to run: sudo docker run --privileged=true --rm=true -t $vol_opts --network host $image"
+  sudo docker run --privileged=true --rm=true -t $vol_opts --network host $image
+}
+
+function ctr_run_test_image() {
+  local image=$1
+
+  # define vol_opts
+  vol_opts="--mount type=bind,src=$TEST_ENV_FILE,dst=/input/test.env,options=rbind:ro"
+  vol_opts+=" --mount type=bind,src=$HOME/.ssh/id_rsa,dst=/root/.ssh/id_rsa,options=rbind:ro"
+  if [[ "${SSL_ENABLE,,}" == 'true' ]]; then
+    vol_opts+=" --mount type=bind,src=/etc/contrail/ssl,dst=/etc/contrail/ssl,options=rbind:ro"
+  fi
+  mkdir -p $scriptdir/output/logs
+  vol_opts+="  --mount type=bind,src=$scriptdir/output,dst=/output,options=rbind:rw"
+  # NOTE: to be able to have sources locally that will be executed
+  # user can clone this repo from script dir and it will be used as a source code
+  if [ -d $scriptdir/tf-deployment-test ]; then
+    vol_opts+=" --mount type=bind,src=$scriptdir/tf-deployment-test,dst=/tf-deployment-test,options=rbind:rw"
+  fi
+  vol_opts+=" --mount type=bind,src=/run/containerd,dst=/run/containerd,options=rbind:rw"
+  vol_opts+=" --mount type=bind,src=/sys/fs/cgroup,dst=/sys/fs/cgroup,options=rbind:rw"
+
+  sudo ctr image pull $image
+
+  echo "INFO: command to run: sudo ctr -n k8s.io run --privileged --rm -t $vol_opts --net-host $image $RANDOM"
+  sudo ctr -n k8s.io run --privileged --rm -t $vol_opts --net-host $image $RANDOM
+}
+
 echo "INFO: create test.env"
 rm -f $TEST_ENV_FILE
 touch $TEST_ENV_FILE
@@ -32,28 +86,12 @@ echo "DEPLOYMENT_TEST_TAGS=$DEPLOYMENT_TEST_TAGS" >> $TEST_ENV_FILE
 
 cat $TEST_ENV_FILE
 
-vol_opts=" -v $TEST_ENV_FILE:/input/test.env"
-
-vol_opts+=" -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa"
-
-if [[ "${SSL_ENABLE,,}" == 'true' ]]; then
-  vol_opts+=" -v /etc/contrail/ssl:/etc/contrail/ssl"
-fi
-
-mkdir -p $scriptdir/output/logs
-vol_opts+=" -v $scriptdir/output:/output"
-
-# NOTE: to be able to have sources locally that will be executed
-# user can clone this repo from script dir and it will be used as a source code
-if [ -d $scriptdir/tf-deployment-test ]; then
-  vol_opts+=" -v $scriptdir/tf-deployment-test:/tf-deployment-test"
-fi
-
 TF_DEPLOYMENT_TEST_IMAGE="${TF_DEPLOYMENT_TEST_IMAGE:-${CONTAINER_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG}}"
-sudo docker pull $TF_DEPLOYMENT_TEST_IMAGE
-
-echo "INFO: command to run: sudo docker run --privileged=true --rm=true -t $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE"
-sudo docker run --privileged=true --rm=true -t $vol_opts --network host $TF_DEPLOYMENT_TEST_IMAGE || res=1
+if [[ $RUNTIME == docker ]] ; then
+  docker_run_test_image $TF_DEPLOYMENT_TEST_IMAGE || res=1
+elif [[ $RUNTIME == containerd ]] ; then
+  ctr_run_test_image $TF_DEPLOYMENT_TEST_IMAGE || res=1
+fi
 
 pushd $scriptdir/output
 tar -cvf $WORKSPACE/logs.tar logs

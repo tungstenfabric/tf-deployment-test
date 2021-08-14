@@ -45,9 +45,17 @@ function fetch_deployer() {
 
     local image="$DEPLOYER_CONTAINER_REGISTRY/$deployer_image"
     [ -n "$CONTRAIL_DEPLOYER_CONTAINER_TAG" ] && image+=":$CONTRAIL_DEPLOYER_CONTAINER_TAG"
-    sudo docker create --name $deployer_image --entrypoint /bin/true $image || return 1
-    sudo docker cp $deployer_image:/src $deployer_dir
-    sudo docker rm -fv $deployer_image
+    if which docker >/dev/null 2>&1 ; then
+        sudo docker create --name $deployer_image --entrypoint /bin/true $image || return 1
+        sudo docker cp $deployer_image:/src $deployer_dir
+        sudo docker rm -fv $deployer_image
+    elif which ctr >/dev/null 2>&1 ; then
+        sudo ctr -n k8s.io container create $image $deployer_image || return 1
+        mkdir /tmp/$deployer_image_$RANDOM
+        sudo ctr -n k8s.io snapshot mounts /tmp/$deployer_image_$RANDOM $deployer_image | xargs sudo
+        cp /tmp/$deployer_image_$RANDOM/src $deployer_dir
+        sudo ctr -n k8s.io container rm $deployer_image
+    fi
     sudo chown -R $UID $deployer_dir
 }
 
