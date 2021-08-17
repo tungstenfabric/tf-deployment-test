@@ -61,7 +61,10 @@ function ctr_run_test_image() {
   vol_opts+=" --mount type=bind,src=/run/containerd,dst=/run/containerd,options=rbind:rw"
   vol_opts+=" --mount type=bind,src=/sys/fs/cgroup,dst=/sys/fs/cgroup,options=rbind:rw"
 
-  sudo ctr -n k8s.io image pull $image
+  if ! sudo ctr -n k8s.io image pull $image >/dev/null ; then
+        echo "ERROR: image $image cannot be pulled"
+        return 1
+  fi
 
   echo "INFO: command to run: sudo ctr -n k8s.io run --privileged --rm -t $vol_opts --net-host $image $RANDOM"
   sudo ctr -n k8s.io run --privileged --rm -t $vol_opts --net-host $image $RANDOM
