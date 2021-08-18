@@ -1,10 +1,22 @@
 #!/bin/bash
 # all deployers, k8s orchestrator smoke test
 
+# Some deployers use k8s from home directory
+PATH="$HOME:$PATH"
+
+kubectl_cmd='kubectl'
+if ! $kubectl_cmd get all &> /dev/null ; then
+  kubectl_cmd='sudo kubectl'
+  if ! $kubectl_cmd get all &> /dev/null ; then
+    echo "ERROR: kubectl is not accessible by user and root. Test failed."
+    exit 1
+  fi
+fi  
+
 function create_busybox() {
   local pod_name=$1
 
-  cat <<EOF | kubectl apply -f -
+  cat <<EOF | $kubectl_cmd apply -f -
 apiVersion: v1
 kind: Pod
 metadata:
@@ -22,7 +34,7 @@ EOF
 
 function is_running() {
   local pod_name=$1
-  [ $(kubectl get pod $pod_name -o jsonpath='{.status.phase}') == "Running" ]
+  [ $($kubectl_cmd get pod $pod_name -o jsonpath='{.status.phase}') == "Running" ]
 }
 
 function wait() {
@@ -39,16 +51,9 @@ function wait() {
 }
 
 function cleanup() {
-  kubectl delete pod pingtest-sender
-  kubectl delete pod pingtest-receiver
+  $kubectl_cmd delete pod pingtest-sender
+  $kubectl_cmd delete pod pingtest-receiver
 }
-
-# Some deployers use k8s from home directory
-PATH="$HOME:$PATH"
-if ! which kubectl &>/dev/null; then
-  echo "ERROR: there are no kubectl"
-  exit 1
-fi
 
 create_busybox pingtest-sender
 create_busybox pingtest-receiver
@@ -59,8 +64,8 @@ if ! wait "is_running pingtest-sender && is_running pingtest-receiver" 30; then
   exit 1
 fi
 
-receiver_ip=$(kubectl get pod pingtest-receiver -o jsonpath='{.status.podIP}')
-if ! wait "kubectl exec pingtest-sender -- ping $receiver_ip -c1 &>/dev/null" 30; then
+receiver_ip=$($kubectl_cmd get pod pingtest-receiver -o jsonpath='{.status.podIP}')
+if ! wait "$kubectl_cmd exec pingtest-sender -- ping $receiver_ip -c1 &>/dev/null" 30; then
   echo "ERROR: ping failed"
   cleanup
   exit 1
