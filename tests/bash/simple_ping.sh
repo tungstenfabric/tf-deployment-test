@@ -5,9 +5,9 @@
 PATH="$HOME:$PATH"
 
 kubectl_cmd='kubectl'
-if ! $kubectl_cmd get all &> /dev/null ; then
+if ! $kubectl_cmd get all ; then
   kubectl_cmd='sudo kubectl'
-  if ! $kubectl_cmd get all &> /dev/null ; then
+  if ! $kubectl_cmd get all ; then
     echo "ERROR: kubectl is not accessible by user and root. Test failed."
     exit 1
   fi
