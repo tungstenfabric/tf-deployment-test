@@ -4,6 +4,8 @@
   become: yes
   vars:
     prefix: "em"
+    undercloud_conf: "/home/stack/undercloud.conf"
+    osnet_conf: "/etc/os-net-config/config.json"
   tasks:
     - set_fact:
         eth_interfaces: "{{ ansible_interfaces | select('match','eth.*') | list }}"
@@ -96,6 +98,7 @@
           find:
             paths: /etc/sysconfig/network-scripts/
             patterns: 'ifcfg-*'
+            excludes: '*.bak'
           register: ifcfg_files
         - name: Perform final regex on ifcfg files
           replace:
@@ -105,3 +108,25 @@
           with_nested:
             - "{{ ifcfg_files.files }}"
             - "{{ eth_interfaces }}"
+    - name: Replace interface name in files referencing old eth interface
+      block:
+        - name: Check if undercloud.conf exists
+          stat:
+            path: "{{ undercloud_conf }}"
+          register: undercloud_conf_stat
+        - name: Replace interface name in undercloud.conf
+          replace:
+            path: "{{ undercloud_conf }}"
+            regexp: 'eth(\d+)'
+            replace: "{{ prefix }}\\1"
+          when: undercloud_conf_stat.stat.exists
+        - name: Check if os-net-config's config.json exists
+          stat:
+            path: "{{ osnet_conf }}"
+          register: osnet_conf_stat
+        - name: Replace interface name in config.json
+          replace:
+            path: "{{ osnet_conf }}"
+            regexp: 'eth(\d+)'
+            replace: "{{ prefix }}\\1"
+          when: osnet_conf_stat.stat.exists

@@ -14,12 +14,6 @@ export undercloud_registry_contrail=${prov_ip}:8787
 ns=$(echo ${registry} | cut -s -d '/' -f2-)
 [ -n "$ns" ] && undercloud_registry_contrail+="/$ns"
 
-opts_file="./misc_opts.yaml"
-sed -i $opts_file -e "s|ContrailRegistry: .*$|ContrailRegistry: ${undercloud_registry_contrail}|"
-sed -i $opts_file -e "s/ContrailImageTag: .*$/ContrailImageTag: ${tag}/"
-
-cat $opts_file
-
 ./tripleo-heat-templates/tools/contrail/import_contrail_container.sh \
     -f ./contrail_containers.yaml -r $registry -t $tag
 

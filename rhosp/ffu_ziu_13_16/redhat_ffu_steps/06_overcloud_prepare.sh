@@ -34,6 +34,7 @@ tripleo-ansible-inventory --ansible_ssh_user $NODE_ADMIN_USERNAME --static-yaml-
 jobs=''
 for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
     scp $my_dir/../redhat_files/*.repo /tmp/local.repo ${node_admin_username}@${ip}:
+    ssh ${node_admin_username}@${ip} sudo rm -f /etc/yum.repos.d/*
     #Fix for RHEL7.8 overcloud
     ssh ${node_admin_username}@${ip} sudo cp local.repo /etc/yum.repos.d/
     #parallel ssh
@@ -54,7 +55,8 @@ if [[ "${res}" == 1 ]]; then
     exit 1
 fi
 
-ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-leapp-data.yaml
+#8.3. Copying the Leapp data on the overcloud nodes
+ansible -i inventory.yaml --become -m synchronize -a "src=/etc/leapp/files dest=/etc/leapp/" overcloud
 
 #8.4. USING PREDICTABLE NIC NAMES FOR OVERCLOUD NODES
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-nics.yaml
@@ -65,32 +67,16 @@ source $my_dir/../tf_specific/06_overcloud_prepare.sh
 #8.5. SETTING THE SSH ROOT PERMISSION PARAMETER ON THE OVERCLOUD
 ansible-playbook -i inventory.yaml $my_dir/../redhat_files/playbook-ssh.yaml
 
-#ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster stop --force"
-
-#Sequential rebooting (takes a long time)
-#for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
-#    reboot_and_wait_overcloud_nodes $ip $NODE_ADMIN_USERNAME
-#done
-
-#Creating upgrade plans for overcloud (we need batches for parallel rebooting)
+#Creating upgrade plans for overcloud (we need batches for parallel upgrading)
 $my_dir/overcloud_prepare_upgrade_plan_4_control_plane.sh
 $my_dir/overcloud_prepare_upgrade_plan_4_computes.sh
 
 #Joining upgrade_plans
 #cat ~/overcloud_controlplane_upgrade_plan > /tmp/rebooting_batches
 #cat ~/overcloud_compute_upgrade_plan >> /tmp/rebooting_batches
-#
-#echo "Rebooting overcloud nodes with batches"
-#for line in $(cat /tmp/rebooting_batches); do
-#    reboot_and_wait_overcloud_nodes $line
-#done
 
 #Fix dns issue after yum update
 #ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.8.8" >>/etc/resolv.conf'
 #ansible overcloud -i ~/inventory.yaml -b -m shell -a 'echo "nameserver 8.8.4.4" >>/etc/resolv.conf'
-
-#ansible overcloud -i inventory.yaml -m ping
-#ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs cluster start"
-#ansible overcloud_Controller -i inventory.yaml -b -m shell -a "pcs status"
 
 echo $(date) "------------------ FINISHED: $0 ------------------"

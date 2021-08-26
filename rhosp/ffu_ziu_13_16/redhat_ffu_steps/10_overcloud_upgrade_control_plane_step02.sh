@@ -30,8 +30,6 @@ while IFS= read -r line; do
     fi
     #Skipping first line of upgrade_plane
     if [[ $i>1 ]]; then
-        #Reboot batch for finishing network interfaces renaming (eth -> em)
-        reboot_and_wait_overcloud_nodes $line
         $my_dir/run_overcloud_system_upgrade.sh $line
         $my_dir/run_overcloud_openstack_upgrade.sh $limit
     fi

@@ -41,15 +41,16 @@ sed -i "/^\[DEFAULT\]/ a custom_env_files = custom-undercloud-params.yaml" under
 cp $my_dir/../redhat_files/custom-undercloud-params.yaml .
 
 sed -i "/^\[DEFAULT\]/ a container_images_file = containers-prepare-parameter.yaml" undercloud.conf
-sed -i "s/eth/em/" undercloud.conf
 sed -i 's/#local_interface[ ]*=/local_interface =/g' undercloud.conf
+
+# Show current config files
 cat undercloud.conf
+cat /etc/os-net-config/config.json
 
 #FIXING KNOWN ISSUES
-sudo sed -i "s/eth/em/" /etc/os-net-config/config.json
-cat /etc/os-net-config/config.json
-sudo pip3 uninstall -y Jinja2
+sudo pip3 uninstall -y Jinja2 || true
 sudo pip3 freeze
+sudo dnf reinstall -y python3-jinja2-2.10.1-2.el8_0.noarch
 
 #6.10. RUNNING THE DIRECTOR UPGRADE
 openstack undercloud upgrade -y

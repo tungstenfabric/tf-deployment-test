@@ -20,6 +20,9 @@ role_file="$(pwd)/tripleo-heat-templates/roles_data_contrail_aio.yaml"
   -r $role_file \
   -p tripleo-heat-templates/
 
+#Network template
+network_parameters="-e tripleo-heat-templates/environments/contrail/contrail-net-single.yaml"
+
 #Local mirrors case (CICD)
 rhsm_parameters=''
 
@@ -39,9 +42,8 @@ openstack overcloud upgrade prepare --yes \
   --roles-file $role_file \
   $overcloud_ssh_user \
   $rhsm_parameters \
+  $network_parameters \
   -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
-  -e tripleo-heat-templates/environments/contrail/contrail-net.yaml \
-  -e tripleo-heat-templates/environments/network-isolation.yaml \
   -e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml \
   -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
   -e misc_opts.yaml \

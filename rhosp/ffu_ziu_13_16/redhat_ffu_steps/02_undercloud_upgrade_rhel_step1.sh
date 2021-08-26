@@ -46,7 +46,9 @@ sudo tar -xzf $my_dir/../redhat_files/leapp-data14.tar.gz -C /etc/leapp/files
 
 #Local mirrors case (CICD)
 #copy local.repo file for overcloud nodes
+
 cp /etc/yum.repos.d/local.repo /tmp/
+rm -f $my_dir/../redhat_files/rhel8.repo
 cat $my_dir/../redhat_files/rhel8.repo.template | envsubst > $my_dir/../redhat_files/rhel8.repo
 sudo rm -f /etc/yum.repos.d/*
 sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
@@ -62,6 +64,10 @@ module=pata_acpi; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$m
 
 sudo leapp answer --add --section remove_pam_pkcs11_module_check.confirm=True
 export LEAPP_UNSUPPORTED=1
+
+# Remove the persistent network names actor from the Leapp process
+# https://bugzilla.redhat.com/show_bug.cgi?id=1983033
+sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
 
 #Red Hat Registration case
 #sudo rm -f /etc/yum.repos.d/* || true

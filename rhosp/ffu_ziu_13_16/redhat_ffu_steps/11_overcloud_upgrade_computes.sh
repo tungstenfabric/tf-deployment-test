@@ -21,9 +21,6 @@ fi
 
 #19.3. Upgrading Compute nodes
 while IFS= read -r line; do
-
-    #Reboot batch for finishing network interfaces renaming (eth -> em)
-    reboot_and_wait_overcloud_nodes $line
     $my_dir/../tf_specific/run_overcloud_system_upgrade_prepare.sh $line
     $my_dir/../tf_specific/run_overcloud_system_upgrade_run.sh $line
     bkg_pids=""
