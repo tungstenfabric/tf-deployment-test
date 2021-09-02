@@ -11,9 +11,9 @@ if ! $kubectl_cmd get all ; then
     echo "ERROR: kubectl is not accessible by user and root. Test failed."
     exit 1
   fi
-fi  
+fi
 
-function create_busybox() {
+function create_centos() {
   local pod_name=$1
 
   cat <<EOF | $kubectl_cmd apply -f -
@@ -23,8 +23,8 @@ metadata:
     name: $pod_name
 spec:
     containers:
-    - name: busybox
-      image: busybox
+    - name: centos
+      image: centos
       imagePullPolicy: IfNotPresent
       args:
       - sleep
@@ -55,8 +55,8 @@ function cleanup() {
   $kubectl_cmd delete pod pingtest-receiver
 }
 
-create_busybox pingtest-sender
-create_busybox pingtest-receiver
+create_centos pingtest-sender
+create_centos pingtest-receiver
 
 if ! wait "is_running pingtest-sender && is_running pingtest-receiver" 30; then
   echo "ERROR: created pods are not in the running state"
