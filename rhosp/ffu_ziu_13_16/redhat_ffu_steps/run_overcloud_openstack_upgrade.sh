@@ -35,10 +35,12 @@ for host in $(echo $batch | sed 's/,/ /g'); do
     fi
 done
 
-openstack overcloud upgrade run --yes \
-    --stack overcloud \
-    --limit $openstack_controller_batch --playbook all 2>&1 | tee openstack_overcloud_upgrade_run_${openstack_controller_batch} &
-bkg_pids+=" $! "
+if [[ -n "$openstack_controller_batch" ]] ; then
+    openstack overcloud upgrade run --yes \
+        --stack overcloud \
+        --limit $openstack_controller_batch --playbook all 2>&1 | tee openstack_overcloud_upgrade_run_${openstack_controller_batch} &
+    bkg_pids+=" $! "
+fi
 
 status=0
 for p in $bkg_pids; do

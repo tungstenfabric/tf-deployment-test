@@ -4,6 +4,8 @@
 # use separate steps for system_upgrade_prepare + system_upgrade_run
 # instead of united system_upgrade to allow some hack for vhost0
 
+set -euo pipefail
+
 if [[ -z $1 ]]; then
     echo "No arguments. Please specify the list of the nodes for upgrade"
     echo "Usage: $0 <node-1,node-2,node-3>"
