@@ -60,14 +60,14 @@ create_centos pingtest-receiver
 
 if ! wait "is_running pingtest-sender && is_running pingtest-receiver" 30; then
   echo "ERROR: created pods are not in the running state"
-  cleanup
+  #cleanup
   exit 1
 fi
 
 receiver_ip=$($kubectl_cmd get pod pingtest-receiver -o jsonpath='{.status.podIP}')
 if ! wait "$kubectl_cmd exec pingtest-sender -- ping $receiver_ip -c1 &>/dev/null" 30; then
   echo "ERROR: ping failed"
-  cleanup
+  #cleanup
   exit 1
 fi
 
