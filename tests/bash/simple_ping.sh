@@ -58,7 +58,7 @@ function cleanup() {
 create_centos pingtest-sender
 create_centos pingtest-receiver
 
-if ! wait "is_running pingtest-sender && is_running pingtest-receiver" 30; then
+if ! wait "is_running pingtest-sender && is_running pingtest-receiver" 60; then
   echo "ERROR: created pods are not in the running state"
   #cleanup
   exit 1
