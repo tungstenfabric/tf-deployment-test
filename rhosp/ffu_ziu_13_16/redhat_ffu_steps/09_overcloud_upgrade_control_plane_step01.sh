@@ -40,7 +40,7 @@ if [ ! -f .system_upgrade_transfer_data ]; then
      echo "[$(date)] Finished upgrade transfer data for $batch"
 fi
 
-if [ ! -f nova_hybrid_state ]; then
+if [ ! -f .nova_hybrid_state ]; then
      echo "[$(date)] Setting up hybrid state for computes"
      openstack overcloud upgrade run --yes \
          --stack overcloud \
