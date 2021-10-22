@@ -18,7 +18,7 @@ bkg_pids=""
 for host in $(echo "$batch" | sed "s/,/ /g"); do
     if [ -f "success_system_upgrade_${host}" ]; then
         echo "File success_system_upgrade_${host} already exists. Skipping"
-    else 
+    else
         openstack overcloud upgrade run --yes \
             --stack overcloud \
             --tags system_upgrade \
@@ -39,7 +39,7 @@ if [[ $status == 0 ]]; then
     for host in $(echo $batch | sed 's/,/ /g'); do
         if [ -f "success_system_upgrade_${host}" ]; then
             echo "File success_system_upgrade_${host} already exists. Skipping"
-        else 
+        else
             touch "success_system_upgrade_${host}"
             echo "Created file success_system_upgrade_${host}"
         fi
