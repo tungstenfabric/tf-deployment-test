@@ -2,6 +2,9 @@ parameter_defaults:
   #Local mirrors case (CICD)
   SkipRhelEnforcement: true
 
+  #Default timeout can be increased
+  #UpgradeLeappRebootTimeout: 3600 
+
   #UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1 LEAPP_DEVEL_TARGET_RELEASE=8.2"
   UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1"
 
@@ -10,6 +13,7 @@ parameter_defaults:
     sudo lsmod | grep -q pata_acpi && { sudo rmmod pata_acpi; echo "module pata_acpi unloaded"; } || echo "module pata_acpi was not loaded"
     sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
     sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/kernel/checkinstalledkernels/actor.py
+    sudo leapp answer --add --section authselect_check.confirm=True
     sudo rm -f /etc/yum.repos.d/*
     sudo cp -f /home/${NODE_ADMIN_USERNAME}/rhel8.repo /etc/yum.repos.d/
 

@@ -63,6 +63,7 @@ module=floppy; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$modu
 module=pata_acpi; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$module unloaded"; } || echo "$module was not loaded"
 
 sudo leapp answer --add --section remove_pam_pkcs11_module_check.confirm=True
+sudo leapp answer --add --section authselect_check.confirm=True
 export LEAPP_UNSUPPORTED=1
 
 # Remove the persistent network names actor from the Leapp process
