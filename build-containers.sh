@@ -13,6 +13,7 @@ build_opts="--build-arg LC_ALL=en_US.UTF-8 --build-arg LANG=en_US.UTF-8 --build-
 build_opts+=" --network host --no-cache --tag ${CONTRAIL_REGISTRY}/tf-deployment-test:${CONTRAIL_CONTAINER_TAG} $scriptdir"
 if [[ "$LINUX_ID" == 'rhel' && "${LINUX_VER_ID//.[0-9]*/}" == '8' ]] ; then
     # podman case
+    build_opts+=' --format docker'
     build_opts+=' -v /etc/resolv.conf:/etc/resolv.conf:ro'
 fi
 
