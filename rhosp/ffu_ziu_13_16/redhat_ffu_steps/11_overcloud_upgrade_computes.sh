@@ -19,6 +19,13 @@ if [[ ! -f $upgrade_plan ]]; then
     exit 1
 fi
 
+
+#TF Specific part - it is needed to remove ifcfg-ptkX and
+# ifcfg-vhost0 files to avoid failures on leapp upgrade
+# when networking services tries to start vhost0
+# at the moment before podman installed (dpdk case failes)
+source $my_dir/../tf_specific/11_overcloud_prepare_compute.sh
+
 #19.3. Upgrading Compute nodes
 while IFS= read -r line; do
     $my_dir/../tf_specific/run_overcloud_system_upgrade_prepare.sh $line
