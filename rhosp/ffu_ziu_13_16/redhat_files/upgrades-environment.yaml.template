@@ -13,9 +13,12 @@ parameter_defaults:
     sudo lsmod | grep -q pata_acpi && { sudo rmmod pata_acpi; echo "module pata_acpi unloaded"; } || echo "module pata_acpi was not loaded"
     sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
     sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/kernel/checkinstalledkernels/actor.py
-    sudo leapp answer --add --section authselect_check.confirm=True
     sudo rm -f /etc/yum.repos.d/*
     sudo cp -f /home/${NODE_ADMIN_USERNAME}/rhel8.repo /etc/yum.repos.d/
+    #https://bugzilla.redhat.com/show_bug.cgi?id=1952574#c1
+    sudo leapp answer --add --section authselect_check.confirm=True
+    #https://bugzilla.redhat.com/show_bug.cgi?id=2015325#c19
+    sudo yum -y remove mariadb-server*
 
   UpgradeLeappDebug: true
   UpgradeInitCommand: |
