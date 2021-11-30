@@ -11,6 +11,8 @@ source ~/rhosp-environment.sh
 #checkForVariable RHEL_USER
 #checkForVariable RHEL_PASSWORD
 #checkForVariable RHEL_POOL_ID
+#checkForVariable RHEL_REPOS
+
 
 #Adding FFU and RHOSP16 variables
 undercloud_local_ip=$(grep -o "export prov_ip=.*" ~/rhosp-environment.sh | cut -d ' ' -f2 | cut -d '=' -f 2 | tr -d '"')

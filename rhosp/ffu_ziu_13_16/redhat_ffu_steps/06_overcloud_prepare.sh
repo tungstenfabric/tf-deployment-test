@@ -24,7 +24,7 @@ pcs_bootstrap_node_ip=$(openstack server list --name $pcs_bootstrap_node_name -c
 ssh $node_admin_username@$pcs_bootstrap_node_ip "sudo pcs property set stonith-enabled=false"
 
 #7.5. Creating an overcloud inventory file
-tripleo-ansible-inventory --ansible_ssh_user $NODE_ADMIN_USERNAME --static-yaml-inventory inventory.yaml
+tripleo-ansible-inventory --ansible_ssh_user $node_admin_username --static-yaml-inventory inventory.yaml
 
 #Red Hat Registration Case
 #ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
