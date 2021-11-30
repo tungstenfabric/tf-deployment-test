@@ -7,6 +7,7 @@ cd ~
 source stackrc
 source rhosp-environment.sh
 
+# Comment for Red Hat Registration case
 sudo dnf -y remove python2*
 
 #Red Hat Registration case
@@ -29,7 +30,7 @@ sudo dnf module disable -y virt:rhel
 sudo dnf module enable -y virt:8.2
 
 #this package blocks dystro-sync
-sudo dnf remove crypto-policies-scripts-20210209-1.gitbfb6bed.el8_3.noarch || true
+sudo dnf remove -y crypto-policies-scripts-20210209-1.gitbfb6bed.el8_3.noarch || true
 
 sudo dnf distro-sync -y
 

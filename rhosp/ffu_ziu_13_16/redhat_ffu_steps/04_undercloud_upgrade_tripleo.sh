@@ -20,7 +20,7 @@ echo Generating yaml files
 #[[ -n "$RHEL_POOL_ID" && -n "$RHEL_USER" && -n "$RHEL_PASSWORD" ]]
 #  export rhsm_image_registry_credentials="
 #  ContainerImageRegistryCredentials:
-#    ${OPENSTACK_CONTAINER_REGISTRY}:
+#    ${OPENSTACK_CONTAINER_REGISTRY_FFU}:
 #      ${RHEL_USER}: '${RHEL_PASSWORD}'"
 #
 #
