@@ -31,7 +31,7 @@ rhsm_parameters=''
 #rhsm_parameters+=" -e tripleo-heat-templates/environments/rhsm.yaml"
 
 overcloud_ssh_user=''
-if [ "$NODE_ADMIN_USERNAME" != "heat-admin" ]; then
+if [[ -n "$NODE_ADMIN_USERNAME" && "$NODE_ADMIN_USERNAME" != "heat-admin" ]] ; then
     overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
 fi
 
