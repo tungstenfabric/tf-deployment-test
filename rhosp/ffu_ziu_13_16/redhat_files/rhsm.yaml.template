@@ -6,7 +6,7 @@ parameter_defaults:
      - rhel-8-for-x86_64-highavailability-rpms
      - fast-datapath-for-rhel-8-x86_64-rpms
      - ansible-2-for-rhel-8-x86_64-rpms
-     - openstack-16.1-for-rhel-8-x86_64-rpms
+     - openstack-${RHOSP_VERSION_NUM}-for-rhel-8-x86_64-rpms
      - satellite-tools-6.5-for-rhel-8-x86_64-rpms
     rhsm_username: "${RHEL_USER}"
     rhsm_password: "${RHEL_PASSWORD}"

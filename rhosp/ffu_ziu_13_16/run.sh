@@ -8,11 +8,12 @@ source $my_dir/../common/functions.sh
 source ~/rhosp-environment.sh
 
 #Red Hat Registration case
-#checkForVariable RHEL_USER
-#checkForVariable RHEL_PASSWORD
-#checkForVariable RHEL_POOL_ID
-#checkForVariable RHEL_REPOS
-
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
+  checkForVariable RHEL_USER
+  checkForVariable RHEL_PASSWORD
+  checkForVariable RHEL_POOL_ID
+  checkForVariable RHEL_REPOS
+fi
 
 #Adding FFU and RHOSP16 variables
 undercloud_local_ip=$(grep -o "export prov_ip=.*" ~/rhosp-environment.sh | cut -d ' ' -f2 | cut -d '=' -f 2 | tr -d '"')
@@ -21,15 +22,29 @@ undercloud_public_host="${prov_subnet}.2"
 undercloud_admin_host="${prov_subnet}.3"
 
 
+checkForVariable RHOSP_VERSION
+if [[ "$RHOSP_VERSION" != 'rhosp16.1' || "$RHOSP_VERSION" != 'rhosp16.2' ]] ; then
+  echo "ERROR: update RHOSP_VERSION to target release rhosp16.1 or rhosp16.2"
+  exit 1
+fi
+checkForVariable RHEL_VERSION
+if [[ "$RHEL_VERSION" != 'rhel8.2' || "$RHEL_VERSION" != 'rhel8.4' ]] ; then
+  echo "ERROR: update RHEL_VERSION to target release rhel8.2 (for rhosp16.1) or rhel8.4 (for rhosp16.2)"
+  exit 1
+fi
 checkForVariable SSH_USER
 checkForVariable mgmt_ip
 checkForVariable prov_subnet
-checkForVariable ssh_private_key
-checkForVariable NODE_ADMIN_USERNAME
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
+  checkForVariable ssh_private_key
+  checkForVariable NODE_ADMIN_USERNAME
+fi
 checkForVariable CONTAINER_REGISTRY_FFU
 checkForVariable CONTRAIL_CONTAINER_TAG_FFU
 checkForVariable OPENSTACK_CONTAINER_REGISTRY_FFU
-checkForVariable RHEL_LOCAL_MIRROR_FFU
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
+  checkForVariable RHEL_LOCAL_MIRROR_FFU
+fi
 checkForVariable undercloud_public_host
 checkForVariable undercloud_admin_host
 
@@ -39,14 +54,16 @@ scp $SSH_USER@$mgmt_ip:rhosp-environment.sh /tmp/
 
 add_variable /tmp/rhosp-environment.sh SSH_USER $SSH_USER
 add_variable /tmp/rhosp-environment.sh mgmt_ip $mgmt_ip
-add_variable /tmp/rhosp-environment.sh ssh_private_key $ssh_private_key
-add_variable /tmp/rhosp-environment.sh NODE_ADMIN_USERNAME $NODE_ADMIN_USERNAME
 add_variable /tmp/rhosp-environment.sh CONTAINER_REGISTRY_FFU $CONTAINER_REGISTRY_FFU
 add_variable /tmp/rhosp-environment.sh CONTRAIL_CONTAINER_TAG_FFU $CONTRAIL_CONTAINER_TAG_FFU
 add_variable /tmp/rhosp-environment.sh OPENSTACK_CONTAINER_REGISTRY_FFU $OPENSTACK_CONTAINER_REGISTRY_FFU
-add_variable /tmp/rhosp-environment.sh RHEL_LOCAL_MIRROR_FFU $RHEL_LOCAL_MIRROR_FFU
 add_variable /tmp/rhosp-environment.sh undercloud_admin_host $undercloud_admin_host
 add_variable /tmp/rhosp-environment.sh undercloud_public_host $undercloud_public_host
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
+  add_variable /tmp/rhosp-environment.sh ssh_private_key $ssh_private_key
+  add_variable /tmp/rhosp-environment.sh NODE_ADMIN_USERNAME $NODE_ADMIN_USERNAME
+  add_variable /tmp/rhosp-environment.sh RHEL_LOCAL_MIRROR_FFU $RHEL_LOCAL_MIRROR_FFU
+fi
 
 cd
 #Updating rhosp-environment.sh

@@ -26,33 +26,34 @@ ssh $node_admin_username@$pcs_bootstrap_node_ip "sudo pcs property set stonith-e
 #7.5. Creating an overcloud inventory file
 tripleo-ansible-inventory --ansible_ssh_user $node_admin_username --static-yaml-inventory inventory.yaml
 
-#Red Hat Registration Case
-#ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
-#ansible overcloud -i inventory.yaml -b -m shell -a 'yum update -y'
-
-#Local mirrors case (CICD)
-jobs=''
-for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
-    scp $my_dir/../redhat_files/*.repo /tmp/local.repo ${node_admin_username}@${ip}:
-    ssh ${node_admin_username}@${ip} sudo rm -f /etc/yum.repos.d/*
-    #Fix for RHEL7.8 overcloud
-    ssh ${node_admin_username}@${ip} sudo cp local.repo /etc/yum.repos.d/
-    #parallel ssh
-    ssh ${node_admin_username}@${ip} sudo yum update -y &
-    jobs+=" $!"
-done
-echo Parallel yum-update on overcloud nodes. pids: $jobs. Waiting...
-
-res=0
-for i in $jobs ; do
-    command wait $i || {
-        echo "ERROR: job $i failed"
-        res=1
-    }
-done
-if [[ "${res}" == 1 ]]; then
-    echo "ERROR: errors appeared during parallel yum update on overcloud nodes"
-    exit 1
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
+    #Red Hat Registration Case
+    ansible overcloud -i inventory.yaml -b -m shell -a 'subscription-manager repos --enable=rhel-7-server-optional-rpms'
+    ansible overcloud -i inventory.yaml -b -m shell -a 'yum update -y'
+else
+    #Local mirrors case (CICD)
+    jobs=''
+    for ip in $(openstack server list -c Networks -f value | cut -d '=' -f2); do
+        scp $my_dir/../redhat_files/*.repo /tmp/local.repo ${node_admin_username}@${ip}:
+        ssh ${node_admin_username}@${ip} sudo rm -f /etc/yum.repos.d/*
+        #Fix for RHEL7.8 overcloud
+        ssh ${node_admin_username}@${ip} sudo cp local.repo /etc/yum.repos.d/
+        #parallel ssh
+        ssh ${node_admin_username}@${ip} sudo yum update -y &
+        jobs+=" $!"
+    done
+    echo Parallel yum-update on overcloud nodes. pids: $jobs. Waiting...
+    res=0
+    for i in $jobs ; do
+        command wait $i || {
+            echo "ERROR: job $i failed"
+            res=1
+        }
+    done
+    if [[ "${res}" == 1 ]]; then
+        echo "ERROR: errors appeared during parallel yum update on overcloud nodes"
+        exit 1
+    fi
 fi
 
 #8.3. Copying the Leapp data on the overcloud nodes

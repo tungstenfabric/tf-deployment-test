@@ -25,14 +25,24 @@ network_parameters="-e tripleo-heat-templates/environments/contrail/contrail-net
 
 #Local mirrors case (CICD)
 rhsm_parameters=''
-
-#Red Hat Registration case
-#rhsm_parameters='-e rhsm.yaml'
-#rhsm_parameters+=" -e tripleo-heat-templates/environments/rhsm.yaml"
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
+  #Red Hat Registration case
+  rhsm_parameters+=' -e rhsm.yaml'
+  rhsm_parameters+=' -e tripleo-heat-templates/environments/rhsm.yaml'
+fi
 
 overcloud_ssh_user=''
 if [[ -n "$NODE_ADMIN_USERNAME" && "$NODE_ADMIN_USERNAME" != "heat-admin" ]] ; then
     overcloud_ssh_user="--overcloud-ssh-user $NODE_ADMIN_USERNAME"
+fi
+
+if [[ "$ENABLE_TLS" != 'ipa' ]] ; then
+  tls_opts='-e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml'
+else
+  tls_opts='-e tripleo-heat-templates/environments/contrail/contrail-tls.yaml'
+  tls_opts+=' -e tripleo-heat-templates/environments/ssl/tls-everywhere-endpoints-dns.yaml'
+  tls_opts+=' -e tripleo-heat-templates/environments/services/haproxy-public-tls-certmonger.yaml'
+  tls_opts+=' -e tripleo-heat-templates/environments/ssl/enable-internal-tls.yaml'
 fi
 
 #19.1. Running the overcloud upgrade preparation
@@ -43,13 +53,14 @@ openstack overcloud upgrade prepare --yes \
   $overcloud_ssh_user \
   $rhsm_parameters \
   $network_parameters \
+  $tls_opts \
   -e tripleo-heat-templates/environments/contrail/contrail-services.yaml \
-  -e tripleo-heat-templates/environments/contrail/endpoints-public-dns.yaml \
   -e tripleo-heat-templates/environments/contrail/contrail-plugins.yaml \
   -e misc_opts.yaml \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml \
-  -e tripleo-heat-templates/upgrades-environment.yaml
+  -e tripleo-heat-templates/upgrades-environment.yaml \
+  $FFU_EXTRA_HEAT_ENVIRONMENTS
 
 openstack overcloud external-upgrade run --yes --stack overcloud --tags container_image_prepare
 

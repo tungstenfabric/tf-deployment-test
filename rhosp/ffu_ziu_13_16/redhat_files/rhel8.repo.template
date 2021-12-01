@@ -1,6 +1,6 @@
-[openstack-16.1-for-rhel-8-x86_64-rpms]
-name = Red Hat OpenStack Platform 16.1 for RHEL 8 (RPMs)
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/openstack-16.1-for-rhel-8-x86_64-rpms
+[openstack-${RHOSP_VERSION_NUM}-for-rhel-8-x86_64-rpms]
+name = Red Hat OpenStack Platform $RHOSP_VERSION_NUM for RHEL 8 (RPMs)
+baseurl = ${RHEL_LOCAL_MIRROR_FFU}/openstack-${RHOSP_VERSION_NUM}-for-rhel-8-x86_64-rpms
 enabled = 1
 
 [satellite-tools-6.5-for-rhel-8-x86_64-rpms]

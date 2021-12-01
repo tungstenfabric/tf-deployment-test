@@ -11,6 +11,8 @@ source stackrc
 source rhosp-environment.sh
 source $my_dir/../../common/functions.sh
 
+export RHOSP_VERSION_NUM=${RHOSP_VERSION//rhosp/}
+
 /sbin/ip addr list
 
 #4.5. Converting to next generation power management drivers
@@ -44,15 +46,15 @@ sudo yum install -y leapp
 
 sudo tar -xzf $my_dir/../redhat_files/leapp-data14.tar.gz -C /etc/leapp/files
 
-#Local mirrors case (CICD)
-#copy local.repo file for overcloud nodes
-
-cp /etc/yum.repos.d/local.repo /tmp/
-rm -f $my_dir/../redhat_files/rhel8.repo
-cat $my_dir/../redhat_files/rhel8.repo.template | envsubst > $my_dir/../redhat_files/rhel8.repo
-sudo rm -f /etc/yum.repos.d/*
-sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
-
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
+  #Local mirrors case (CICD)
+  #copy local.repo file for overcloud nodes
+  cp /etc/yum.repos.d/local.repo /tmp/
+  rm -f $my_dir/../redhat_files/rhel8.repo
+  cat $my_dir/../redhat_files/rhel8.repo.template | envsubst > $my_dir/../redhat_files/rhel8.repo
+  sudo rm -f /etc/yum.repos.d/*
+  sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
+fi
 
 echo 'openvswitch2.11' | sudo tee -a /etc/leapp/transaction/to_remove
 echo 'openvswitch2.13' | sudo tee -a /etc/leapp/transaction/to_install
@@ -69,32 +71,29 @@ export LEAPP_UNSUPPORTED=1
 # Remove the persistent network names actor from the Leapp process
 # https://bugzilla.redhat.com/show_bug.cgi?id=1983033
 sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
-
-#Red Hat Registration case
-#sudo rm -f /etc/yum.repos.d/* || true
-#sudo subscription-manager refresh
-#
-#sudo leapp upgrade --debug \
-#  --enablerepo rhel-8-for-x86_64-baseos-rpms \
-#  --enablerepo rhel-8-for-x86_64-appstream-rpms \
-#  --enablerepo rhel-8-for-x86_64-highavailability-rpms \
-#  --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
-#  --enablerepo ansible-2-for-rhel-8-x86_64-rpms \
-#  --enablerepo openstack-16.1-for-rhel-8-x86_64-rpms \
-#  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
-#  --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
-
-#Local mirrors case (CICD)
-sudo leapp upgrade --no-rhsm --debug \
-  --enablerepo rhel-8-for-x86_64-baseos-rpms \
-  --enablerepo rhel-8-for-x86_64-appstream-rpms \
-  --enablerepo rhel-8-for-x86_64-highavailability-rpms \
-  --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
-  --enablerepo ansible-2.9-for-rhel-8-x86_64-rpms \
-  --enablerepo openstack-16.1-for-rhel-8-x86_64-rpms \
-  --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
-  --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
-
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
+  #Red Hat Registration case
+  sudo leapp upgrade --debug \
+    --enablerepo rhel-8-for-x86_64-baseos-rpms \
+    --enablerepo rhel-8-for-x86_64-appstream-rpms \
+    --enablerepo rhel-8-for-x86_64-highavailability-rpms \
+    --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
+    --enablerepo ansible-2-for-rhel-8-x86_64-rpms \
+    --enablerepo openstack-${RHOSP_VERSION//rhosp/}-for-rhel-8-x86_64-rpms \
+    --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
+    --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
+else
+  #Local mirrors case (CICD)
+  sudo leapp upgrade --no-rhsm --debug \
+    --enablerepo rhel-8-for-x86_64-baseos-rpms \
+    --enablerepo rhel-8-for-x86_64-appstream-rpms \
+    --enablerepo rhel-8-for-x86_64-highavailability-rpms \
+    --enablerepo fast-datapath-for-rhel-8-x86_64-rpms \
+    --enablerepo ansible-2.9-for-rhel-8-x86_64-rpms \
+    --enablerepo openstack-${RHOSP_VERSION//rhosp/}-for-rhel-8-x86_64-rpms \
+    --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
+    --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
+fi
 
 sudo touch /.autorelabel
 

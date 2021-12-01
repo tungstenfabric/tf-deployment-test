@@ -16,6 +16,7 @@ if [ ! -e tripleo-heat-templates.rhosp13 ] ; then
   mv misc_opts.yaml misc_opts.yaml.rhosp13
 fi
 
+# TODO: instead of below there is use of ~/tf-devstack/rhosp/overcloud/04_prepare_heat_templates.sh
 #rm -rf tripleo-heat-templates
 #cp -r /usr/share/openstack-tripleo-heat-templates tripleo-heat-templates
 #rm -rf tf-tripleo-heat-templates
@@ -23,9 +24,9 @@ fi
 #cp -r tf-tripleo-heat-templates/* tripleo-heat-templates/
 
 #Using deployment framework for getting appropriate heat teamplates for RHOSP16
-sed -i s/RHOSP_VERSION=\"rhosp13\"/RHOSP_VERSION=\"rhosp16.1\"/ rhosp-environment.sh || true
+sed -i s/RHOSP_VERSION=\"rhosp13\"/RHOSP_VERSION=\"${RHOSP_VERSION}\"/ rhosp-environment.sh || true
 sed -i s/RHOSP_MAJOR_VERSION=\"rhosp13\"/RHOSP_MAJOR_VERSION=\"rhosp16\"/ rhosp-environment.sh || true
-sed -i s/RHEL_VERSION=\"rhel7\"/RHEL_VERSION=\"rhel8.2\"/ rhosp-environment.sh || true
+sed -i s/RHEL_VERSION=\"rhel7\"/RHEL_VERSION=\"${RHEL_VERSION}\"/ rhosp-environment.sh || true
 sed -i s/RHEL_MAJOR_VERSION=\"rhel7\"/RHEL_MAJOR_VERSION=\"rhel8\"/ rhosp-environment.sh || true
 sed -i s/OPENSTACK_VERSION=\"queens\"/OPENSTACK_VERSION=\"train\"/ rhosp-environment.sh || true
 if ! grep -q -E "CONTRAIL_CONTAINER_TAG=.*" rhosp-environment.sh; then
@@ -56,6 +57,17 @@ cat $opts_file
 
 
 #8.1. CREATING AN UPGRADES ENVIRONMENT FILE
+export RHOSP_VERSION_NUM=${RHOSP_VERSION//rhosp/}
+export RHEL_VERSION_NUM=${RHEL_VERSION//rhel/}
+declare -A _dnf_container_tools=(
+  ["rhel8.2"]="container-tools:2.0"
+  ["rhel8.4"]="container-tools:3.0"
+)
+export CONTAINER_TOOLS_MODULE=${_dnf_container_tools[$RHEL_VERSION]}
+if [ -z "$CONTAINER_TOOLS_MODULE" ] ; then
+  echo "ERROR: internal error - no container-tools set for $RHEL_VERSION"
+  exit 1
+fi
 cat $my_dir/../redhat_files/upgrades-environment.yaml.template | envsubst > $my_dir/../redhat_files/upgrades-environment.yaml
 cp $my_dir/../redhat_files/upgrades-environment.yaml tripleo-heat-templates/
 #this file was removed from doc
