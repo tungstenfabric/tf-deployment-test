@@ -7,7 +7,19 @@ cd ~
 source stackrc
 source rhosp-environment.sh
 
-sudo systemctl stop 'openstack-*' httpd haproxy mariadb 'rabbitmq*' docker xinetd
+sudo systemctl stop 'openstack-*' httpd haproxy mariadb 'rabbitmq*' docker xinetd || true
+
+# WA t oavoid error on next cleanup
+# Error:
+#  Problem: package python2-requests-2.20.0-3.module+el8.2.0+4577+feefd9b8.noarch requires python2-urllib3, but none of the providers can be installed
+#   - package leapp-deps-el8-5.0.8-100.202109271224Z.b7ebfca.master.el8.noarch requires python2-requests, but none of the providers can be installed
+#   - package python2-urllib3-1.24.2-3.module+el8.4.0+9193+f3daf6ef.noarch requires python2-pysocks, but none of the providers can be installed
+#   - package python2-leapp-0.13.0-1.el7_9.noarch requires leapp-framework-dependencies = 3, but none of the providers can be installed
+#   - conflicting requests
+#   - problem with installed package python2-leapp-0.13.0-1.el7_9.noarch
+sudo rpm -e --nodeps python2-leapp || true
+sudo rpm -e --nodeps leapp || true
+sudo rpm -e --nodeps leapp-upgrade-el7toel8 || true
 
 sudo yum -y remove '*el7ost*' 'galera*' 'haproxy*' \
     httpd 'mysql*' 'pacemaker*' xinetd python-jsonpointer \

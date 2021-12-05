@@ -68,6 +68,12 @@ if [ -z "$CONTAINER_TOOLS_MODULE" ] ; then
   echo "ERROR: internal error - no container-tools set for $RHEL_VERSION"
   exit 1
 fi
+
+export RHSM_PARAMTERS=''
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
+  RHSM_PARAMTERS='--no-rhsm'
+fi
+
 cat $my_dir/../redhat_files/upgrades-environment.yaml.template | envsubst > $my_dir/../redhat_files/upgrades-environment.yaml
 cp $my_dir/../redhat_files/upgrades-environment.yaml tripleo-heat-templates/
 #this file was removed from doc
