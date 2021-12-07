@@ -60,7 +60,7 @@ openstack overcloud upgrade prepare --yes \
   -e contrail-parameters.yaml \
   -e containers-prepare-parameter.yaml \
   -e tripleo-heat-templates/upgrades-environment.yaml \
-  $FFU_EXTRA_HEAT_ENVIRONMENTS
+  $RHOSP_EXTRA_HEAT_ENVIRONMENTS
 
 openstack overcloud external-upgrade run --yes --stack overcloud --tags container_image_prepare
 
