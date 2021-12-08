@@ -23,12 +23,12 @@ undercloud_admin_host="${prov_subnet}.3"
 
 
 checkForVariable RHOSP_VERSION
-if [[ "$RHOSP_VERSION" != 'rhosp16.1' || "$RHOSP_VERSION" != 'rhosp16.2' ]] ; then
+if [[ "$RHOSP_VERSION" != 'rhosp16.1' && "$RHOSP_VERSION" != 'rhosp16.2' ]] ; then
   echo "ERROR: update RHOSP_VERSION to target release rhosp16.1 or rhosp16.2"
   exit 1
 fi
 checkForVariable RHEL_VERSION
-if [[ "$RHEL_VERSION" != 'rhel8.2' || "$RHEL_VERSION" != 'rhel8.4' ]] ; then
+if [[ "$RHEL_VERSION" != 'rhel8.2' && "$RHEL_VERSION" != 'rhel8.4' ]] ; then
   echo "ERROR: update RHEL_VERSION to target release rhel8.2 (for rhosp16.1) or rhel8.4 (for rhosp16.2)"
   exit 1
 fi
