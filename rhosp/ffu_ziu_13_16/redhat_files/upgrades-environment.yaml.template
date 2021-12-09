@@ -1,12 +1,11 @@
 parameter_defaults:
   #Local mirrors case (CICD)
-  SkipRhelEnforcement: true
+  ${UPGRADE_ENV_OPTS1}
 
   #Default timeout can be increased
   #UpgradeLeappRebootTimeout: 3600 
 
-  #UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1 LEAPP_DEVEL_TARGET_RELEASE=${RHEL_VERSION_NUM}"
-  UpgradeLeappDevelSkip: "LEAPP_UNSUPPORTED=1"
+  ${UPGRADE_ENV_OPTS2} 
 
   LeappInitCommand: |
     #https://bugzilla.redhat.com/show_bug.cgi?id=1962365#c23
@@ -26,7 +25,7 @@ parameter_defaults:
   UpgradeLeappDebug: true
 
   UpgradeInitCommand: |
-    sudo subscription-manager release --set=${RHEL_VERSION_NUM}
+    ${UPGRADE_ENV_OPTS3}
     sudo dnf module disable -y container-tools:rhel8
     sudo dnf module enable -y ${CONTAINER_TOOLS_MODULE}
     sudo dnf module disable -y virt:rhel

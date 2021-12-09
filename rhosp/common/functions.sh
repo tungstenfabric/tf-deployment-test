@@ -166,3 +166,19 @@ function sync_time() {
   done
 }
 
+function update_rhosp_environment_sh() {
+  #Updating versions of openstack, rhosp and rhel in rhosp-environment.sh
+  local config=${1:-'rhosp-environment.sh'}
+
+  source $DEVSTACK_PATH/rhosp/providers/common/common.sh
+  source $DEVSTACK_PATH/rhosp/config/${RHEL_MAJOR_VERSION}_env.sh
+
+  add_variable $config ENVIRONMENT_OS $ENVIRONMENT_OS
+  add_variable $config RHOSP_VERSION $RHOSP_VERSION
+  add_variable $config RHOSP_MAJOR_VERSION $RHOSP_MAJOR_VERSION
+  add_variable $config RHEL_VERSION $RHEL_VERSION
+  add_variable $config RHEL_MAJOR_VERSION $RHEL_MAJOR_VERSION
+  add_variable $config OPENSTACK_VERSION $OPENSTACK_VERSION
+  add_variable $config RHEL_REPOS $RHEL_REPOS
+}
+

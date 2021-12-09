@@ -10,6 +10,10 @@ cd ~
 source stackrc
 source rhosp-environment.sh
 
+opts_file="./misc_opts.yaml"
+#Remember ContrailControllerCount
+contrail_controller_count=$(grep ContrailControllerCount $opts_file | cut -d ':' -f 2 | tr -d  ' ')
+
 if [ ! -e tripleo-heat-templates.rhosp13 ] ; then
   mv tripleo-heat-templates tripleo-heat-templates.rhosp13
   mv contrail-parameters.yaml contrail-parameters.yaml.rhosp13
@@ -23,35 +27,30 @@ fi
 #git clone https://github.com/tungstenfabric/tf-tripleo-heat-templates.git -b stable/train
 #cp -r tf-tripleo-heat-templates/* tripleo-heat-templates/
 
-#Using deployment framework for getting appropriate heat teamplates for RHOSP16
-sed -i s/RHOSP_VERSION=\"rhosp13\"/RHOSP_VERSION=\"${RHOSP_VERSION}\"/ rhosp-environment.sh || true
-sed -i s/RHOSP_MAJOR_VERSION=\"rhosp13\"/RHOSP_MAJOR_VERSION=\"rhosp16\"/ rhosp-environment.sh || true
-sed -i s/RHEL_VERSION=\"rhel7\"/RHEL_VERSION=\"${RHEL_VERSION}\"/ rhosp-environment.sh || true
-sed -i s/RHEL_MAJOR_VERSION=\"rhel7\"/RHEL_MAJOR_VERSION=\"rhel8\"/ rhosp-environment.sh || true
-sed -i s/OPENSTACK_VERSION=\"queens\"/OPENSTACK_VERSION=\"train\"/ rhosp-environment.sh || true
-if ! grep -q -E "CONTRAIL_CONTAINER_TAG=.*" rhosp-environment.sh; then
-    echo "export CONTRAIL_CONTAINER_TAG=\"${CONTRAIL_CONTAINER_TAG_FFU}\"" >> rhosp-environment.sh
-fi
-
 
 ~/tf-devstack/rhosp/overcloud/04_prepare_heat_templates.sh
 
 #Tuning misc_opts.sh
-registry="${CONTAINER_REGISTRY_FFU}"
-tag=${CONTRAIL_CONTAINER_TAG_FFU:-'latest'}
+registry="${CONTAINER_REGISTRY}"
+tag=${CONTRAIL_CONTAINER_TAG:-'latest'}
 
 export undercloud_registry_contrail=${prov_ip}:8787
 ns=$(echo ${registry} | cut -s -d '/' -f2-)
 [ -n "$ns" ] && undercloud_registry_contrail+="/$ns"
 
-opts_file="./misc_opts.yaml"
 sed -i $opts_file -e "s|ContrailRegistry: .*$|ContrailRegistry: ${undercloud_registry_contrail}|"
 sed -i $opts_file -e "s/ContrailImageTag: .*$/ContrailImageTag: ${tag}/"
 
-sed -i "s/AdminPassword:.*/AdminPassword: 'c0ntrail123'/" $opts_file || true
 if ! grep -q tripleo_delegate_to $opts_file; then
     echo "  tripleo_delegate_to: undercloud" >> $opts_file
 fi
+if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
+  echo "  SkipRhelEnforcement: True" >> $opts_file
+  echo "  DnfStreams: []" >> $opts_file
+fi
+
+#Restoring ContrailControllerCount (contril controller will be deleted at the beggining of FFU if count is 0)
+sed -i $opts_file -e "s/ContrailControllerCount: .*$/ContrailControllerCount: $contrail_controller_count/"
 
 cat $opts_file
 
@@ -71,8 +70,17 @@ fi
 
 export RHSM_PARAMTERS=''
 if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
-  RHSM_PARAMTERS='--no-rhsm'
+  export RHSM_PARAMTERS='--no-rhsm'
+  export UPGRADE_ENV_OPTS1='SkipRhelEnforcement: true'
+  export UPGRADE_ENV_OPTS2="UpgradeLeappDevelSkip: \"LEAPP_UNSUPPORTED=1\""
+  export UPGRADE_ENV_OPTS3=''
+else 
+  export UPGRADE_ENV_OPTS1=''
+  export UPGRADE_ENV_OPTS2="UpgradeLeappDevelSkip: \"LEAPP_UNSUPPORTED=1 LEAPP_DEVEL_TARGET_RELEASE=${RHEL_VERSION_NUM}\""
+  export UPGRADE_ENV_OPTS3="sudo subscription-manager release --set=${RHEL_VERSION_NUM}"
 fi
+
+
 
 cat $my_dir/../redhat_files/upgrades-environment.yaml.template | envsubst > $my_dir/../redhat_files/upgrades-environment.yaml
 cp $my_dir/../redhat_files/upgrades-environment.yaml tripleo-heat-templates/

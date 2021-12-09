@@ -7,8 +7,8 @@ cd ~
 source stackrc
 source rhosp-environment.sh
 
-registry=${CONTAINER_REGISTRY_FFU:-'docker.io/tungstenfabric'}
-tag=${CONTRAIL_CONTAINER_TAG_FFU:-'latest'}
+registry=${CONTAINER_REGISTRY:-'docker.io/tungstenfabric'}
+tag=${CONTRAIL_CONTAINER_TAG:-'latest'}
 
 export undercloud_registry_contrail=${prov_ip}:8787
 ns=$(echo ${registry} | cut -s -d '/' -f2-)

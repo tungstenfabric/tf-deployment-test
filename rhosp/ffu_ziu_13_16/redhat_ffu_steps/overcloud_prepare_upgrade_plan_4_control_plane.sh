@@ -37,10 +37,14 @@ for ((i=0;i<3;i++)) ; do
   node=''
   batch=''
   for node in $(openstack server list -c Name -f value | grep controller | grep ${i}); do
-      if [ -z $batch ]; then
-          batch+="$node"
-      else
-          batch+=",$node"
+      if [[ -n "$EXTERNAL_CONTROLLER_NODES" && $node =~ 'contrailcontroller' ]]; then
+          echo "INFO: Excluding $node from upgrade_plan because EXTERNAL_CONTROLLER_NODES is using (CN21.2 upgrade mode)"
+      else 
+          if [ -z $batch ]; then
+              batch+="$node"
+          else
+              batch+=",$node"
+          fi
       fi
   done
   if echo "$batch" | grep -q $pcs_bootstrap_node; then

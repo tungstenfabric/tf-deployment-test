@@ -22,7 +22,7 @@ if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
   [[ -n "$RHEL_POOL_ID" && -n "$RHEL_USER" && -n "$RHEL_PASSWORD" && -n "$RHEL_REPOS" ]]
     export rhsm_image_registry_credentials="
   ContainerImageRegistryCredentials:
-    ${OPENSTACK_CONTAINER_REGISTRY_FFU}:
+    ${OPENSTACK_CONTAINER_REGISTRY}:
       ${RHEL_USER}: '${RHEL_PASSWORD}'"
 
   ###10.1. Red Hat Subscription Manager (RHSM) composable service

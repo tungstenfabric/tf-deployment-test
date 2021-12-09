@@ -5,7 +5,50 @@ my_dir="$(dirname "$my_file")"
 
 cd
 source $my_dir/../common/functions.sh
-source ~/rhosp-environment.sh
+
+checkForVariable CONTAINER_REGISTRY
+checkForVariable CONTRAIL_CONTAINER_TAG
+checkForVariable OPENSTACK_CONTAINER_REGISTRY
+checkForVariable ENVIRONMENT_OS
+checkForVariable PROVIDER
+if [[ "$ENVIRONMENT_OS" != 'rhel82' && "$ENVIRONMENT_OS" != 'rhel84' ]] ; then
+  echo "ERROR: update ENVIRONMENT_OS to target release rhel82 or rhel84"
+  exit 1
+fi
+
+#backup previous version of rhosp-environment.sh
+if [ ! -f rhosp-environment.sh.backup ]; then
+  cp rhosp-environment.sh rhosp-environment.sh.backup
+fi
+
+#Check tf-devstack repo
+DEVSTACK_PATH=${DEVSTACK_PATH:-"$HOME/tf-devstack"}
+
+if [[ -d $DEVSTACK_PATH ]]; then
+  #Updating ENVIRONMENT_OS, rhosp and rhel versions in rhosp-environment.sh
+  update_rhosp_environment_sh rhosp-environment.sh
+else 
+  echo "ERROR: tf-devstack not found at $DEVSTACK_PATH. Make cd; git clone https://github.com/tungstenfabric/tf-devstack.git or define variable DEVSTACK_PATH"
+  exit 1
+fi
+
+add_variable rhosp-environment.sh CONTAINER_REGISTRY $CONTAINER_REGISTRY
+add_variable rhosp-environment.sh CONTRAIL_CONTAINER_TAG $CONTRAIL_CONTAINER_TAG
+add_variable rhosp-environment.sh OPENSTACK_CONTAINER_REGISTRY $OPENSTACK_CONTAINER_REGISTRY
+add_variable rhosp-environment.sh OPENSTACK_CONTAINER_TAG $OPENSTACK_CONTAINER_TAG
+
+if [[ -n "$EXTERNAL_CONTROLLER_NODES" ]] ; then
+  add_variable rhosp-environment.sh EXTERNAL_CONTROLLER_NODES $EXTERNAL_CONTROLLER_NODES
+  add_variable rhosp-environment.sh CONTROL_PLANE_ORCHESTRATOR 'operator'
+  add_variable rhosp-environment.sh overcloud_ctrlcont_instance ''
+fi
+
+if [[ -n "$RHOSP_EXTRA_HEAT_ENVIRONMENTS" ]] ; then
+  add_variable rhosp-environment.sh RHOSP_EXTRA_HEAT_ENVIRONMENTS "$RHOSP_EXTRA_HEAT_ENVIRONMENTS"
+fi
+
+#Reading updated rhosp-environment.sh
+source rhosp-environment.sh
 
 #Red Hat Registration case
 if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
@@ -15,23 +58,14 @@ if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
   checkForVariable RHEL_REPOS
 fi
 
-#Adding FFU and RHOSP16 variables
+#Adding and RHOSP16 variables
 undercloud_local_ip=$(grep -o "export prov_ip=.*" ~/rhosp-environment.sh | cut -d ' ' -f2 | cut -d '=' -f 2 | tr -d '"')
 
 undercloud_public_host="${prov_subnet}.2"
 undercloud_admin_host="${prov_subnet}.3"
 
-
 checkForVariable RHOSP_VERSION
-if [[ "$RHOSP_VERSION" != 'rhosp16.1' && "$RHOSP_VERSION" != 'rhosp16.2' ]] ; then
-  echo "ERROR: update RHOSP_VERSION to target release rhosp16.1 or rhosp16.2"
-  exit 1
-fi
 checkForVariable RHEL_VERSION
-if [[ "$RHEL_VERSION" != 'rhel8.2' && "$RHEL_VERSION" != 'rhel8.4' ]] ; then
-  echo "ERROR: update RHEL_VERSION to target release rhel8.2 (for rhosp16.1) or rhel8.4 (for rhosp16.2)"
-  exit 1
-fi
 checkForVariable SSH_USER
 checkForVariable mgmt_ip
 checkForVariable prov_subnet
@@ -39,36 +73,30 @@ if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
   checkForVariable ssh_private_key
   checkForVariable NODE_ADMIN_USERNAME
 fi
-checkForVariable CONTAINER_REGISTRY_FFU
-checkForVariable CONTRAIL_CONTAINER_TAG_FFU
-checkForVariable OPENSTACK_CONTAINER_REGISTRY_FFU
+
 if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
-  checkForVariable RHEL_LOCAL_MIRROR_FFU
+  checkForVariable RHEL_LOCAL_MIRROR
 fi
 checkForVariable undercloud_public_host
 checkForVariable undercloud_admin_host
 
-#Setting FFU parameters
-rm /tmp/rhosp-environment.sh || true
-scp $SSH_USER@$mgmt_ip:rhosp-environment.sh /tmp/
+#Adding RHOSP16 parameters to ~/rhosp-environment.sh
+cd
+add_variable rhosp-environment.sh SSH_USER $SSH_USER
+add_variable rhosp-environment.sh mgmt_ip $mgmt_ip
+add_variable rhosp-environment.sh undercloud_admin_host $undercloud_admin_host
+add_variable rhosp-environment.sh undercloud_public_host $undercloud_public_host
+add_variable rhosp-environment.sh DEVSTACK_PATH $DEVSTACK_PATH
 
-add_variable /tmp/rhosp-environment.sh SSH_USER $SSH_USER
-add_variable /tmp/rhosp-environment.sh mgmt_ip $mgmt_ip
-add_variable /tmp/rhosp-environment.sh CONTAINER_REGISTRY_FFU $CONTAINER_REGISTRY_FFU
-add_variable /tmp/rhosp-environment.sh CONTRAIL_CONTAINER_TAG_FFU $CONTRAIL_CONTAINER_TAG_FFU
-add_variable /tmp/rhosp-environment.sh OPENSTACK_CONTAINER_REGISTRY_FFU $OPENSTACK_CONTAINER_REGISTRY_FFU
-add_variable /tmp/rhosp-environment.sh undercloud_admin_host $undercloud_admin_host
-add_variable /tmp/rhosp-environment.sh undercloud_public_host $undercloud_public_host
 if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
-  add_variable /tmp/rhosp-environment.sh ssh_private_key $ssh_private_key
-  add_variable /tmp/rhosp-environment.sh NODE_ADMIN_USERNAME $NODE_ADMIN_USERNAME
-  add_variable /tmp/rhosp-environment.sh RHEL_LOCAL_MIRROR_FFU $RHEL_LOCAL_MIRROR_FFU
+  add_variable rhosp-environment.sh ssh_private_key $ssh_private_key
+  add_variable rhosp-environment.sh NODE_ADMIN_USERNAME $NODE_ADMIN_USERNAME
+  add_variable rhosp-environment.sh RHEL_LOCAL_MIRROR $RHEL_LOCAL_MIRROR
 fi
 
-cd
 #Updating rhosp-environment.sh
 ssh $SSH_USER@$mgmt_ip cp rhosp-environment.sh rhosp-environment-rhosp13-backup.sh
-scp -r /tmp/rhosp-environment.sh $SSH_USER@$mgmt_ip:
+scp -r rhosp-environment.sh $SSH_USER@$mgmt_ip:
 echo "Copying tf-deployment-test to undercloud node"
 ssh $SSH_USER@$mgmt_ip "mkdir tf-deployment-test || true"
 scp -r $my_dir/../../* $SSH_USER@$mgmt_ip:tf-deployment-test

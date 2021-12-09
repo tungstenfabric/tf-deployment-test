@@ -1,41 +1,41 @@
 [openstack-${RHOSP_VERSION_NUM}-for-rhel-8-x86_64-rpms]
 name = Red Hat OpenStack Platform $RHOSP_VERSION_NUM for RHEL 8 (RPMs)
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/openstack-${RHOSP_VERSION_NUM}-for-rhel-8-x86_64-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/openstack-${RHOSP_VERSION_NUM}-for-rhel-8-x86_64-rpms
 enabled = 1
 
 [satellite-tools-6.5-for-rhel-8-x86_64-rpms]
 name = Red Hat Satellite Tools for RHEL 8 Server RPMs x86_64
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/satellite-tools-6.5-for-rhel-8-x86_64-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/satellite-tools-6.5-for-rhel-8-x86_64-rpms
 enabled = 1
 
 [ansible-2.9-for-rhel-8-x86_64-rpms]
 name = Red Hat Ansible Engine 2.9 for RHEL 8 x86_64 (RPMs)
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/ansible-2.9-for-rhel-8-x86_64-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/ansible-2.9-for-rhel-8-x86_64-rpms
 enabled = 1
 
 [rhel-8-for-x86_64-appstream-rpms]
 name = Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/rhel-8-for-x86_64-appstream-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/rhel-8-for-x86_64-appstream-rpms
 enabled = 1
 
 [rhel-8-for-x86_64-highavailability-rpms]
 name = Red Hat Enterprise Linux 8 for x86_64 - High Availability (RPMs) Extended Update Support
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/rhel-8-for-x86_64-highavailability-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/rhel-8-for-x86_64-highavailability-rpms
 enabled = 1
 
 [fast-datapath-for-rhel-8-x86_64-rpms]
 name = Red Hat Fast Datapath for RHEL 8 (RPMS)
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/fast-datapath-for-rhel-8-x86_64-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/fast-datapath-for-rhel-8-x86_64-rpms
 enabled = 1
 
 [rhel-8-for-x86_64-baseos-rpms]
 name = Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs) Extended Update Support
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/rhel-8-for-x86_64-baseos-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/rhel-8-for-x86_64-baseos-rpms
 enabled = 1
 
 [advanced-virt-for-rhel-8-x86_64-rpms]
 name = Advanced Virtualization for RHEL 8 x86_64 (RPMs)
-baseurl = ${RHEL_LOCAL_MIRROR_FFU}/advanced-virt-for-rhel-8-x86_64-rpms
+baseurl = ${RHEL_LOCAL_MIRROR}/advanced-virt-for-rhel-8-x86_64-rpms
 enabled = 1
 
 
