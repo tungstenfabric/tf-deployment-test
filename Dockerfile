@@ -15,6 +15,7 @@ RUN cp /tf-deployment-test/testrunner.sh / && \
     yum install -y python3 rsync openssh-clients && \
     pip3 install --upgrade --no-compile pip && \
     pip3 install --no-compile -r /tf-deployment-test/requirements.txt && \
+    pip3 install --force urllib3==1.24.2 && \
     yum clean all -y && \
     rm -rf /var/cache/yum
 
