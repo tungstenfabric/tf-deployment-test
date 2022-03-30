@@ -12,6 +12,8 @@ RUN cp /tf-deployment-test/testrunner.sh / && \
     if [[ -d /tf-deployment-test/mirrors && -n "$(ls /tf-deployment-test/mirrors/*.repo)" ]] ; then \
         cp /tf-deployment-test/mirrors/*.repo /etc/yum.repos.d/ ; \
     fi && \
+    yum update -y -x "redhat-release*" -x "coreutils*" && \
+    yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical && \
     yum install -y python3 rsync openssh-clients && \
     pip3 install --upgrade --no-compile pip && \
     pip3 install --no-compile -r /tf-deployment-test/requirements.txt && \
