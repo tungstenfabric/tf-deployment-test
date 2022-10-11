@@ -1,0 +1,15 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: disable default dnf module for container-tools
+      command: dnf module disable -y container-tools:rhel8
+      become: true
+    - name: set dnf module for container-tools:3.0
+      command: dnf module enable -y container-tools:3.0
+      become: true
+    - name: disable dnf module for virt:8.2
+      command: dnf module disable -y virt:8.2
+      become: true
+    - name: set dnf module for virt:rhel
+      command: dnf module enable -y virt:rhel
+      become: true

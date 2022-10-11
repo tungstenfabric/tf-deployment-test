@@ -1,0 +1,36 @@
+---
+- hosts: undercloud
+  tasks:
+
+  - name: Changing tag to 16.2 in containers-prepare-parameter.yaml
+    replace:
+      path: "{{ ansible_env.HOME }}/containers-prepare-parameter.yaml"
+      regexp: "tag: '16.1'"
+      replace: "tag: '16.2'"
+      backup: yes
+
+  - name: Changing ContrailImageTag in misc_opts.yaml
+    replace:
+      path: "{{ ansible_env.HOME }}/misc_opts.yaml"
+      regexp: "ContrailImageTag: .*"
+      replace: "ContrailImageTag: nightly-ubi8"
+      backup: yes
+
+  - name: Adding custom parameters to misc_opts.yaml (disabling Red Hat registration)
+    lineinfile:
+      dest: "{{ ansible_env.HOME }}/misc_opts.yaml"
+      line: "  SkipRhelEnforcement: True"
+      insertafter: '^parameter_defaults:'
+      state: present
+
+  - name: Adding custom parameters to undercloud.conf (disabling Red Hat registration) 
+    lineinfile:
+      dest: "{{ ansible_env.HOME }}/undercloud.conf"
+      line: 'custom_env_files = custom-undercloud-params.yaml'
+      insertafter: '^\[DEFAULT\]'
+      state: present
+
+  - name: Copying custom-undercloud-params.yaml
+    copy:
+      src: custom-undercloud-params.yaml
+      dest: "{{ ansible_env.HOME }}/custom-undercloud-params.yaml"

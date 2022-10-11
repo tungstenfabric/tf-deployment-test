@@ -14,7 +14,7 @@ function run_ssh() {
   fi
   echo ------------------------- Running on $user@$addr -----------------------------------
   echo ---  Command: $command
-  ssh ${user}@${addr} ${command}
+  ssh $ssh_opts ${user}@${addr} ${command}
   if [ $? -ne 0 ]
   then
      echo ===================== FAIL: ${command}
