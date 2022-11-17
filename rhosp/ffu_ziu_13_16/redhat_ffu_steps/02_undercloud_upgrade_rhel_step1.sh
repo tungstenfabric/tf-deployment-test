@@ -73,6 +73,7 @@ export LEAPP_UNSUPPORTED=1
 sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
 if [[ "${ENABLE_RHEL_REGISTRATION,,}" == 'true' ]] ; then
   #Red Hat Registration case
+  sudo subscription-manager refresh
   sudo leapp upgrade --debug \
     --enablerepo rhel-8-for-x86_64-baseos-rpms \
     --enablerepo rhel-8-for-x86_64-appstream-rpms \

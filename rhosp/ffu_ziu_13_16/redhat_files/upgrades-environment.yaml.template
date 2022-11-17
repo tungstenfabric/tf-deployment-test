@@ -7,14 +7,16 @@ parameter_defaults:
 
   ${UPGRADE_ENV_OPTS2} 
 
+  LeappActorsToRemove: ['checkinstalledkernels', 'persistentnetnamesdisable']
+
   LeappInitCommand: |
     #https://bugzilla.redhat.com/show_bug.cgi?id=1962365#c23
     sudo lsmod | grep -q floppy && { sudo rmmod floppy; echo "module floppy unloaded"; } || echo "module floppy was not loaded"
     sudo lsmod | grep -q pata_acpi && { sudo rmmod pata_acpi; echo "module pata_acpi unloaded"; } || echo "module pata_acpi was not loaded"
     #https://bugzilla.redhat.com/show_bug.cgi?id=1983033#c2
-    sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
+    #sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/persistentnetnamesdisable/actor.py
     #https://bugzilla.redhat.com/show_bug.cgi?id=1996039#c4
-    sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/kernel/checkinstalledkernels/actor.py
+    #sudo rm -f /usr/share/leapp-repository/repositories/system_upgrade/el7toel8/actors/kernel/checkinstalledkernels/actor.py
     sudo rm -f /etc/yum.repos.d/*
     sudo cp -f /home/${NODE_ADMIN_USERNAME}/rhel8.repo /etc/yum.repos.d/
     #https://bugzilla.redhat.com/show_bug.cgi?id=1952574#c1
