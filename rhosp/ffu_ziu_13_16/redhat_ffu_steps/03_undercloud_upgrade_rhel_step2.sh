@@ -61,10 +61,11 @@ if [ -z "$_ctools" ] ; then
   echo "ERROR: internal error - no container-tools set for $RHEL_VERSION"
   exit 1
 fi
-sudo dnf module disable -y container-tools:rhel8
+sudo dnf module reset -y container-tools
 sudo dnf module enable -y $_ctools
-sudo dnf module disable -y virt:rhel
-sudo dnf module enable -y virt:8.2
+#virt module management is not needed for rhosp16.2
+#sudo dnf module disable -y virt:rhel
+#sudo dnf module enable -y virt:8.2
 
 #this package blocks dystro-sync
 sudo dnf remove -y crypto-policies-scripts-20210209-1.gitbfb6bed.el8_3.noarch || true

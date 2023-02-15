@@ -56,8 +56,9 @@ if [[ "${ENABLE_RHEL_REGISTRATION,,}" != 'true' ]] ; then
   sudo cp $my_dir/../redhat_files/rhel8.repo /etc/yum.repos.d/
 fi
 
+sudo yum clean all
 echo 'openvswitch2.11' | sudo tee -a /etc/leapp/transaction/to_remove
-echo 'openvswitch2.13' | sudo tee -a /etc/leapp/transaction/to_install
+echo 'openvswitch2.15' | sudo tee -a /etc/leapp/transaction/to_install
 echo 'ceph-ansible' | sudo tee -a /etc/leapp/transaction/to_keep
 
 #Disable unneeded modules and prepare answers for leapp
@@ -67,6 +68,7 @@ module=pata_acpi; sudo lsmod | grep -q $module && { sudo rmmod $module; echo "$m
 sudo leapp answer --add --section remove_pam_pkcs11_module_check.confirm=True
 sudo leapp answer --add --section authselect_check.confirm=True
 export LEAPP_UNSUPPORTED=1
+export LEAPP_DEVEL_TARGET_RELEASE=8.4
 
 # Remove the persistent network names actor from the Leapp process
 # https://bugzilla.redhat.com/show_bug.cgi?id=1983033
@@ -95,6 +97,12 @@ else
     --enablerepo satellite-tools-6.5-for-rhel-8-x86_64-rpms \
     --enablerepo advanced-virt-for-rhel-8-x86_64-rpms
 fi
+
+echo " if this fails with error mentioned in bug CEM-29059 please do the below change"
+# change the releasever from /etc/leapp/yum.repo.d/ and grep for 8.2 and change into 8.4
+# changes are in below files and workaround from shaju, not sure why these files were not updated as part of leaf pkg install or registration with satellite
+#system_upgrade/el7toel8/actors/ipuworkflowconfig/libraries/ipuworkflowconfig.py:CURRENT_TARGET_VERSION = '8.4'
+#system_upgrade/el7toel8/actors/ipuworkflowconfig/libraries/ipuworkflowconfig.py:CURRENT_SAP_HANA_TARGET_VERSION = '8.4'
 
 sudo touch /.autorelabel
 
